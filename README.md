@@ -6,17 +6,34 @@ Automated pipeline that builds PMTiles from ALPR camera data and serves them via
 
 A daily GitHub Action:
 
-1. Fetches GeoJSON from `data.dontgetflocked.com` (~90K camera locations)
+1. Fetches GeoJSON from `data.dontgetflocked.com` (~90K camera locations with full properties)
 2. Validates the data (non-empty, valid JSON)
-3. Runs [Tippecanoe](https://github.com/felt/tippecanoe) to produce a `.pmtiles` file (coordinates only, z0–z14)
-4. Uploads to Cloudflare R2, served at `tiles.dontgetflocked.com`
+3. Runs [Tippecanoe](https://github.com/felt/tippecanoe) to produce a `.pmtiles` file (z0–z14, all properties included)
+4. Uploads `cameras.pmtiles` + `styles/layers.json` to Cloudflare R2
 
-## Styling
+## Client integration
 
-The `docs/` folder contains the map layer styling and architecture reference used by Deflock client apps:
+Two files served from R2:
 
-- [`docs/map-architecture.md`](docs/map-architecture.md) — rendering architecture, data sources, layer stack
-- [`docs/map-styling.md`](docs/map-styling.md) — paint properties, zoom interpolations, color palette
+| URL | Purpose |
+|-----|---------|
+| `tiles.dontgetflocked.com/cameras.pmtiles` | Vector tiles — single source for all zoom levels |
+| `tiles.dontgetflocked.com/styles/layers.json` | Layer definitions, paint properties, animation config, palette |
+
+Clients fetch `layers.json` on load and apply it directly — no hardcoded styles, update once and all apps get it.
+
+### Single-source architecture
+
+PMTiles includes all camera properties (operator, brand, direction, etc.). Clients use **one source** for both dot-density at national zoom and detail popups at close zoom. No separate GeoJSON fetch needed.
+
+## Styles
+
+`styles/layers.json` contains:
+
+- **layers** — MapLibre-compatible layer definitions with zoom interpolations
+- **animation** — pulse ring parameters (duration, radius/opacity ranges)
+- **cones** — direction cone geometry config (radius, spread, segments)
+- **palette** — color tokens used across all layers
 
 ## Setup
 
@@ -32,14 +49,11 @@ The `docs/` folder contains the map layer styling and architecture reference use
 ### Manual run
 
 ```bash
-# Install tippecanoe and jq
 brew install tippecanoe jq
 
-# Set env vars
 export R2_BUCKET_NAME=your-bucket
 export R2_ENDPOINT=https://your-account-id.r2.cloudflarestorage.com
 
-# Run
 bash scripts/build_tiles.sh
 ```
 

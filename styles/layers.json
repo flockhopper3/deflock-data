@@ -1,0 +1,165 @@
+{
+  "version": 1,
+  "source": {
+    "id": "cameras",
+    "type": "vector",
+    "url": "pmtiles://https://tiles.dontgetflocked.com/cameras.pmtiles"
+  },
+  "layers": [
+    {
+      "id": "direction-cones",
+      "type": "fill",
+      "source": "direction-cones",
+      "minzoom": 12,
+      "paint": {
+        "fill-color": "#ef4444",
+        "fill-opacity": 0.35
+      }
+    },
+    {
+      "id": "direction-cones-outline",
+      "type": "line",
+      "source": "direction-cones",
+      "minzoom": 12,
+      "paint": {
+        "line-color": "#dc2626",
+        "line-width": 2,
+        "line-opacity": 0.7
+      }
+    },
+    {
+      "id": "dot-density",
+      "type": "circle",
+      "source": "cameras",
+      "source-layer": "cameras",
+      "maxzoom": 14,
+      "paint": {
+        "circle-color": "#ef4444",
+        "circle-radius": [
+          "interpolate", ["exponential", 1.5], ["zoom"],
+          3, 1.5,
+          6, 2.5,
+          8, 4,
+          10, 6,
+          12, 8,
+          13, 7
+        ],
+        "circle-opacity": [
+          "interpolate", ["linear"], ["zoom"],
+          0, 0.55,
+          7, 0.6,
+          10, 0.85,
+          12, 0.95,
+          13, 0.2,
+          14, 0
+        ],
+        "circle-blur": [
+          "interpolate", ["linear"], ["zoom"],
+          0, 0.3,
+          10, 0.1,
+          12, 0
+        ]
+      }
+    },
+    {
+      "id": "camera-point",
+      "type": "circle",
+      "source": "cameras",
+      "source-layer": "cameras",
+      "minzoom": 11,
+      "paint": {
+        "circle-color": "#dc2626",
+        "circle-radius": 6,
+        "circle-stroke-width": 2,
+        "circle-stroke-color": "#fca5a5",
+        "circle-stroke-opacity": [
+          "interpolate", ["linear"], ["zoom"],
+          11, 0,
+          13, 1
+        ],
+        "circle-opacity": [
+          "interpolate", ["linear"], ["zoom"],
+          11, 0,
+          13, 1
+        ]
+      }
+    },
+    {
+      "id": "camera-glow",
+      "type": "circle",
+      "source": "cameras",
+      "source-layer": "cameras",
+      "minzoom": 11,
+      "paint": {
+        "circle-color": "#ef4444",
+        "circle-radius": [
+          "interpolate", ["linear"], ["zoom"],
+          11, 6,
+          14, 14,
+          16, 18
+        ],
+        "circle-opacity": [
+          "interpolate", ["linear"], ["zoom"],
+          11, 0,
+          13, 0.3
+        ],
+        "circle-blur": 0.6
+      }
+    },
+    {
+      "id": "pulse-ring-outer",
+      "type": "circle",
+      "source": "cameras",
+      "source-layer": "cameras",
+      "minzoom": 12,
+      "paint": {
+        "circle-color": "#ef4444",
+        "circle-radius": 16,
+        "circle-opacity": 0,
+        "circle-blur": 0.5
+      }
+    },
+    {
+      "id": "pulse-ring-inner",
+      "type": "circle",
+      "source": "cameras",
+      "source-layer": "cameras",
+      "minzoom": 12,
+      "paint": {
+        "circle-color": "#ef4444",
+        "circle-radius": 10,
+        "circle-opacity": 0,
+        "circle-blur": 0.3
+      }
+    }
+  ],
+  "animation": {
+    "pulse": {
+      "duration": 1800,
+      "layers": {
+        "pulse-ring-outer": {
+          "circle-radius": [16, 20],
+          "circle-opacity": [0.15, 0.5]
+        },
+        "pulse-ring-inner": {
+          "circle-radius": [10, 12],
+          "circle-opacity": [0.3, 0.75]
+        }
+      }
+    }
+  },
+  "cones": {
+    "radiusFt": 150,
+    "spreadDeg": 50,
+    "arcSegments": 8
+  },
+  "palette": {
+    "camera": "#ef4444",
+    "camera-dark": "#dc2626",
+    "camera-light": "#fca5a5",
+    "route-privacy": "#3b82f6",
+    "route-direct": "#f97316",
+    "origin": "#22c55e",
+    "destination": "#ef4444"
+  }
+}

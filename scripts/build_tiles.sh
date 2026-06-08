@@ -28,11 +28,14 @@ tippecanoe \
   --extend-zooms-if-still-dropping \
   --no-tile-stats \
   --layer=cameras \
-  --exclude-all \
   "${GEOJSON_FILE}"
 
 echo "==> Uploading to Cloudflare R2"
 aws s3 cp "${OUTPUT_FILE}" "s3://${R2_BUCKET_NAME}/${OUTPUT_FILE}" \
   --endpoint-url "${R2_ENDPOINT}"
 
-echo "==> Done. Uploaded ${OUTPUT_FILE} ($(du -h "${OUTPUT_FILE}" | cut -f1))"
+aws s3 cp styles/layers.json "s3://${R2_BUCKET_NAME}/styles/layers.json" \
+  --endpoint-url "${R2_ENDPOINT}" \
+  --content-type "application/json"
+
+echo "==> Done. Uploaded ${OUTPUT_FILE} ($(du -h "${OUTPUT_FILE}" | cut -f1)) + styles/layers.json"
