@@ -1,0 +1,4 @@
+*.pmtiles
+*.geojson
+.DS_Store
+.env
