@@ -6,7 +6,10 @@ OUTPUT_FILE="cameras.pmtiles"
 GEOJSON_FILE="cameras.geojson"
 
 echo "==> Fetching GeoJSON from ${DATA_URL}"
-curl -sSf -H "User-Agent: deflock-data-pipeline" "${DATA_URL}" -o "${GEOJSON_FILE}"
+curl -sSf \
+  -H "User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Safari/537.36" \
+  -H "Accept: application/json" \
+  "${DATA_URL}" -o "${GEOJSON_FILE}"
 
 echo "==> Validating GeoJSON"
 FEATURE_COUNT=$(jq '.features | length' "${GEOJSON_FILE}")
