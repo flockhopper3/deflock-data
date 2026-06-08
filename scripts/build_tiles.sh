@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-DATA_URL="${DATA_URL:-https://data.dontgetflocked.com}"
+DATA_URL="https://data.dontgetflocked.com/cameras.geojson.gz"
 OUTPUT_FILE="cameras.pmtiles"
 GEOJSON_FILE="cameras.geojson"
 
@@ -10,8 +10,8 @@ curl -sSf "${DATA_URL}" -o "${GEOJSON_FILE}"
 
 echo "==> Validating GeoJSON"
 FEATURE_COUNT=$(jq '.features | length' "${GEOJSON_FILE}")
-if [ "${FEATURE_COUNT}" -lt 1 ]; then
-  echo "ERROR: GeoJSON has 0 features — aborting"
+if [ "${FEATURE_COUNT}" -lt 1000 ]; then
+  echo "ERROR: Only ${FEATURE_COUNT} features — expected 100K+. Aborting to protect prod."
   exit 1
 fi
 echo "    ${FEATURE_COUNT} features found"
@@ -24,11 +24,16 @@ tippecanoe \
   --no-tile-size-limit \
   --minimum-zoom=0 \
   --maximum-zoom=14 \
-  --drop-densest-as-needed \
-  --extend-zooms-if-still-dropping \
   --no-tile-stats \
   --layer=cameras \
   "${GEOJSON_FILE}"
+
+FILE_SIZE=$(stat -f%z "${OUTPUT_FILE}" 2>/dev/null || stat -c%s "${OUTPUT_FILE}")
+MIN_SIZE=$((10 * 1024 * 1024))  # 10MB minimum
+if [ "${FILE_SIZE}" -lt "${MIN_SIZE}" ]; then
+  echo "ERROR: Output is only $(du -h "${OUTPUT_FILE}" | cut -f1) — suspiciously small. Aborting."
+  exit 1
+fi
 
 echo "==> Uploading to Cloudflare R2"
 aws s3 cp "${OUTPUT_FILE}" "s3://${R2_BUCKET_NAME}/${OUTPUT_FILE}" \
@@ -37,5 +42,7 @@ aws s3 cp "${OUTPUT_FILE}" "s3://${R2_BUCKET_NAME}/${OUTPUT_FILE}" \
 aws s3 cp styles/layers.json "s3://${R2_BUCKET_NAME}/styles/layers.json" \
   --endpoint-url "${R2_ENDPOINT}" \
   --content-type "application/json"
+
+rm -f "${GEOJSON_FILE}"
 
 echo "==> Done. Uploaded ${OUTPUT_FILE} ($(du -h "${OUTPUT_FILE}" | cut -f1)) + styles/layers.json"
