@@ -22,6 +22,9 @@ tippecanoe \
   --force \
   --no-feature-limit \
   --no-tile-size-limit \
+  --cluster-distance=60 \
+  --cluster-densest-as-needed \
+  --accumulate-attribute=cluster_count:sum \
   --drop-rate=1 \
   --minimum-zoom=0 \
   --maximum-zoom=14 \
