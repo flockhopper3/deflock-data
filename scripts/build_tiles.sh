@@ -5,7 +5,7 @@ OUTPUT_FILE="cameras.pmtiles"
 GEOJSON_FILE="cameras.geojson"
 
 echo "==> Fetching GeoJSON from R2"
-aws s3 cp "s3://${R2_BUCKET_NAME}/cameras.geojson.gz" "${GEOJSON_FILE}" \
+aws s3 cp "s3://${R2_DATA_BUCKET}/cameras.geojson.gz" "${GEOJSON_FILE}" \
   --endpoint-url "${R2_ENDPOINT}"
 
 echo "==> Validating GeoJSON"
@@ -36,7 +36,7 @@ if [ "${FILE_SIZE}" -lt "${MIN_SIZE}" ]; then
 fi
 
 echo "==> Uploading to Cloudflare R2"
-aws s3 cp "${OUTPUT_FILE}" "s3://${R2_BUCKET_NAME}/${OUTPUT_FILE}" \
+aws s3 cp "${OUTPUT_FILE}" "s3://${R2_TILES_BUCKET}/${OUTPUT_FILE}" \
   --endpoint-url "${R2_ENDPOINT}"
 
 rm -f "${GEOJSON_FILE}"

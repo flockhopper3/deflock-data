@@ -24,6 +24,7 @@ jobs:
 
       - name: Build and upload tiles
         env:
-          R2_BUCKET_NAME: ${{ secrets.R2_BUCKET_NAME }}
+          R2_DATA_BUCKET: flockhopper-data
+          R2_TILES_BUCKET: flockhopper-tiles
           R2_ENDPOINT: ${{ secrets.R2_ENDPOINT }}
         run: bash scripts/build_tiles.sh
