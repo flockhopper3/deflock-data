@@ -22,6 +22,7 @@ tippecanoe \
   --force \
   --no-feature-limit \
   --no-tile-size-limit \
+  --drop-rate=1 \
   --minimum-zoom=0 \
   --maximum-zoom=14 \
   --no-tile-stats \
