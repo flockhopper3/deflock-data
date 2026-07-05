@@ -1,0 +1,31 @@
+<!DOCTYPE html><html><head>
+<script src="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.js"></script>
+<link href="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.css" rel="stylesheet">
+</head><body>
+<div id="map" style="width:100vw;height:100vh;"></div>
+<script>
+(async () => {
+  var layers = await (await fetch('/dark-theme-layers.json')).json();
+  var map = new maplibregl.Map({
+    container: 'map',
+    style: { version: 8, glyphs: 'https://demotiles.maplibre.org/font/{fontstack}/{range}.pbf',
+      sources: { protomaps: { type: 'vector', url: 'https://tiles.dontgetflocked.com/planet.json' } }, layers: layers },
+    center: [-98, 38], zoom: 4,
+  });
+  map.on('load', function() {
+    map.addSource('cameras', { type: 'geojson', data: '/cameras.geojson' });
+    map.addLayer({ id: 'dots', type: 'circle', source: 'cameras',
+      paint: { 'circle-color': '#ef4444', 'circle-radius': 1.5, 'circle-opacity': 0.7 } });
+    var done = false;
+    map.on('sourcedata', function(e) {
+      if (done || e.sourceId !== 'cameras' || !e.isSourceLoaded) return;
+      done = true;
+      setTimeout(function() {
+        var n = map.queryRenderedFeatures({ layers: ['dots'] }).length;
+        fetch('/probe-result', { method: 'POST', headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ rendered: n, pass: n > 50000 }) });
+      }, 2000);
+    });
+  });
+})();
+</script></body></html>

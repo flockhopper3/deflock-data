@@ -1,4 +1,8 @@
 *.pmtiles
+*.pmtiles-journal
 *.geojson
 .DS_Store
 .env
+node_modules/
+tiles/local-dev/benchmark-log.jsonl
+tiles/local-dev/probe-result.json

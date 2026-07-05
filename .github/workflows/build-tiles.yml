@@ -1,13 +1,18 @@
-name: Daily Tile Build
+name: Build Tiles
 
 on:
   schedule:
-    - cron: "0 6 * * *" # 6 AM UTC daily
+    - cron: "23 * * * *" # hourly, off the top of the hour (GitHub delays :00 jobs)
   workflow_dispatch: # manual trigger
+
+concurrency:
+  group: tile-build
+  cancel-in-progress: false
 
 jobs:
   build:
     runs-on: ubuntu-latest
+    timeout-minutes: 20
     steps:
       - uses: actions/checkout@v4
 
@@ -27,4 +32,4 @@ jobs:
           R2_DATA_BUCKET: flockhopper-data
           R2_TILES_BUCKET: flockhopper-tiles
           R2_ENDPOINT: ${{ secrets.R2_ENDPOINT }}
-        run: bash scripts/build_tiles.sh
+        run: bash tiles/cameras/build.sh

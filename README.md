@@ -1,62 +1,113 @@
 # deflock-data
 
-Automated pipeline that builds PMTiles from ALPR camera data and serves them via Cloudflare R2.
+Data & tiles hub for ALPR (automated license plate reader) camera locations — ingestion, tile pipelines, and analysis in one place:
 
-## How it works
+| Hub | Contents |
+|-----|----------|
+| [`data/`](data/) | Code that pulls raw camera data and publishes it to R2 *(migrating here soon)* |
+| [`tiles/`](tiles/) | Tile pipelines — currently the cameras tileset, more to come |
+| [`analysis/`](analysis/) | Analysis & research on the dataset |
 
-A daily GitHub Action:
+The active piece today is the **camera tile pipeline**: every hour, a GitHub Action turns the latest camera GeoJSON (~103K points, sourced from OpenStreetMap surveillance tagging) into a single [PMTiles](https://docs.protomaps.com/pmtiles/) file served from Cloudflare R2 — no tile server required.
 
-1. Fetches GeoJSON from `data.dontgetflocked.com` (~90K camera locations with full properties)
-2. Validates the data (non-empty, valid JSON)
-3. Runs [Tippecanoe](https://github.com/felt/tippecanoe) to produce a `.pmtiles` file (z0–z14, all properties included)
-4. Uploads `cameras.pmtiles` + `styles/layers.json` to Cloudflare R2
+**Anyone can use the data.** No API key, no rate limits beyond Cloudflare's defaults.
 
-## Client integration
+| URL | What it is |
+|-----|------------|
+| `https://tiles.dontgetflocked.com/cameras.pmtiles` | Vector tiles, z0–z14, layer name `cameras` |
+| `https://tiles.dontgetflocked.com/cameras.geojson.sha256` | Hash of the source data the current tiles were built from |
 
-Two files served from R2:
+## Tile design: heatmap → dots
 
-| URL | Purpose |
-|-----|---------|
-| `tiles.dontgetflocked.com/cameras.pmtiles` | Vector tiles — single source for all zoom levels |
-| `tiles.dontgetflocked.com/styles/layers.json` | Layer definitions, paint properties, animation config, palette |
+One tileset drives both a national heatmap and street-level dots:
 
-Clients fetch `layers.json` on load and apply it directly — no hardcoded styles, update once and all apps get it.
+- **z0–z10** — points are clustered by Tippecanoe (`--cluster-distance=10 --cluster-maxzoom=10`). Each cluster carries a `point_count` property, which the heatmap layer uses as its density weight. This keeps national-level tiles tiny (the z0 tile is ~2 KB instead of 6.4 MB unclustered).
+- **z11–z14** — raw, unclustered points with **all** source properties (`brand`, `direction`, `operator`, `osmId`, …) for individual dot rendering, popups, and direction cones.
+- **z11–z13** — the crossfade zone: the heatmap fades out while dot layers fade in.
 
-### Single-source architecture
+Reference MapLibre layer definitions live in [`tiles/cameras/layers.json`](tiles/cameras/layers.json) — a heatmap layer (`camera-heat`), dot layers (`camera-point`, `camera-glow`), direction-cone config, and the color palette. Clients can fetch and apply it directly, or use it as a starting point.
 
-PMTiles includes all camera properties (operator, brand, direction, etc.). Clients use **one source** for both dot-density at national zoom and detail popups at close zoom. No separate GeoJSON fetch needed.
+### Minimal client example
 
-## Styles
+```js
+import maplibregl from 'maplibre-gl';
+import { Protocol } from 'pmtiles';
 
-`styles/layers.json` contains:
+maplibregl.addProtocol('pmtiles', new Protocol().tile);
 
-- **layers** — MapLibre-compatible layer definitions with zoom interpolations
-- **animation** — pulse ring parameters (duration, radius/opacity ranges)
-- **cones** — direction cone geometry config (radius, spread, segments)
-- **palette** — color tokens used across all layers
+const map = new maplibregl.Map({
+  container: 'map',
+  style: {
+    version: 8,
+    sources: {
+      cameras: {
+        type: 'vector',
+        url: 'pmtiles://https://tiles.dontgetflocked.com/cameras.pmtiles',
+      },
+    },
+    layers: [/* see tiles/cameras/layers.json */],
+  },
+});
+```
 
-## Setup
+Tiles are fetched with HTTP range requests — clients only download the byte ranges for tiles in view.
 
-### Required GitHub Secrets
+## How the pipeline works
 
-| Secret | Description |
-|--------|-------------|
-| `R2_ACCESS_KEY_ID` | Cloudflare R2 API token (access key) |
-| `R2_SECRET_ACCESS_KEY` | Cloudflare R2 API token (secret key) |
-| `R2_BUCKET_NAME` | Target R2 bucket name |
-| `R2_ENDPOINT` | R2 S3-compatible endpoint URL |
+[`.github/workflows/build-tiles.yml`](.github/workflows/build-tiles.yml) runs hourly (and on manual dispatch):
 
-### Manual run
+1. Downloads `cameras.geojson.gz` from the private R2 data bucket
+2. **Skips the build if the data hasn't changed** since the last run (SHA-256 compared against the hash stored alongside the tiles)
+3. Validates the GeoJSON (feature count sanity check)
+4. Runs [Tippecanoe](https://github.com/felt/tippecanoe) with the clustered-then-raw zoom strategy above
+5. Sanity-checks the output size, then uploads `cameras.pmtiles` + the new source hash to the public R2 tiles bucket
+
+The whole run takes a few minutes; unchanged-data runs exit in seconds.
+
+## Running it yourself
+
+See [docs/setup-guide.md](docs/setup-guide.md) for the full walkthrough: R2 buckets, API tokens, custom domain, GitHub secrets, and local testing.
+
+Quick local build:
 
 ```bash
-brew install tippecanoe jq
+brew install tippecanoe jq   # or apt-get install tippecanoe jq
 
-export R2_BUCKET_NAME=your-bucket
-export R2_ENDPOINT=https://your-account-id.r2.cloudflarestorage.com
+export R2_DATA_BUCKET=your-data-bucket
+export R2_TILES_BUCKET=your-tiles-bucket
+export R2_ENDPOINT=https://<account-id>.r2.cloudflarestorage.com
 
-bash scripts/build_tiles.sh
+bash tiles/cameras/build.sh
+```
+
+## Local preview
+
+`tiles/local-dev/` contains a zero-dependency-ish Node server that serves PMTiles as `{z}/{x}/{y}.mvt` (no range-request setup needed) plus preview pages:
+
+```bash
+cd tiles/local-dev
+npm install
+node server.js
+# open http://localhost:3000/heatmap-preview.html
+```
+
+`heatmap-preview.html` renders the heatmap→dots style against a locally built tileset. `build-test-tiles.sh` builds a sweep of Tippecanoe configs for side-by-side comparison.
+
+## Repo layout
+
+```
+data/                              # ingestion code (migrating here)
+tiles/
+  cameras/build.sh                 # fetch → validate → tippecanoe → upload
+  cameras/layers.json              # reference MapLibre layers (heatmap + dots)
+  local-dev/                       # local tile server + preview/benchmark harness
+analysis/                          # analysis & research on the dataset
+.github/workflows/build-tiles.yml  # hourly schedule + manual dispatch
+docs/setup-guide.md                # deploy-from-scratch walkthrough
+docs/map-architecture.md           # client-side rendering architecture notes
+docs/map-styling.md                # layer styling reference
 ```
 
 ## License
 
-MIT
+MIT. Camera location data derives from [OpenStreetMap](https://www.openstreetmap.org/copyright) (© OpenStreetMap contributors, ODbL).

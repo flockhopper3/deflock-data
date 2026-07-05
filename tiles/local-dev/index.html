@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>FLOCK – Local Dev</title>
+  <script src="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.js"></script>
+  <link href="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.css" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #0f0f0f; color: #e0e0e0; }
+    #map { position: absolute; top: 0; left: 0; right: 0; bottom: 0; }
+
+    #hud {
+      position: absolute; top: 12px; left: 12px; z-index: 10;
+      background: rgba(0,0,0,0.85); border: 1px solid #333; border-radius: 8px;
+      padding: 12px 16px; min-width: 240px; backdrop-filter: blur(8px);
+    }
+    #hud h3 { font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: #888; margin-bottom: 8px; }
+    .hud-row { display: flex; justify-content: space-between; font-size: 13px; margin: 3px 0; }
+    .hud-row .label { color: #999; }
+    .hud-row .val { font-variant-numeric: tabular-nums; font-weight: 600; }
+    .val.good { color: #4ade80; }
+    .val.warn { color: #facc15; }
+    .val.bad { color: #ef4444; }
+    #fps-graph { width: 100%; height: 40px; margin-top: 8px; background: #1a1a1a; border-radius: 4px; }
+
+    #panel {
+      position: absolute; top: 12px; right: 12px; z-index: 10;
+      background: rgba(0,0,0,0.85); border: 1px solid #333; border-radius: 8px;
+      padding: 16px; width: 300px; backdrop-filter: blur(8px);
+      max-height: calc(100vh - 24px); overflow-y: auto;
+    }
+    #panel h3 { font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: #888; margin: 12px 0 6px; }
+    #panel h3:first-child { margin-top: 0; }
+    .ctrl { margin: 6px 0; }
+    .ctrl label { display: flex; justify-content: space-between; align-items: center; font-size: 12px; color: #ccc; }
+    .ctrl input[type="range"] { width: 140px; accent-color: #ef4444; }
+    .ctrl select { background: #222; color: #eee; border: 1px solid #444; border-radius: 4px; padding: 3px 6px; font-size: 12px; }
+    .ctrl .val-display { font-variant-numeric: tabular-nums; color: #ef4444; min-width: 36px; text-align: right; font-size: 12px; }
+
+    .presets { display: flex; gap: 4px; flex-wrap: wrap; margin: 8px 0; }
+    .presets button {
+      padding: 4px 10px; font-size: 11px; background: #222; color: #ccc;
+      border: 1px solid #444; border-radius: 4px; cursor: pointer;
+    }
+    .presets button:hover { background: #333; }
+    .presets button.active { background: #ef4444; color: #fff; border-color: #ef4444; }
+
+    #panel::-webkit-scrollbar { width: 4px; }
+    #panel::-webkit-scrollbar-thumb { background: #444; border-radius: 2px; }
+  </style>
+</head>
+<body>
+  <div id="map"></div>
+
+  <div id="hud">
+    <h3>Performance</h3>
+    <div class="hud-row"><span class="label">FPS</span><span class="val" id="fps">–</span></div>
+    <div class="hud-row"><span class="label">Frame time</span><span class="val" id="frame-time">–</span></div>
+    <div class="hud-row"><span class="label">Zoom</span><span class="val" id="zoom">–</span></div>
+    <div class="hud-row"><span class="label">Rendered</span><span class="val" id="rendered">–</span></div>
+    <div class="hud-row"><span class="label">Tileset</span><span class="val" id="tileset-label">–</span></div>
+    <canvas id="fps-graph" width="240" height="40"></canvas>
+  </div>
+
+  <div id="panel">
+    <h3>Tileset</h3>
+    <div class="ctrl">
+      <label>
+
+        <select id="tileset-select" onchange="switchTileset(this.value)"></select>
+        <button onclick="loadTilesetList()" style="margin-left:4px;background:#333;color:#ccc;border:1px solid #555;border-radius:4px;padding:2px 8px;font-size:11px;cursor:pointer;">refresh</button>
+      </label>
+    </div>
+
+    <h3>Render Style</h3>
+    <div class="presets" id="preset-btns">
+      <button class="active" onclick="applyPreset('dots', this)">Dots</button>
+      <button onclick="applyPreset('heatmap', this)">Heatmap</button>
+      <button onclick="applyPreset('production', this)">Production</button>
+    </div>
+
+    <h3>Circle</h3>
+    <div class="ctrl">
+      <label>Radius <span class="val-display" id="v-radius">4</span></label>
+      <input type="range" id="c-radius" min="1" max="20" step="0.5" value="4" oninput="updateCircle()">
+    </div>
+    <div class="ctrl">
+      <label>Opacity <span class="val-display" id="v-opacity">0.8</span></label>
+      <input type="range" id="c-opacity" min="0" max="1" step="0.05" value="0.8" oninput="updateCircle()">
+    </div>
+    <div class="ctrl">
+      <label>Blur <span class="val-display" id="v-blur">0.0</span></label>
+      <input type="range" id="c-blur" min="0" max="1" step="0.05" value="0" oninput="updateCircle()">
+    </div>
+    <div class="ctrl">
+      <label>Color <input type="color" id="c-color" value="#ef4444" oninput="updateCircle()"></label>
+    </div>
+    <div class="ctrl">
+      <label>Stroke width <span class="val-display" id="v-stroke">0</span></label>
+      <input type="range" id="c-stroke" min="0" max="4" step="0.5" value="0" oninput="updateCircle()">
+    </div>
+
+    <h3>Heatmap (when active)</h3>
+    <div class="ctrl">
+      <label>Intensity <span class="val-display" id="v-heat-intensity">1</span></label>
+      <input type="range" id="c-heat-intensity" min="0.1" max="5" step="0.1" value="1" oninput="updateHeatmap()">
+    </div>
+    <div class="ctrl">
+      <label>Radius <span class="val-display" id="v-heat-radius">20</span></label>
+      <input type="range" id="c-heat-radius" min="1" max="60" step="1" value="20" oninput="updateHeatmap()">
+    </div>
+    <div class="ctrl">
+      <label>Opacity <span class="val-display" id="v-heat-opacity">0.8</span></label>
+      <input type="range" id="c-heat-opacity" min="0" max="1" step="0.05" value="0.8" oninput="updateHeatmap()">
+    </div>
+
+    <h3>Benchmark</h3>
+    <button onclick="runBenchmark()" style="padding:5px 12px;font-size:11px;background:#222;color:#ccc;border:1px solid #444;border-radius:4px;cursor:pointer;">Log current view</button>
+    <button onclick="runAllBenchmark()" style="padding:5px 12px;font-size:11px;background:#222;color:#ccc;border:1px solid #444;border-radius:4px;cursor:pointer;">Benchmark all</button>
+    <button onclick="showLog()" style="padding:5px 12px;font-size:11px;background:#222;color:#ccc;border:1px solid #444;border-radius:4px;cursor:pointer;">Show log</button>
+    <pre id="log-output" style="margin-top:8px;font-size:10px;color:#aaa;max-height:200px;overflow-y:auto;white-space:pre-wrap;display:none;"></pre>
+  </div>
+
+  <script>
+    var currentPreset = 'dots';
+    var currentTileset = 'cameras-full.pmtiles';
+    var map;
+    var CAMERA_LAYERS = ['camera-dots', 'camera-heat', 'camera-glow', 'camera-point'];
+
+    (async function() {
+      var layers = await (await fetch('/dark-theme-layers.json')).json();
+
+      map = new maplibregl.Map({
+        container: 'map',
+        style: {
+          version: 8,
+          glyphs: 'https://demotiles.maplibre.org/font/{fontstack}/{range}.pbf',
+          sources: {
+            protomaps: { type: 'vector', url: 'https://tiles.dontgetflocked.com/planet.json' }
+          },
+          layers: layers,
+        },
+        center: [-98, 38],
+        zoom: 4,
+        maxZoom: 18,
+      });
+
+      map.on('error', function(e) { console.error('Map error:', e.error ? e.error.message : e); });
+
+      map.on('load', function() {
+        addTileSource(currentTileset);
+        addCameraLayers();
+        startPerfMonitor();
+      });
+
+      map.on('click', 'camera-dots', function(e) {
+        var f = e.features[0];
+        if (!f) return;
+        var html = Object.entries(f.properties)
+          .map(function(kv) { return '<b>' + kv[0] + ':</b> ' + kv[1]; })
+          .join('<br>');
+        new maplibregl.Popup({ maxWidth: '320px' })
+          .setLngLat(e.lngLat)
+          .setHTML(html)
+          .addTo(map);
+      });
+
+      map.on('mouseenter', 'camera-dots', function() { map.getCanvas().style.cursor = 'pointer'; });
+      map.on('mouseleave', 'camera-dots', function() { map.getCanvas().style.cursor = ''; });
+    })();
+
+    function addTileSource(filename) {
+      removeCameraLayers();
+      if (map.getSource('cameras')) map.removeSource('cameras');
+
+      map.addSource('cameras', {
+        type: 'vector',
+        url: 'http://localhost:3000/tiles/' + filename.replace('.pmtiles', '') + '.json',
+      });
+    }
+
+    function switchTileset(filename) {
+      currentTileset = filename;
+      addTileSource(filename);
+      addCameraLayers();
+      document.getElementById('tileset-label').textContent = filename.replace('cameras-','').replace('.pmtiles','');
+    }
+
+    function removeCameraLayers() {
+      CAMERA_LAYERS.forEach(function(id) { if (map.getLayer(id)) map.removeLayer(id); });
+    }
+
+    function addCameraLayers() {
+      removeCameraLayers();
+      if (currentPreset === 'heatmap') { addHeatmapLayers(); }
+      else if (currentPreset === 'production') { addProductionLayers(); }
+      else { addDotsLayer(); }
+    }
+
+    function addDotsLayer() {
+      var r = parseFloat(document.getElementById('c-radius').value);
+      var o = parseFloat(document.getElementById('c-opacity').value);
+      var b = parseFloat(document.getElementById('c-blur').value);
+      var c = document.getElementById('c-color').value;
+      var s = parseFloat(document.getElementById('c-stroke').value);
+
+      var paint = {
+        'circle-color': c,
+        'circle-radius': ['interpolate', ['exponential', 1.5], ['zoom'], 3, r * 0.4, 6, r * 0.6, 8, r, 12, r * 2],
+        'circle-opacity': o,
+        'circle-blur': b,
+      };
+      if (s > 0) {
+        paint['circle-stroke-width'] = s;
+        paint['circle-stroke-color'] = '#fca5a5';
+      }
+      map.addLayer({ id: 'camera-dots', type: 'circle', source: 'cameras', 'source-layer': 'cameras', paint: paint });
+    }
+
+    function addHeatmapLayers() {
+      var intensity = parseFloat(document.getElementById('c-heat-intensity').value);
+      var radius = parseInt(document.getElementById('c-heat-radius').value);
+      var opacity = parseFloat(document.getElementById('c-heat-opacity').value);
+
+      map.addLayer({
+        id: 'camera-heat', type: 'heatmap', source: 'cameras', 'source-layer': 'cameras',
+        maxzoom: 12,
+        paint: {
+          'heatmap-intensity': ['interpolate', ['linear'], ['zoom'], 0, intensity * 0.5, 9, intensity * 2],
+          'heatmap-radius': ['interpolate', ['linear'], ['zoom'], 0, radius * 0.5, 9, radius],
+          'heatmap-opacity': ['interpolate', ['linear'], ['zoom'], 7, opacity, 12, 0],
+          'heatmap-color': [
+            'interpolate', ['linear'], ['heatmap-density'],
+            0, 'rgba(0,0,0,0)', 0.2, '#3b0764', 0.4, '#7c2d12', 0.6, '#dc2626', 0.8, '#f97316', 1, '#fbbf24'
+          ],
+        },
+      });
+      map.addLayer({
+        id: 'camera-dots', type: 'circle', source: 'cameras', 'source-layer': 'cameras',
+        minzoom: 10,
+        paint: {
+          'circle-color': '#ef4444',
+          'circle-radius': ['interpolate', ['exponential', 1.5], ['zoom'], 10, 3, 12, 6],
+          'circle-opacity': 0.9,
+        },
+      });
+    }
+
+    function addProductionLayers() {
+      map.addLayer({
+        id: 'camera-glow', type: 'circle', source: 'cameras', 'source-layer': 'cameras', minzoom: 11,
+        paint: {
+          'circle-color': '#ef4444',
+          'circle-radius': ['interpolate', ['linear'], ['zoom'], 11, 6, 14, 14, 16, 18],
+          'circle-opacity': ['interpolate', ['linear'], ['zoom'], 11, 0, 13, 0.3],
+          'circle-blur': 0.6,
+        },
+      });
+      map.addLayer({
+        id: 'camera-dots', type: 'circle', source: 'cameras', 'source-layer': 'cameras',
+        paint: {
+          'circle-color': '#ef4444',
+          'circle-radius': ['interpolate', ['exponential', 1.5], ['zoom'], 3, 1.5, 6, 2.5, 8, 4, 10, 6, 12, 8, 13, 7],
+          'circle-opacity': ['interpolate', ['linear'], ['zoom'], 0, 0.55, 7, 0.6, 10, 0.85, 12, 0.95],
+          'circle-blur': ['interpolate', ['linear'], ['zoom'], 0, 0.3, 10, 0.1, 12, 0],
+          'circle-stroke-width': ['interpolate', ['linear'], ['zoom'], 11, 0, 13, 2],
+          'circle-stroke-color': '#fca5a5',
+          'circle-stroke-opacity': ['interpolate', ['linear'], ['zoom'], 11, 0, 13, 1],
+        },
+      });
+      map.addLayer({
+        id: 'camera-point', type: 'circle', source: 'cameras', 'source-layer': 'cameras', minzoom: 11,
+        paint: {
+          'circle-color': '#dc2626',
+          'circle-radius': 6,
+          'circle-stroke-width': 2,
+          'circle-stroke-color': '#fca5a5',
+          'circle-stroke-opacity': ['interpolate', ['linear'], ['zoom'], 11, 0, 13, 1],
+          'circle-opacity': ['interpolate', ['linear'], ['zoom'], 11, 0, 13, 1],
+        },
+      });
+    }
+
+    function applyPreset(name, btn) {
+      currentPreset = name;
+      document.querySelectorAll('#preset-btns button').forEach(function(b) { b.classList.remove('active'); });
+      if (btn) btn.classList.add('active');
+      addCameraLayers();
+    }
+
+    function updateCircle() {
+      sync('c-radius', 'v-radius'); sync('c-opacity', 'v-opacity');
+      sync('c-blur', 'v-blur'); sync('c-stroke', 'v-stroke');
+      if (!map || !map.getLayer('camera-dots') || currentPreset !== 'dots') return;
+      var r = parseFloat(document.getElementById('c-radius').value);
+      map.setPaintProperty('camera-dots', 'circle-color', document.getElementById('c-color').value);
+      map.setPaintProperty('camera-dots', 'circle-radius', ['interpolate', ['exponential', 1.5], ['zoom'], 3, r*0.4, 6, r*0.6, 8, r, 12, r*2]);
+      map.setPaintProperty('camera-dots', 'circle-opacity', parseFloat(document.getElementById('c-opacity').value));
+      map.setPaintProperty('camera-dots', 'circle-blur', parseFloat(document.getElementById('c-blur').value));
+      map.setPaintProperty('camera-dots', 'circle-stroke-width', parseFloat(document.getElementById('c-stroke').value));
+    }
+
+    function updateHeatmap() {
+      sync('c-heat-intensity', 'v-heat-intensity');
+      sync('c-heat-radius', 'v-heat-radius');
+      sync('c-heat-opacity', 'v-heat-opacity');
+      if (!map || !map.getLayer('camera-heat')) return;
+      var i = parseFloat(document.getElementById('c-heat-intensity').value);
+      var r = parseInt(document.getElementById('c-heat-radius').value);
+      map.setPaintProperty('camera-heat', 'heatmap-intensity', ['interpolate', ['linear'], ['zoom'], 0, i*0.5, 9, i*2]);
+      map.setPaintProperty('camera-heat', 'heatmap-radius', ['interpolate', ['linear'], ['zoom'], 0, r*0.5, 9, r]);
+      map.setPaintProperty('camera-heat', 'heatmap-opacity', ['interpolate', ['linear'], ['zoom'], 7, parseFloat(document.getElementById('c-heat-opacity').value), 12, 0]);
+    }
+
+    function sync(inputId, displayId) {
+      document.getElementById(displayId).textContent = document.getElementById(inputId).value;
+    }
+
+    // Perf monitor
+    var fpsHistory = new Array(120).fill(0);
+    var frameCount = 0;
+    var lastFpsTime = performance.now();
+    var featureCount = 0;
+    var featureCountStale = true;
+
+    function startPerfMonitor() {
+      var canvas = document.getElementById('fps-graph');
+      var ctx = canvas.getContext('2d');
+      canvas.width = 240; canvas.height = 40;
+
+      map.on('moveend', function() { featureCountStale = true; });
+      map.on('idle', function() { featureCountStale = true; });
+
+      function tick() {
+        frameCount++;
+        var now = performance.now();
+        var dt = now - lastFpsTime;
+        if (dt >= 500) {
+          var fps = Math.round(frameCount / (dt / 1000));
+          frameCount = 0; lastFpsTime = now;
+          fpsHistory.push(fps); if (fpsHistory.length > 120) fpsHistory.shift();
+
+          document.getElementById('fps').textContent = fps;
+          document.getElementById('fps').className = 'val ' + (fps >= 55 ? 'good' : fps >= 30 ? 'warn' : 'bad');
+          document.getElementById('frame-time').textContent = (1000 / fps).toFixed(1) + 'ms';
+          document.getElementById('frame-time').className = 'val ' + (fps >= 55 ? 'good' : fps >= 30 ? 'warn' : 'bad');
+          document.getElementById('zoom').textContent = map.getZoom().toFixed(2);
+          document.getElementById('tileset-label').textContent = currentTileset.replace('cameras-','').replace('.pmtiles','');
+
+          if (featureCountStale) {
+            featureCountStale = false;
+            var activeLayers = CAMERA_LAYERS.filter(function(l) { return map.getLayer(l); });
+            featureCount = activeLayers.length ? map.queryRenderedFeatures({ layers: activeLayers }).length : 0;
+          }
+          document.getElementById('rendered').textContent = featureCount.toLocaleString();
+
+          ctx.clearRect(0, 0, 240, 40);
+          ctx.fillStyle = '#1a1a1a'; ctx.fillRect(0, 0, 240, 40);
+          ctx.strokeStyle = '#333'; ctx.beginPath(); ctx.moveTo(0, 20); ctx.lineTo(240, 20); ctx.stroke();
+          var barW = 240 / fpsHistory.length;
+          fpsHistory.forEach(function(v, idx) {
+            var h = (v / 120) * 40;
+            ctx.fillStyle = v >= 55 ? '#4ade80' : v >= 30 ? '#facc15' : '#ef4444';
+            ctx.fillRect(idx * barW, 40 - h, barW - 0.5, h);
+          });
+        }
+        requestAnimationFrame(tick);
+      }
+      requestAnimationFrame(tick);
+    }
+
+    // Auto-discover tilesets from server
+    async function loadTilesetList() {
+      var resp = await fetch('/tilesets');
+      var files = await resp.json();
+      var select = document.getElementById('tileset-select');
+      select.innerHTML = '';
+      files.forEach(function(f) {
+        var opt = document.createElement('option');
+        opt.value = f;
+        var name = f.replace('.pmtiles', '');
+        var label = name;
+        opt.textContent = label;
+        select.appendChild(opt);
+      });
+      if (files.length > 0 && !files.includes(currentTileset)) {
+        currentTileset = files[0];
+      }
+      select.value = currentTileset;
+    }
+    loadTilesetList();
+
+    // Benchmark: log current view metrics
+    function measureView() {
+      var activeLayers = CAMERA_LAYERS.filter(function(l) { return map.getLayer(l); });
+      var rendered = activeLayers.length ? map.queryRenderedFeatures({ layers: activeLayers }).length : 0;
+      return {
+        tileset: currentTileset,
+        preset: currentPreset,
+        zoom: parseFloat(map.getZoom().toFixed(2)),
+        center: [parseFloat(map.getCenter().lng.toFixed(4)), parseFloat(map.getCenter().lat.toFixed(4))],
+        rendered: rendered,
+        fps: parseInt(document.getElementById('fps').textContent) || 0,
+        ts: new Date().toISOString(),
+      };
+    }
+
+    async function runBenchmark() {
+      var m = measureView();
+      await fetch('/log', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(m),
+      });
+      console.log('Logged:', m);
+      showLog();
+    }
+
+    async function runAllBenchmark() {
+      var select = document.getElementById('tileset-select');
+      var options = Array.from(select.options).map(function(o) { return o.value; });
+      var zooms = [3, 4, 6, 8, 10, 12];
+      var logEl = document.getElementById('log-output');
+      logEl.style.display = 'block';
+      logEl.textContent = 'Running benchmark across ' + options.length + ' tilesets x ' + zooms.length + ' zooms...\n';
+
+      for (var i = 0; i < options.length; i++) {
+        var tileset = options[i];
+        switchTileset(tileset);
+        select.value = tileset;
+
+        for (var j = 0; j < zooms.length; j++) {
+          map.setZoom(zooms[j]);
+          map.setCenter([-98, 38]);
+          await new Promise(function(r) { map.once('idle', r); });
+          await new Promise(function(r) { setTimeout(r, 500); });
+
+          var m = measureView();
+          await fetch('/log', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(m),
+          });
+          logEl.textContent += tileset.replace('.pmtiles','') + ' z' + zooms[j] + ': ' + m.rendered + ' features, ' + m.fps + ' fps\n';
+          logEl.scrollTop = logEl.scrollHeight;
+        }
+      }
+      logEl.textContent += '\nDone! Results saved to benchmark-log.jsonl\n';
+    }
+
+    async function showLog() {
+      var resp = await fetch('/log');
+      var data = await resp.json();
+      var logEl = document.getElementById('log-output');
+      logEl.style.display = 'block';
+      if (data.length === 0) {
+        logEl.textContent = '(no results yet)';
+        return;
+      }
+      var header = 'tileset                     | zoom | rendered | fps';
+      var sep    = '----------------------------|------|----------|----';
+      var lines = [header, sep];
+      data.forEach(function(r) {
+        var name = (r.tileset || '').replace('.pmtiles','').padEnd(28);
+        var z = ('z' + r.zoom).padEnd(6);
+        var feat = String(r.rendered).padStart(8);
+        var fps = String(r.fps).padStart(4);
+        lines.push(name + '| ' + z + '| ' + feat + ' | ' + fps);
+      });
+      logEl.textContent = lines.join('\n');
+    }
+  </script>
+</body>
+</html>

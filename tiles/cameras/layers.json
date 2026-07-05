@@ -1,5 +1,5 @@
 {
-  "version": 1,
+  "version": 2,
   "source": {
     "id": "cameras",
     "type": "vector",
@@ -28,36 +28,52 @@
       }
     },
     {
-      "id": "dot-density",
-      "type": "circle",
+      "id": "camera-heat",
+      "type": "heatmap",
       "source": "cameras",
       "source-layer": "cameras",
-      "maxzoom": 14,
+      "maxzoom": 13,
       "paint": {
-        "circle-color": "#ef4444",
-        "circle-radius": [
+        "heatmap-weight": [
+          "interpolate", ["linear"], ["coalesce", ["get", "point_count"], 1],
+          1, 1,
+          10, 3,
+          100, 8,
+          1000, 20,
+          10000, 45,
+          40000, 80
+        ],
+        "heatmap-intensity": [
+          "interpolate", ["linear"], ["zoom"],
+          0, 0.8,
+          6, 1.2,
+          10, 2,
+          13, 3
+        ],
+        "heatmap-radius": [
           "interpolate", ["exponential", 1.5], ["zoom"],
-          3, 1.5,
-          6, 2.5,
-          8, 4,
-          10, 6,
-          12, 8,
-          13, 7
+          0, 10,
+          4, 18,
+          8, 26,
+          11, 32,
+          13, 40
         ],
-        "circle-opacity": [
+        "heatmap-color": [
+          "interpolate", ["linear"], ["heatmap-density"],
+          0, "rgba(0,0,0,0)",
+          0.15, "rgba(69,10,10,0.45)",
+          0.35, "#7f1d1d",
+          0.55, "#b91c1c",
+          0.75, "#ef4444",
+          0.92, "#f97316",
+          1, "#fde047"
+        ],
+        "heatmap-opacity": [
           "interpolate", ["linear"], ["zoom"],
-          0, 0.55,
-          7, 0.6,
+          0, 0.85,
           10, 0.85,
-          12, 0.95,
-          13, 0.2,
-          14, 0
-        ],
-        "circle-blur": [
-          "interpolate", ["linear"], ["zoom"],
-          0, 0.3,
-          10, 0.1,
-          12, 0
+          11, 0.7,
+          13, 0
         ]
       }
     },
