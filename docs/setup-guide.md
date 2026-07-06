@@ -93,7 +93,7 @@ With the Worker (Option A):
 
 ```bash
 curl -s https://tiles.dontgetflocked.com/cameras.json | jq '{minzoom, maxzoom, tiles}'
-# z0 should be tiny (~2 KB) — clustered; z11+ carries raw points
+# z0 should be tiny (a few KB) — clustered; z11+ carries raw points
 curl -s -o /dev/null -w "%{http_code} %{size_download} bytes\n" https://tiles.dontgetflocked.com/cameras/0/0/0.mvt
 ```
 

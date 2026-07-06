@@ -23,7 +23,7 @@ A Cloudflare Worker in front of the R2 bucket unpacks the PMTiles archive into s
 
 One tileset drives both a national heatmap and street-level dots:
 
-- **z0–z10** — points are clustered by Tippecanoe (`--cluster-distance=10 --cluster-maxzoom=10`). Each cluster carries a `point_count` property, which the heatmap layer uses as its density weight. This keeps national-level tiles tiny (the z0 tile is ~2 KB instead of 6.4 MB unclustered).
+- **z0–z10** — points are clustered by Tippecanoe (`--cluster-distance=5 --cluster-maxzoom=10 --keep-point-cluster-position`). Each cluster sits on a real camera position and carries a `point_count` property, which the heatmap layer uses as its **linear** density weight — so the rendered heatmap is mathematically equivalent to one computed from all raw points, at a fraction of the tile weight (the z0 tile is ~4 KB instead of 6.4 MB unclustered).
 - **z11–z14** — raw, unclustered points with **all** source properties (`brand`, `direction`, `operator`, `osmId`, …) for individual dot rendering, popups, and direction cones.
 - **z11–z13** — the crossfade zone: the heatmap fades out while dot layers fade in.
 

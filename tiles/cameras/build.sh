@@ -30,7 +30,10 @@ else
 fi
 
 echo "==> Checking whether source data changed since last build"
-NEW_HASH=$(shasum -a 256 "${GEOJSON_FILE}" | cut -d' ' -f1)
+# Bump BUILD_CONFIG whenever tippecanoe flags change so the skip check
+# doesn't short-circuit a rebuild with unchanged source data.
+BUILD_CONFIG="v2-cluster5-keeppos-maxz10"
+NEW_HASH="$(shasum -a 256 "${GEOJSON_FILE}" | cut -d' ' -f1)-${BUILD_CONFIG}"
 OLD_HASH=$(aws s3 cp "s3://${R2_TILES_BUCKET}/${HASH_FILE}" - \
   --endpoint-url "${R2_ENDPOINT}" 2>/dev/null || echo "none")
 if [ "${NEW_HASH}" = "${OLD_HASH}" ]; then
@@ -53,8 +56,9 @@ tippecanoe \
   --no-feature-limit \
   --no-tile-size-limit \
   --drop-rate=1 \
-  --cluster-distance=10 \
+  --cluster-distance=5 \
   --cluster-maxzoom=10 \
+  --keep-point-cluster-position \
   --minimum-zoom=0 \
   --maximum-zoom=14 \
   --no-tile-stats \

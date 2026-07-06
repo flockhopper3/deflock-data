@@ -34,21 +34,12 @@
       "source-layer": "cameras",
       "maxzoom": 13,
       "paint": {
-        "heatmap-weight": [
-          "interpolate", ["linear"], ["coalesce", ["get", "point_count"], 1],
-          1, 1,
-          10, 3,
-          100, 8,
-          1000, 20,
-          10000, 45,
-          40000, 80
-        ],
+        "heatmap-weight": ["coalesce", ["get", "point_count"], 1],
         "heatmap-intensity": [
           "interpolate", ["linear"], ["zoom"],
-          0, 0.8,
-          6, 1.2,
-          10, 2,
-          13, 3
+          0, 1,
+          9, 3,
+          13, 4
         ],
         "heatmap-radius": [
           "interpolate", ["exponential", 1.5], ["zoom"],

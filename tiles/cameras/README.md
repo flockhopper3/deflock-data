@@ -9,7 +9,7 @@ The ALPR camera tileset: ~103K points served as `cameras.pmtiles` (z0–z14, lay
 
 ## Zoom strategy
 
-- **z0–z10** — Tippecanoe-clustered points (`--cluster-distance=10 --cluster-maxzoom=10`); each cluster carries `point_count`, which the heatmap layer uses as its density weight
+- **z0–z10** — Tippecanoe-clustered points (`--cluster-distance=5 --cluster-maxzoom=10 --keep-point-cluster-position`); clusters sit on real camera positions and carry `point_count`, which the heatmap layer uses as its linear density weight
 - **z11–z14** — raw points with all source properties (`brand`, `direction`, `operator`, …) for dots, popups, and direction cones
 
 ## Manual build
