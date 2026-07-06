@@ -16,10 +16,28 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Install dependencies
+      # The apt-packaged tippecanoe is the old Mapbox fork and lacks flags we
+      # use (--keep-point-cluster-position), so build felt/tippecanoe once and
+      # cache the binary.
+      - name: Cache tippecanoe
+        id: cache-tippecanoe
+        uses: actions/cache@v4
+        with:
+          path: ~/tippecanoe-bin
+          key: tippecanoe-2.79.0
+
+      - name: Build tippecanoe
+        if: steps.cache-tippecanoe.outputs.cache-hit != 'true'
         run: |
           sudo apt-get update
-          sudo apt-get install -y tippecanoe jq
+          sudo apt-get install -y build-essential libsqlite3-dev zlib1g-dev
+          git clone --depth 1 --branch 2.79.0 https://github.com/felt/tippecanoe.git /tmp/tippecanoe
+          make -C /tmp/tippecanoe -j"$(nproc)"
+          mkdir -p ~/tippecanoe-bin
+          cp /tmp/tippecanoe/tippecanoe /tmp/tippecanoe/tippecanoe-decode ~/tippecanoe-bin/
+
+      - name: Add tippecanoe to PATH
+        run: echo "$HOME/tippecanoe-bin" >> "$GITHUB_PATH"
 
       - name: Configure AWS CLI for R2
         run: |
