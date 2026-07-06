@@ -3,7 +3,7 @@
   "source": {
     "id": "cameras",
     "type": "vector",
-    "url": "pmtiles://https://tiles.dontgetflocked.com/cameras.pmtiles"
+    "url": "https://tiles.dontgetflocked.com/cameras.json"
   },
   "layers": [
     {

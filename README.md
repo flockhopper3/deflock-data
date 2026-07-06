@@ -14,8 +14,10 @@ The active piece today is the **camera tile pipeline**: every hour, a GitHub Act
 
 | URL | What it is |
 |-----|------------|
-| `https://tiles.dontgetflocked.com/cameras.pmtiles` | Vector tiles, z0–z14, layer name `cameras` |
-| `https://tiles.dontgetflocked.com/cameras.geojson.sha256` | Hash of the source data the current tiles were built from |
+| `https://tiles.dontgetflocked.com/cameras.json` | [TileJSON](https://github.com/mapbox/tilejson-spec) for the camera tileset |
+| `https://tiles.dontgetflocked.com/cameras/{z}/{x}/{y}.mvt` | Vector tiles, z0–z14, layer name `cameras` |
+
+A Cloudflare Worker in front of the R2 bucket unpacks the PMTiles archive into standard `z/x/y` tile URLs, so clients don't need the `pmtiles` protocol adapter — any MapLibre/Mapbox-compatible client can consume the TileJSON directly.
 
 ## Tile design: heatmap → dots
 
@@ -31,9 +33,6 @@ Reference MapLibre layer definitions live in [`tiles/cameras/layers.json`](tiles
 
 ```js
 import maplibregl from 'maplibre-gl';
-import { Protocol } from 'pmtiles';
-
-maplibregl.addProtocol('pmtiles', new Protocol().tile);
 
 const map = new maplibregl.Map({
   container: 'map',
@@ -42,7 +41,7 @@ const map = new maplibregl.Map({
     sources: {
       cameras: {
         type: 'vector',
-        url: 'pmtiles://https://tiles.dontgetflocked.com/cameras.pmtiles',
+        url: 'https://tiles.dontgetflocked.com/cameras.json',
       },
     },
     layers: [/* see tiles/cameras/layers.json */],
@@ -50,7 +49,7 @@ const map = new maplibregl.Map({
 });
 ```
 
-Tiles are fetched with HTTP range requests — clients only download the byte ranges for tiles in view.
+Only tiles in the current viewport are fetched.
 
 ## How the pipeline works
 

@@ -34,11 +34,9 @@ The GitHub Action talks to R2 through the S3-compatible API.
 
 PMTiles needs the bucket to answer HTTP range requests, which R2 supports out of the box. Two options:
 
-**Custom domain (recommended — enables Cloudflare caching):**
+**Option A — tile-serving Worker (what this deployment uses):** a Cloudflare Worker bound to the tiles bucket unpacks the PMTiles archive and serves `/{name}/{z}/{x}/{y}.mvt` + TileJSON at `/{name}.json` on `tiles.dontgetflocked.com`. Protomaps publishes a ready-made one: [protomaps/PMTiles serverless for Cloudflare](https://docs.protomaps.com/deploy/cloudflare). Clients get plain `z/x/y` URLs — no `pmtiles` protocol adapter needed, and each tile caches independently at the edge.
 
-1. Open the tiles bucket → **Settings → Public access → Custom Domains → Connect Domain**
-2. Enter e.g. `tiles.dontgetflocked.com` (the zone must already be on Cloudflare)
-3. Cloudflare creates the DNS record and certificate automatically
+**Option B — direct custom domain on the bucket:** open the tiles bucket → **Settings → Public access → Custom Domains → Connect Domain** and enter a hostname on a zone you have in Cloudflare. Clients then fetch `cameras.pmtiles` directly via HTTP range requests using the `pmtiles` JS protocol adapter.
 
 **CORS** — clients on other origins need it. Bucket → **Settings → CORS policy**:
 
@@ -91,12 +89,21 @@ Re-run it immediately and you should instead see `Source unchanged — skipping 
 
 ## 6. Verify the served tiles
 
+With the Worker (Option A):
+
 ```bash
-# Header should come back and honor range requests (HTTP 206)
-curl -sI -H "Range: bytes=0-16383" https://tiles.dontgetflocked.com/cameras.pmtiles | head -5
+curl -s https://tiles.dontgetflocked.com/cameras.json | jq '{minzoom, maxzoom, tiles}'
+# z0 should be tiny (~2 KB) — clustered; z11+ carries raw points
+curl -s -o /dev/null -w "%{http_code} %{size_download} bytes\n" https://tiles.dontgetflocked.com/cameras/0/0/0.mvt
 ```
 
-Then point the [PMTiles viewer](https://pmtiles.io) at the URL — you should see clustered points at low zoom and raw points from z11.
+With a direct bucket domain (Option B), check range-request support instead (expect `HTTP 206`):
+
+```bash
+curl -sI -H "Range: bytes=0-16383" https://<your-domain>/cameras.pmtiles | head -5
+```
+
+Then point the [PMTiles viewer](https://pmtiles.io) at the file URL — clustered points at low zoom, raw points from z11.
 
 ## 7. Test the heatmap → dots rendering locally
 
