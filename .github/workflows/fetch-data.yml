@@ -21,7 +21,7 @@ jobs:
           node-version: 22
 
       - name: Run unit tests
-        run: node --test data/cameras/
+        run: node --test data/cameras/lib.test.mjs
 
       - name: Fetch from Overpass
         run: node data/cameras/fetch.mjs --out /tmp/data-out

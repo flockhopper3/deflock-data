@@ -24,7 +24,7 @@ The tile build (`build-tiles.yml`, hourly at :23) picks up the fresh `cameras.ge
 ## Running locally
 
 ```bash
-node --test data/cameras/          # unit tests
+node --test data/cameras/lib.test.mjs   # unit tests
 node data/cameras/fetch.mjs --out /tmp/data-out
 
 export R2_DATA_BUCKET=your-data-bucket
