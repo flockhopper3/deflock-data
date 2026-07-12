@@ -67,11 +67,13 @@ PMTiles needs the bucket to answer HTTP range requests, which R2 supports out of
 
 Bucket names are not secret; they're set as plain env vars in the workflow file — edit them there if yours differ.
 
+The same three secrets power both workflows — data ingestion (`Fetch Camera Data`) and the tile build (`Build Tiles`).
+
 ## 5. First run
 
-Don't wait for the schedule — trigger manually:
+Don't wait for the schedule — trigger manually, ingestion first so the data bucket is populated:
 
-**Actions → Build Tiles → Run workflow**
+**Actions → Fetch Camera Data → Run workflow**, then **Actions → Build Tiles → Run workflow**
 
 Watch the log. A healthy run looks like:
 

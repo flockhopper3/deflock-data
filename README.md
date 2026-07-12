@@ -4,7 +4,7 @@ Data & tiles hub for ALPR (automated license plate reader) camera locations — 
 
 | Hub | Contents |
 |-----|----------|
-| [`data/`](data/) | Code that pulls raw camera data and publishes it to R2 *(migrating here soon)* |
+| [`data/`](data/) | Code that pulls raw camera data (US + Canada) from Overpass and publishes it to R2 hourly |
 | [`tiles/`](tiles/) | Tile pipelines — currently the cameras tileset, more to come |
 | [`analysis/`](analysis/) | Analysis & research on the dataset |
 
@@ -53,7 +53,11 @@ Only tiles in the current viewport are fetched.
 
 ## How the pipeline works
 
-[`.github/workflows/build-tiles.yml`](.github/workflows/build-tiles.yml) runs hourly (and on manual dispatch):
+Two hourly GitHub Actions run back to back:
+
+**Data ingestion** — [`.github/workflows/fetch-data.yml`](.github/workflows/fetch-data.yml) at :05 queries the Overpass API for ALPR cameras in the **US and Canada**, transforms the results to GeoJSON, validates feature counts, and uploads `cameras.geojson.gz` (merged) plus `cameras-us.geojson.gz` / `cameras-ca.geojson.gz` to the R2 data bucket with a 1-hour cache. Details in [`data/README.md`](data/README.md).
+
+**Tile build** — [`.github/workflows/build-tiles.yml`](.github/workflows/build-tiles.yml) at :23 (and on manual dispatch):
 
 1. Downloads `cameras.geojson.gz` from the private R2 data bucket
 2. **Skips the build if the data hasn't changed** since the last run (SHA-256 compared against the hash stored alongside the tiles)
@@ -95,13 +99,16 @@ node server.js
 ## Repo layout
 
 ```
-data/                              # ingestion code (migrating here)
+data/
+  cameras/fetch.mjs                # Overpass (US + CA) → GeoJSON, dependency-free Node
+  cameras/upload.sh                # → R2 data bucket, 1hr cache + metadata
 tiles/
   cameras/build.sh                 # fetch → validate → tippecanoe → upload
   cameras/layers.json              # reference MapLibre layers (heatmap + dots)
   local-dev/                       # local tile server + preview/benchmark harness
 analysis/                          # analysis & research on the dataset
-.github/workflows/build-tiles.yml  # hourly schedule + manual dispatch
+.github/workflows/fetch-data.yml   # hourly data ingestion (:05) + manual dispatch
+.github/workflows/build-tiles.yml  # hourly tile build (:23) + manual dispatch
 docs/setup-guide.md                # deploy-from-scratch walkthrough
 docs/map-architecture.md           # client-side rendering architecture notes
 docs/map-styling.md                # layer styling reference

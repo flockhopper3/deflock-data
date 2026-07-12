@@ -1,0 +1,39 @@
+name: Fetch Camera Data
+
+on:
+  schedule:
+    - cron: "5 * * * *" # hourly at :05 — tile build at :23 picks up fresh data
+  workflow_dispatch: # manual trigger
+
+concurrency:
+  group: data-fetch
+  cancel-in-progress: false
+
+jobs:
+  fetch:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45 # Overpass can be slow; endpoint fallback ×2 countries
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Run unit tests
+        run: node --test data/cameras/
+
+      - name: Fetch from Overpass
+        run: node data/cameras/fetch.mjs --out /tmp/data-out
+
+      - name: Configure AWS CLI for R2
+        run: |
+          aws configure set aws_access_key_id "${{ secrets.R2_ACCESS_KEY_ID }}"
+          aws configure set aws_secret_access_key "${{ secrets.R2_SECRET_ACCESS_KEY }}"
+          aws configure set default.region auto
+
+      - name: Upload to R2
+        env:
+          R2_DATA_BUCKET: flockhopper-data
+          R2_ENDPOINT: ${{ secrets.R2_ENDPOINT }}
+        run: bash data/cameras/upload.sh /tmp/data-out
