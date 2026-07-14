@@ -3,7 +3,7 @@ const fs = require('fs');
 const path = require('path');
 const { PMTiles } = require('pmtiles');
 
-const PORT = Number(process.env.PORT) || 3000;
+const PORT = 3000;
 const ROOT = path.join(__dirname, '..');
 const STATIC = __dirname;
 

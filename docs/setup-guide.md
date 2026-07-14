@@ -82,13 +82,9 @@ Watch the log. A healthy run looks like:
 ==> Checking whether source data changed since last build
 ==> Validating GeoJSON
     102998 features found
-==> Tippecanoe pass 1/2: heat range (z0–10, geometry-only, unclustered)
-==> Tippecanoe pass 2/2: detail range (z11–14, all properties)
-==> Merging zoom ranges with tile-join
-==> Verifying tile invariants
-OK: 102998 cameras at z0, geometry-only heat range, properties intact at z12
+==> Running Tippecanoe
 ==> Uploading to Cloudflare R2
-==> Done. Uploaded cameras.pmtiles (33M)
+==> Done. Uploaded cameras.pmtiles (35M)
 ```
 
 Re-run it immediately and you should instead see `Source unchanged — skipping build`.
@@ -99,7 +95,7 @@ With the Worker (Option A):
 
 ```bash
 curl -s https://tiles.dontgetflocked.com/cameras.json | jq '{minzoom, maxzoom, tiles}'
-# z0 carries every camera geometry-only (~60 KB gzipped); z11+ adds full properties
+# z0 should be tiny (a few KB) — clustered; z11+ carries raw points
 curl -s -o /dev/null -w "%{http_code} %{size_download} bytes\n" https://tiles.dontgetflocked.com/cameras/0/0/0.mvt
 ```
 
@@ -109,24 +105,21 @@ With a direct bucket domain (Option B), check range-request support instead (exp
 curl -sI -H "Range: bytes=0-16383" https://<your-domain>/cameras.pmtiles | head -5
 ```
 
-Then point the [PMTiles viewer](https://pmtiles.io) at the file URL — geometry-only points at low zoom, full-property points from z11.
+Then point the [PMTiles viewer](https://pmtiles.io) at the file URL — clustered points at low zoom, raw points from z11.
 
 ## 7. Test the heatmap → dots rendering locally
 
-First build a local tileset (same pipeline as CI, no R2 needed), then serve it:
-
 ```bash
-bash tiles/cameras/build.sh --local <cameras.geojson> tiles/local-dev/cameras-local.pmtiles
 cd tiles/local-dev
 npm install
-node server.js   # PORT=<port> node server.js if 3000 is taken
+node server.js
 ```
 
-Open `http://localhost:3000/heatmap-preview.html`. The preview fetches `/tiles/cameras-local.json`, which the dev server builds from `cameras-local.pmtiles`. Zoom from national level (heatmap) through z11–13 (crossfade) to street level (dots + popups).
+Open `http://localhost:3000/heatmap-preview.html`. It renders whatever `cameras-heatmap.pmtiles` is present locally (build one with the same flags as `tiles/cameras/build.sh`, or copy the production file). Zoom from national level (heatmap) through z11–13 (crossfade) to street level (dots + popups).
 
 To tune the look, edit the paint expressions in `tiles/cameras/layers.json` and mirror them in `heatmap-preview.html`:
 
-- `heatmap-weight` — constant 1 per camera; density comes purely from point concentration
+- `heatmap-weight` — how much each cluster contributes; keyed off `point_count`
 - `heatmap-radius` / `heatmap-intensity` — blob size and brightness per zoom
 - The z11–13 opacity ramps on `camera-heat` vs `camera-point`/`camera-glow` — the crossfade
 
