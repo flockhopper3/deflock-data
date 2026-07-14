@@ -68,7 +68,7 @@ read -r LON LAT <<<"$(jq -r '.features[0].features[0].geometry.coordinates | "\(
 read -r TX TY <<<"$(awk -v lon="${LON}" -v lat="${LAT}" 'BEGIN {
   z = 12; n = 2^z; pi = 3.14159265358979; r = lat * pi / 180;
   x = int((lon + 180) / 360 * n);
-  y = int((1 - log(tan(r) + 1/cos(r)) / pi) / 2 * n);
+  y = int((1 - log(sin(r)/cos(r) + 1/cos(r)) / pi) / 2 * n);
   print x, y }')"
 WITH_ID=$(tippecanoe-decode "${FILE}" 12 "${TX}" "${TY}" \
   | jq '[.features[].features[].properties | select(has("osmId"))] | length')
