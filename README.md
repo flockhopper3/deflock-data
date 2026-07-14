@@ -8,16 +8,18 @@ Data & tiles hub for ALPR (automated license plate reader) camera locations — 
 | [`tiles/`](tiles/) | Tile pipelines — currently the cameras tileset, more to come |
 | [`analysis/`](analysis/) | Analysis & research on the dataset |
 
-The active piece today is the **camera tile pipeline**: every hour, a GitHub Action turns the latest camera GeoJSON (~103K points, sourced from OpenStreetMap surveillance tagging) into a single [PMTiles](https://docs.protomaps.com/pmtiles/) file served from Cloudflare R2 — no tile server required.
+The active piece today is the **camera tile pipeline**: every hour, a GitHub Action turns the latest camera GeoJSON (~103K points, sourced from OpenStreetMap surveillance tagging) into one [PMTiles](https://docs.protomaps.com/pmtiles/) archive **per country** served from Cloudflare R2 — no tile server required.
 
 **Anyone can use the data.** No API key, no rate limits beyond Cloudflare's defaults.
 
-| URL | What it is |
-|-----|------------|
-| `https://tiles.dontgetflocked.com/cameras.json` | [TileJSON](https://github.com/mapbox/tilejson-spec) for the camera tileset |
-| `https://tiles.dontgetflocked.com/cameras/{z}/{x}/{y}.mvt` | Vector tiles, z0–z14, layer name `cameras` |
+| Country | TileJSON | Tiles |
+|---------|----------|-------|
+| US | `https://tiles.dontgetflocked.com/cameras-us.json` | `https://tiles.dontgetflocked.com/cameras-us/{z}/{x}/{y}.mvt` |
+| Canada | `https://tiles.dontgetflocked.com/cameras-ca.json` | `https://tiles.dontgetflocked.com/cameras-ca/{z}/{x}/{y}.mvt` |
 
-A Cloudflare Worker in front of the R2 bucket unpacks the PMTiles archive into standard `z/x/y` tile URLs, so clients don't need the `pmtiles` protocol adapter — any MapLibre/Mapbox-compatible client can consume the TileJSON directly.
+> **Transition note:** the legacy merged `cameras.pmtiles` is frozen (no longer rebuilt) and keeps serving until the app switches to the per-country sources above; delete it from the tiles bucket after the app migrates.
+
+A Cloudflare Worker in front of the R2 bucket unpacks each PMTiles archive into standard `z/x/y` tile URLs, so clients don't need the `pmtiles` protocol adapter — any MapLibre/Mapbox-compatible client can consume the TileJSON directly.
 
 ## Tile design: heatmap → dots
 
@@ -39,33 +41,37 @@ const map = new maplibregl.Map({
   style: {
     version: 8,
     sources: {
-      cameras: {
+      'cameras-us': {
         type: 'vector',
-        url: 'https://tiles.dontgetflocked.com/cameras.json',
+        url: 'https://tiles.dontgetflocked.com/cameras-us.json',
+      },
+      'cameras-ca': {
+        type: 'vector',
+        url: 'https://tiles.dontgetflocked.com/cameras-ca.json',
       },
     },
-    layers: [/* see tiles/cameras/layers.json */],
+    layers: [/* see tiles/cameras/layers.json, applied once per source */],
   },
 });
 ```
 
-Only tiles in the current viewport are fetched.
+The app creates one MapLibre source per country, reusing the same [`tiles/cameras/layers.json`](tiles/cameras/layers.json) layer definitions for both. Only tiles in the current viewport are fetched.
 
 ## How the pipeline works
 
 Two hourly GitHub Actions run back to back:
 
-**Data ingestion** — [`.github/workflows/fetch-data.yml`](.github/workflows/fetch-data.yml) at :05 queries the Overpass API for ALPR cameras in the **US and Canada**, transforms the results to GeoJSON, validates feature counts, and uploads `cameras.geojson.gz` (merged) plus `cameras-us.geojson.gz` / `cameras-ca.geojson.gz` to the R2 data bucket with a 1-hour cache. Details in [`data/README.md`](data/README.md).
+**Data ingestion** — [`.github/workflows/fetch-data.yml`](.github/workflows/fetch-data.yml) at :05 queries the Overpass API for ALPR cameras in the **US and Canada**, transforms the results to GeoJSON, validates feature counts, and uploads a merged GeoJSON plus `cameras-us.geojson.gz` / `cameras-ca.geojson.gz` to the R2 data bucket with a 1-hour cache. Details in [`data/README.md`](data/README.md).
 
-**Tile build** — [`.github/workflows/build-tiles.yml`](.github/workflows/build-tiles.yml) at :23 (and on manual dispatch):
+**Tile build** — [`.github/workflows/build-tiles.yml`](.github/workflows/build-tiles.yml) at :23 (and on manual dispatch) runs [`build.sh`](tiles/cameras/build.sh), which builds **one PMTiles archive per country** from `cameras-us.geojson.gz` / `cameras-ca.geojson.gz` (a Worker cron ingests both hourly). It loops the country table and re-invokes itself per country (`build.sh --country <cc>`) so a failure in one country can't block or corrupt the other's build:
 
-1. Downloads `cameras.geojson.gz` from the private R2 data bucket
-2. **Skips the build if the data hasn't changed** since the last run (SHA-256 compared against the hash stored alongside the tiles)
-3. Validates the GeoJSON (feature count sanity check)
+1. Downloads that country's `cameras-<cc>.geojson.gz` from the private R2 data bucket
+2. **Skips the build if the data hasn't changed** since the last run (per-country SHA-256 compared against `cameras-<cc>.geojson.sha256`)
+3. Validates the GeoJSON against a per-country feature floor — 50,000 (US) / 300 (CA)
 4. Runs [Tippecanoe](https://github.com/felt/tippecanoe) twice — a geometry-only z0–10 heat pass and a full-property z11–14 detail pass — and merges them with `tile-join`, then verifies tile invariants (`verify.sh`)
-5. Sanity-checks the output size, then uploads `cameras.pmtiles` + the new source hash to the public R2 tiles bucket
+5. Sanity-checks the output size — 10 MB (US) / 82 KB (CA) floor — then uploads `cameras-us.pmtiles` or `cameras-ca.pmtiles` + the new per-country source hash to the public R2 tiles bucket
 
-The whole run takes a few minutes; unchanged-data runs exit in seconds.
+The whole run takes a few minutes; a country whose data hasn't changed exits in seconds.
 
 ## Running it yourself
 
