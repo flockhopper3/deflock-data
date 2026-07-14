@@ -1,9 +1,9 @@
 {
-  "version": 3,
+  "version": 4,
   "source": {
     "id": "cameras",
     "type": "vector",
-    "url": "https://tiles.dontgetflocked.com/cameras.json"
+    "url": "https://tiles.dontgetflocked.com/cameras-us.json"
   },
   "layers": [
     {
