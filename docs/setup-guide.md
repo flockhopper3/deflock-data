@@ -82,9 +82,13 @@ Watch the log. A healthy run looks like:
 ==> Checking whether source data changed since last build
 ==> Validating GeoJSON
     102998 features found
-==> Running Tippecanoe
+==> Tippecanoe pass 1/2: heat range (z0–10, geometry-only, unclustered)
+==> Tippecanoe pass 2/2: detail range (z11–14, all properties)
+==> Merging zoom ranges with tile-join
+==> Verifying tile invariants
+OK: 102998 cameras at z0, geometry-only heat range, properties intact at z12
 ==> Uploading to Cloudflare R2
-==> Done. Uploaded cameras.pmtiles (35M)
+==> Done. Uploaded cameras.pmtiles (33M)
 ```
 
 Re-run it immediately and you should instead see `Source unchanged — skipping build`.
@@ -109,13 +113,16 @@ Then point the [PMTiles viewer](https://pmtiles.io) at the file URL — geometry
 
 ## 7. Test the heatmap → dots rendering locally
 
+First build a local tileset (same pipeline as CI, no R2 needed), then serve it:
+
 ```bash
+bash tiles/cameras/build.sh --local <cameras.geojson> tiles/local-dev/cameras-local.pmtiles
 cd tiles/local-dev
 npm install
-node server.js
+node server.js   # PORT=<port> node server.js if 3000 is taken
 ```
 
-Open `http://localhost:3000/heatmap-preview.html`. It renders whatever `cameras-heatmap.pmtiles` is present locally (build one with the same flags as `tiles/cameras/build.sh`, or copy the production file). Zoom from national level (heatmap) through z11–13 (crossfade) to street level (dots + popups).
+Open `http://localhost:3000/heatmap-preview.html`. The preview fetches `/tiles/cameras-local.json`, which the dev server builds from `cameras-local.pmtiles`. Zoom from national level (heatmap) through z11–13 (crossfade) to street level (dots + popups).
 
 To tune the look, edit the paint expressions in `tiles/cameras/layers.json` and mirror them in `heatmap-preview.html`:
 
