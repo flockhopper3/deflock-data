@@ -12,7 +12,7 @@
 
 ## Global Constraints
 
-- Country table: `us` (source `cameras-us.geojson.gz`, output `cameras-us.pmtiles`, min **50000** features, min output **10 MB**) and `ca` (source `cameras-ca.geojson.gz`, output `cameras-ca.pmtiles`, min **300** features, min output **100 KB**, subject to Task 2's measurement).
+- Country table: `us` (source `cameras.geojson.gz` — the legacy un-suffixed key the ingest Worker writes US under, not `cameras-us.geojson.gz` as originally listed here; output `cameras-us.pmtiles`, min **50000** features, min output **10 MB**) and `ca` (source `cameras-ca.geojson.gz`, output `cameras-ca.pmtiles`, min **300** features, min output **100 KB**, subject to Task 2's measurement).
 - Zoom split unchanged: heat z0–z10 geometry-only (`--exclude-all`), detail z11–z14 full properties, `--drop-rate=1` everywhere, layer name `cameras` in every archive.
 - `BUILD_CONFIG` stays `v3-geomonly-heat` (tippecanoe flags are unchanged; the per-country hash keys `cameras-<cc>.geojson.sha256` are new, so no stale-hash carryover exists).
 - Per-country failure isolation MUST hold: with both countries failing at fetch, the script must attempt BOTH and exit non-zero naming both.

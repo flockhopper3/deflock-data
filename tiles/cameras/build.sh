@@ -49,6 +49,17 @@ country_min_bytes() {
   esac
 }
 
+# Source keys in R2_DATA_BUCKET. The ingest Worker writes US data under the
+# legacy un-suffixed key; switch us to cameras-us.geojson.gz when ingestion
+# moves to the Actions workflow (which writes per-country keys).
+country_source_key() {
+  case "$1" in
+    us) echo "cameras.geojson.gz" ;;
+    ca) echo "cameras-ca.geojson.gz" ;;
+    *) return 1 ;;
+  esac
+}
+
 HEAT_TMP="$(mktemp -u).heat.pmtiles"
 DETAIL_TMP="$(mktemp -u).detail.pmtiles"
 trap 'rm -f "${HEAT_TMP}" "${DETAIL_TMP}"' EXIT
@@ -112,13 +123,14 @@ if [ "${1:-}" = "--country" ]; then
     exit 1
   fi
   MIN_BYTES="$(country_min_bytes "${CC}")"
+  SOURCE_KEY="$(country_source_key "${CC}")"
 
   OUTPUT_FILE="cameras-${CC}.pmtiles"
   GEOJSON_FILE="cameras-${CC}.geojson"
   HASH_FILE="cameras-${CC}.geojson.sha256"
 
-  echo "==> [${CC}] Fetching GeoJSON from R2"
-  aws s3 cp "s3://${R2_DATA_BUCKET}/cameras-${CC}.geojson.gz" "${GEOJSON_FILE}.download" \
+  echo "==> [${CC}] Fetching ${SOURCE_KEY} from R2"
+  aws s3 cp "s3://${R2_DATA_BUCKET}/${SOURCE_KEY}" "${GEOJSON_FILE}.download" \
     --endpoint-url "${R2_ENDPOINT}"
 
   # The object may or may not actually be gzip-compressed — check magic bytes.

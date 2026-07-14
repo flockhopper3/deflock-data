@@ -10,7 +10,7 @@ Replace the single merged `cameras.pmtiles` with one PMTiles archive per country
 ## Decisions made
 
 - **Per-country only.** The merged `cameras.pmtiles` is no longer built. The app will add one MapLibre source per country (app repo follow-up, out of scope here).
-- **Source keys:** `cameras-us.geojson.gz` and `cameras-ca.geojson.gz` in `flockhopper-data`, refreshed hourly by the Worker cron (confirmed by user). The Actions ingestion cutover remains a separate, later project.
+- **Source keys:** `cameras.geojson.gz` (US) and `cameras-ca.geojson.gz` (CA) in `flockhopper-data`, refreshed hourly by the Worker cron (confirmed by user). US is the legacy un-suffixed key — confirmed against the Worker's fetcher registry; the spec previously assumed `cameras-us.geojson.gz`. The Actions ingestion cutover remains a separate, later project.
 - **Transition:** the existing merged `cameras.pmtiles` object stays in R2, frozen, so the current app keeps serving until it migrates. Deleted afterward, along with the orphaned `cameras.geojson.sha256`.
 
 ## Data flow
@@ -33,7 +33,7 @@ flockhopper-tiles Worker (unchanged, generic {name}.pmtiles routing)
 
 | Country | Source key | Output | Min features | Min output size |
 |---------|------------|--------|--------------|-----------------|
-| us | cameras-us.geojson.gz | cameras-us.pmtiles | 50,000 | 10 MB |
+| us | cameras.geojson.gz (legacy key) | cameras-us.pmtiles | 50,000 | 10 MB |
 | ca | cameras-ca.geojson.gz | cameras-ca.pmtiles | 300 | 100 KB |
 
 Floors mirror `data/cameras/fetch.mjs`. Size floors become per-country because the old global 10 MB minimum would reject Canada's ~1K-camera archive.

@@ -6,7 +6,7 @@ End-to-end walkthrough for deploying the hourly tile pipeline from scratch. At t
 
 - A Cloudflare account (free plan is fine — R2 has a generous free tier)
 - A GitHub account
-- The source data: gzipped GeoJSON FeatureCollections of camera points, uploaded to R2 as `cameras-us.geojson.gz` / `cameras-ca.geojson.gz`
+- The source data: gzipped GeoJSON FeatureCollections of camera points, uploaded to R2 as `cameras.geojson.gz` (US, legacy un-suffixed key) / `cameras-ca.geojson.gz`
 
 ## 1. Cloudflare R2 buckets
 
@@ -14,7 +14,7 @@ Two buckets keep read and write concerns separate:
 
 | Bucket | Purpose | Public? |
 |--------|---------|---------|
-| `flockhopper-data` | Source `cameras-us.geojson.gz` / `cameras-ca.geojson.gz` (pipeline reads) | No |
+| `flockhopper-data` | Source `cameras.geojson.gz` (US) / `cameras-ca.geojson.gz` (pipeline reads) | No |
 | `flockhopper-tiles` | Built `cameras-us.pmtiles` / `cameras-ca.pmtiles` (pipeline writes, world reads) | Yes |
 
 In the Cloudflare dashboard: **R2 → Create bucket**, once per bucket. Location "Automatic" is fine.

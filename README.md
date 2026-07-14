@@ -63,9 +63,9 @@ Two hourly GitHub Actions run back to back:
 
 **Data ingestion** — [`.github/workflows/fetch-data.yml`](.github/workflows/fetch-data.yml) at :05 queries the Overpass API for ALPR cameras in the **US and Canada**, transforms the results to GeoJSON, validates feature counts, and uploads a merged GeoJSON plus `cameras-us.geojson.gz` / `cameras-ca.geojson.gz` to the R2 data bucket with a 1-hour cache. Details in [`data/README.md`](data/README.md).
 
-**Tile build** — [`.github/workflows/build-tiles.yml`](.github/workflows/build-tiles.yml) at :23 (and on manual dispatch) runs [`build.sh`](tiles/cameras/build.sh), which builds **one PMTiles archive per country** from `cameras-us.geojson.gz` / `cameras-ca.geojson.gz` (a Worker cron ingests both hourly). It loops the country table and re-invokes itself per country (`build.sh --country <cc>`) so a failure in one country can't block or corrupt the other's build:
+**Tile build** — [`.github/workflows/build-tiles.yml`](.github/workflows/build-tiles.yml) at :23 (and on manual dispatch) runs [`build.sh`](tiles/cameras/build.sh), which builds **one PMTiles archive per country** from `cameras.geojson.gz` (US, legacy un-suffixed key) / `cameras-ca.geojson.gz` (a Worker cron ingests both hourly). It loops the country table and re-invokes itself per country (`build.sh --country <cc>`) so a failure in one country can't block or corrupt the other's build:
 
-1. Downloads that country's `cameras-<cc>.geojson.gz` from the private R2 data bucket
+1. Downloads that country's source GeoJSON.gz from the private R2 data bucket — `cameras.geojson.gz` for US (legacy key), `cameras-ca.geojson.gz` for CA
 2. **Skips the build if the data hasn't changed** since the last run (per-country SHA-256 compared against `cameras-<cc>.geojson.sha256`)
 3. Validates the GeoJSON against a per-country feature floor — 50,000 (US) / 300 (CA)
 4. Runs [Tippecanoe](https://github.com/felt/tippecanoe) twice — a geometry-only z0–10 heat pass and a full-property z11–14 detail pass — and merges them with `tile-join`, then verifies tile invariants (`verify.sh`)
