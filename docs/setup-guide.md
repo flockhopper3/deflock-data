@@ -92,14 +92,14 @@ OK: 102998 cameras at z0, geometry-only heat range, properties intact at z12
 ==> [ca] Fetching GeoJSON from R2
 ==> [ca] Checking whether source data changed since last build
 ==> [ca] Validating GeoJSON
-    1842 features found
+    514 features found
 ==> Tippecanoe pass 1/2: heat range (z0–10, geometry-only, unclustered)
 ==> Tippecanoe pass 2/2: detail range (z11–14, all properties)
 ==> Merging zoom ranges with tile-join
 ==> [ca] Verifying tile invariants
-OK: 1842 cameras at z0, geometry-only heat range, properties intact at z12
+OK: 514 cameras at z0, geometry-only heat range, properties intact at z12
 ==> [ca] Uploading to Cloudflare R2
-==> [ca] Done. Uploaded cameras-ca.pmtiles (110K)
+==> [ca] Done. Uploaded cameras-ca.pmtiles (160K)
 ==> All countries built or skipped successfully
 ```
 

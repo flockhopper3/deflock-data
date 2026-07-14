@@ -44,7 +44,7 @@ country_min_features() {
 country_min_bytes() {
   case "$1" in
     us) echo $((10 * 1024 * 1024)) ;;
-    ca) echo $((82 * 1024)) ;;
+    ca) echo $((80 * 1024)) ;;
     *) return 1 ;;
   esac
 }
@@ -167,6 +167,12 @@ if [ "${1:-}" = "--country" ]; then
   rm -f "${GEOJSON_FILE}"
   echo "==> [${CC}] Done. Uploaded ${OUTPUT_FILE} ($(du -h "${OUTPUT_FILE}" | cut -f1))"
   exit 0
+fi
+
+# Guard against typos like --countr that would silently start a full R2 build
+if [ "$#" -gt 0 ]; then
+  echo "ERROR: unknown argument '$1' (expected --local, --country, or no args)"
+  exit 1
 fi
 
 # ── Main R2 mode: every country, isolating failures ────────────────────
