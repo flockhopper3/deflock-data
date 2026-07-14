@@ -44,7 +44,7 @@ country_min_features() {
 country_min_bytes() {
   case "$1" in
     us) echo $((10 * 1024 * 1024)) ;;
-    ca) echo $((100 * 1024)) ;;
+    ca) echo $((82 * 1024)) ;;
     *) return 1 ;;
   esac
 }
