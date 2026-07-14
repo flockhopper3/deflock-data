@@ -23,7 +23,7 @@ A Cloudflare Worker in front of the R2 bucket unpacks the PMTiles archive into s
 
 One tileset drives both a national heatmap and street-level dots:
 
-- **z0–z10** — points are clustered by Tippecanoe (`--cluster-distance=5 --cluster-maxzoom=10 --keep-point-cluster-position`). Each cluster sits on a real camera position and carries a `point_count` property, which the heatmap layer uses as its **linear** density weight — so the rendered heatmap is mathematically equivalent to one computed from all raw points, at a fraction of the tile weight (the z0 tile is ~4 KB instead of 6.4 MB unclustered).
+- **z0–z10** — every camera as a raw, geometry-only point (no attributes, no clustering, `--drop-rate=1`). Each point contributes heatmap weight 1 at its true location, so the density surface is identical at every zoom and heat anchors never move between zoom levels. Geometry-only MVT points compress ~20:1 — the z0 tile is ~60 KB gzipped on the wire.
 - **z11–z14** — raw, unclustered points with **all** source properties (`brand`, `direction`, `operator`, `osmId`, …) for individual dot rendering, popups, and direction cones.
 - **z11–z13** — the crossfade zone: the heatmap fades out while dot layers fade in.
 
@@ -62,7 +62,7 @@ Two hourly GitHub Actions run back to back:
 1. Downloads `cameras.geojson.gz` from the private R2 data bucket
 2. **Skips the build if the data hasn't changed** since the last run (SHA-256 compared against the hash stored alongside the tiles)
 3. Validates the GeoJSON (feature count sanity check)
-4. Runs [Tippecanoe](https://github.com/felt/tippecanoe) with the clustered-then-raw zoom strategy above
+4. Runs [Tippecanoe](https://github.com/felt/tippecanoe) twice — a geometry-only z0–10 heat pass and a full-property z11–14 detail pass — and merges them with `tile-join`, then verifies tile invariants (`verify.sh`)
 5. Sanity-checks the output size, then uploads `cameras.pmtiles` + the new source hash to the public R2 tiles bucket
 
 The whole run takes a few minutes; unchanged-data runs exit in seconds.
@@ -94,7 +94,7 @@ node server.js
 # open http://localhost:3000/heatmap-preview.html
 ```
 
-`heatmap-preview.html` renders the heatmap→dots style against a locally built tileset. `build-test-tiles.sh` builds a sweep of Tippecanoe configs for side-by-side comparison.
+`heatmap-preview.html` renders the heatmap→dots style against a locally built tileset. Build a preview tileset with `bash tiles/cameras/build.sh --local <geojson> [out.pmtiles]`.
 
 ## Repo layout
 

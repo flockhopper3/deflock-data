@@ -1,5 +1,5 @@
 {
-  "version": 2,
+  "version": 3,
   "source": {
     "id": "cameras",
     "type": "vector",
@@ -34,7 +34,7 @@
       "source-layer": "cameras",
       "maxzoom": 13,
       "paint": {
-        "heatmap-weight": ["coalesce", ["get", "point_count"], 1],
+        "heatmap-weight": 1,
         "heatmap-intensity": [
           "interpolate", ["linear"], ["zoom"],
           0, 1,
