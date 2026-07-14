@@ -21,7 +21,7 @@
   <script>
     // Mirrors tiles/cameras/layers.json (camera-heat + camera-point + camera-glow).
     // Served via the local-dev server's /tiles endpoint: node server.js
-    const TILEJSON_URL = 'http://localhost:3000/tiles/cameras-local.json';
+    const TILEJSON_URL = location.origin + '/tiles/cameras-local.json';
 
     const map = new maplibregl.Map({
       container: 'map',
