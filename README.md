@@ -94,7 +94,7 @@ node server.js
 # open http://localhost:3000/heatmap-preview.html
 ```
 
-`heatmap-preview.html` renders the heatmap→dots style against a locally built tileset. `build-test-tiles.sh` builds a sweep of Tippecanoe configs for side-by-side comparison.
+`heatmap-preview.html` renders the heatmap→dots style against a locally built tileset. Build a preview tileset with `bash tiles/cameras/build.sh --local <geojson> [out.pmtiles]`.
 
 ## Repo layout
 
