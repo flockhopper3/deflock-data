@@ -95,7 +95,7 @@ With the Worker (Option A):
 
 ```bash
 curl -s https://tiles.dontgetflocked.com/cameras.json | jq '{minzoom, maxzoom, tiles}'
-# z0 should be tiny (a few KB) — clustered; z11+ carries raw points
+# z0 carries every camera geometry-only (~60 KB gzipped); z11+ adds full properties
 curl -s -o /dev/null -w "%{http_code} %{size_download} bytes\n" https://tiles.dontgetflocked.com/cameras/0/0/0.mvt
 ```
 
@@ -105,7 +105,7 @@ With a direct bucket domain (Option B), check range-request support instead (exp
 curl -sI -H "Range: bytes=0-16383" https://<your-domain>/cameras.pmtiles | head -5
 ```
 
-Then point the [PMTiles viewer](https://pmtiles.io) at the file URL — clustered points at low zoom, raw points from z11.
+Then point the [PMTiles viewer](https://pmtiles.io) at the file URL — geometry-only points at low zoom, full-property points from z11.
 
 ## 7. Test the heatmap → dots rendering locally
 
@@ -119,7 +119,7 @@ Open `http://localhost:3000/heatmap-preview.html`. It renders whatever `cameras-
 
 To tune the look, edit the paint expressions in `tiles/cameras/layers.json` and mirror them in `heatmap-preview.html`:
 
-- `heatmap-weight` — how much each cluster contributes; keyed off `point_count`
+- `heatmap-weight` — constant 1 per camera; density comes purely from point concentration
 - `heatmap-radius` / `heatmap-intensity` — blob size and brightness per zoom
 - The z11–13 opacity ramps on `camera-heat` vs `camera-point`/`camera-glow` — the crossfade
 
