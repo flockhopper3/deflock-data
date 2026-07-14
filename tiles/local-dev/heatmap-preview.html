@@ -21,7 +21,7 @@
   <script>
     // Mirrors tiles/cameras/layers.json (camera-heat + camera-point + camera-glow).
     // Served via the local-dev server's /tiles endpoint: node server.js
-    const TILEJSON_URL = 'http://localhost:3000/tiles/cameras-heatmap.json';
+    const TILEJSON_URL = 'http://localhost:3000/tiles/cameras-local.json';
 
     const map = new maplibregl.Map({
       container: 'map',
@@ -39,7 +39,7 @@
             'source-layer': 'cameras',
             maxzoom: 13,
             paint: {
-              'heatmap-weight': ['coalesce', ['get', 'point_count'], 1],
+              'heatmap-weight': 1,
               'heatmap-intensity': [
                 'interpolate', ['linear'], ['zoom'],
                 0, 1, 9, 3, 13, 4
