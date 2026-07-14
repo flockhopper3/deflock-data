@@ -16,15 +16,16 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      # The apt-packaged tippecanoe is the old Mapbox fork and lacks flags we
-      # use (--keep-point-cluster-position), so build felt/tippecanoe once and
-      # cache the binary.
+      # The apt-packaged tippecanoe is the old Mapbox fork and can't write
+      # PMTiles directly, so build felt/tippecanoe once and cache the
+      # binaries. Cache key is suffixed because the cached set of binaries
+      # changed (added tile-join) — bump the suffix if it changes again.
       - name: Cache tippecanoe
         id: cache-tippecanoe
         uses: actions/cache@v4
         with:
           path: ~/tippecanoe-bin
-          key: tippecanoe-2.79.0
+          key: tippecanoe-2.79.0-r2
 
       - name: Build tippecanoe
         if: steps.cache-tippecanoe.outputs.cache-hit != 'true'
@@ -34,7 +35,7 @@ jobs:
           git clone --depth 1 --branch 2.79.0 https://github.com/felt/tippecanoe.git /tmp/tippecanoe
           make -C /tmp/tippecanoe -j"$(nproc)"
           mkdir -p ~/tippecanoe-bin
-          cp /tmp/tippecanoe/tippecanoe /tmp/tippecanoe/tippecanoe-decode ~/tippecanoe-bin/
+          cp /tmp/tippecanoe/tippecanoe /tmp/tippecanoe/tippecanoe-decode /tmp/tippecanoe/tile-join ~/tippecanoe-bin/
 
       - name: Add tippecanoe to PATH
         run: echo "$HOME/tippecanoe-bin" >> "$GITHUB_PATH"
