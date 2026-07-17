@@ -1,27 +1,19 @@
 #!/usr/bin/env node
-// Fetches ALPR camera data from Overpass for the US and Canada and writes
-// per-country GeoJSON (hourly naming: cameras-<cc>-hourly.geojson) to an
-// output directory, plus meta.json with the metadata upload.sh attaches
-// to each R2 object.
+// Fetches ALPR camera data from Overpass for the US (via adaptive tiling) and Canada
+// (via an authoritative OSM area query), and writes per-country GeoJSON (hourly naming:
+// cameras-<cc>-hourly.geojson) to an output directory, plus meta.json with the metadata
+// upload.sh attaches to each R2 object.
 //
 // Usage: node data/cameras/fetch.mjs [--out <dir>]
 
 import { mkdir, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
-import {
-  buildCamerasQuery,
-  queryOverpass,
-  transformOverpassToGeoJSON,
-} from './lib.mjs';
+import { fetchAllCameras } from './tiled-fetch.mjs';
 
 // minFeatures guards against publishing a truncated/broken Overpass response
-// over good data. US has ~100K+ mapped ALPRs, Canada ~1K+.
-const COUNTRIES = [
-  { code: 'US', slug: 'us', minFeatures: 50_000 },
-  { code: 'CA', slug: 'ca', minFeatures: 300 },
-];
-
-const COURTESY_DELAY_MS = 10_000; // pause between Overpass queries
+// over good data. US has ~100K+ mapped ALPRs, Canada ~500+.
+const US_MIN_FEATURES = 50_000;
+const CA_MIN_FEATURES = 300;
 
 function outDirFromArgs(argv) {
   const i = argv.indexOf('--out');
@@ -33,26 +25,25 @@ async function main() {
   await mkdir(outDir, { recursive: true });
 
   const lastUpdated = new Date().toISOString();
+  const { us, ca } = await fetchAllCameras();
+
+  const datasets = [
+    { slug: 'us', fc: us, minFeatures: US_MIN_FEATURES },
+    { slug: 'ca', fc: ca, minFeatures: CA_MIN_FEATURES },
+  ];
+
   const meta = {};
-
-  for (const [i, country] of COUNTRIES.entries()) {
-    if (i > 0) await new Promise((r) => setTimeout(r, COURTESY_DELAY_MS));
-
-    console.log(`==> Fetching ${country.code} cameras from Overpass`);
-    const data = await queryOverpass(buildCamerasQuery(country.code));
-
-    console.log(`    ${data.elements.length} elements received, transforming`);
-    const fc = transformOverpassToGeoJSON(data);
+  for (const { slug, fc, minFeatures } of datasets) {
     const count = fc.features.length;
-    console.log(`    ${count} camera features`);
+    console.log(`${slug.toUpperCase()}: ${count} camera features`);
 
-    if (count < country.minFeatures) {
+    if (count < minFeatures) {
       throw new Error(
-        `Validation failed for ${country.code}: only ${count} cameras (minimum ${country.minFeatures}). Aborting.`
+        `Validation failed for ${slug.toUpperCase()}: only ${count} cameras (minimum ${minFeatures}). Aborting.`
       );
     }
 
-    const name = `cameras-${country.slug}-hourly`;
+    const name = `cameras-${slug}-hourly`;
     await writeFile(join(outDir, `${name}.geojson`), JSON.stringify(fc));
     meta[name] = { featureCount: count, lastUpdated, source: 'overpass' };
   }
