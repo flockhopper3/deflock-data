@@ -56,7 +56,7 @@ export async function queryOverpass(query, fetchImpl = fetch) {
         data = JSON.parse(text);
       } catch {
         throw new Error(
-          `Non-JSON response from ${endpoint}: ${text.slice(0, 200)}`
+          `Non-JSON response from ${endpoint}: ${text.slice(0, 500).replace(/\s+/g, ' ')}`
         );
       }
 
