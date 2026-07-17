@@ -17,7 +17,7 @@ The active piece today is the **camera tile pipeline**: every hour, a GitHub Act
 | Hourly (new app) | hourly | This repo's GitHub Actions | `https://data.dontgetflocked.com/cameras-us-hourly.geojson.gz` / `…-ca-hourly…` | `https://tiles.dontgetflocked.com/cameras-us-hourly.json` / `…-ca-hourly.json` |
 | Daily (FlockHopper) | daily 08:00 UTC | Cloudflare Worker cron | `https://data.dontgetflocked.com/cameras.geojson.gz` / `…-ca…` | `https://tiles.dontgetflocked.com/cameras-us.json` / `…-ca.json` (frozen: `cameras.pmtiles`) |
 
-> The daily tiles (`cameras-us.pmtiles`, `cameras-ca.pmtiles`) and the legacy merged `cameras.pmtiles` are frozen — no pipeline rebuilds them; they keep serving FlockHopper until it migrates.
+> The daily tiles (`cameras-us.pmtiles`, `cameras-ca.pmtiles`) and the legacy merged `cameras.pmtiles` are frozen — no pipeline rebuilds them; they keep serving FlockHopper until it migrates. After migration, also delete the orphaned `cameras-us.geojson.sha256` / `cameras-ca.geojson.sha256` hash objects from the tiles bucket.
 
 A Cloudflare Worker in front of the R2 bucket unpacks each PMTiles archive into standard `z/x/y` tile URLs, so clients don't need the `pmtiles` protocol adapter — any MapLibre/Mapbox-compatible client can consume the TileJSON directly.
 

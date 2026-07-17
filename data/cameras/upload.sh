@@ -17,7 +17,7 @@ set -euo pipefail
 
 OUT_DIR="${1:-out}"
 
-for file in "${OUT_DIR}"/cameras*.geojson; do
+for file in "${OUT_DIR}"/cameras-*-hourly.geojson; do
   name="$(basename "${file}" .geojson)"
   feature_count="$(jq -r --arg n "${name}" '.[$n].featureCount' "${OUT_DIR}/meta.json")"
   last_updated="$(jq -r --arg n "${name}" '.[$n].lastUpdated' "${OUT_DIR}/meta.json")"
