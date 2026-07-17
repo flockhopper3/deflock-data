@@ -1,10 +1,10 @@
 # tiles/cameras
 
-The ALPR camera tileset: ~103K points served as one PMTiles archive per country — `cameras-us.pmtiles` and `cameras-ca.pmtiles` (z0–z14, layer name `cameras`).
+The ALPR camera tileset: ~103K points served as one PMTiles archive per country — `cameras-us-hourly.pmtiles` and `cameras-ca-hourly.pmtiles` (z0–z14, layer name `cameras`).
 
 | File | Purpose |
 |------|---------|
-| `build.sh` | Fetch GeoJSON from R2 → validate → Tippecanoe → upload PMTiles, once per country. Loops the country table (`us`, `ca`) and re-invokes itself per country (`build.sh --country <cc>`) for failure isolation. Run hourly by CI; skips a country's build when its source data is unchanged (per-country hash: `cameras-<cc>.geojson.sha256`). |
+| `build.sh` | Fetch GeoJSON from R2 → validate → Tippecanoe → upload PMTiles, once per country. Loops the country table (`us`, `ca`) and re-invokes itself per country (`build.sh --country <cc>`) for failure isolation. Run hourly by CI; skips a country's build when its source (`cameras-<cc>-hourly.geojson.gz`) is unchanged (per-country hash: `cameras-<cc>-hourly.geojson.sha256`). |
 | `layers.json` | Reference MapLibre style: heatmap (`camera-heat`) at low zoom crossfading into dots (`camera-point`, `camera-glow`) at z11–13, plus direction-cone config and palette. |
 
 ## Zoom strategy

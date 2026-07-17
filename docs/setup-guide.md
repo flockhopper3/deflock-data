@@ -1,12 +1,14 @@
 # Setup Guide: GitHub → Cloudflare R2 tile pipeline
 
-End-to-end walkthrough for deploying the hourly tile pipeline from scratch. At the end you'll have one PMTiles archive per country (`cameras-us.pmtiles`, `cameras-ca.pmtiles`) rebuilding hourly and served from public URLs.
+End-to-end walkthrough for deploying the hourly tile pipeline from scratch. At the end you'll have one PMTiles archive per country (`cameras-us-hourly.pmtiles`, `cameras-ca-hourly.pmtiles`) rebuilding hourly and served from public URLs.
+
+The same R2 buckets also hold the **daily** dataset (legacy un-suffixed names, e.g. `cameras.geojson.gz` / `cameras-us.pmtiles`), produced by a separate Cloudflare Worker cron for FlockHopper — that pipeline is out of scope for this guide.
 
 ## Prerequisites
 
 - A Cloudflare account (free plan is fine — R2 has a generous free tier)
 - A GitHub account
-- The source data: gzipped GeoJSON FeatureCollections of camera points, uploaded to R2 as `cameras.geojson.gz` (US, legacy un-suffixed key) / `cameras-ca.geojson.gz`
+- The source data: gzipped GeoJSON FeatureCollections of camera points, uploaded to R2 as `cameras-us-hourly.geojson.gz` / `cameras-ca-hourly.geojson.gz`
 
 ## 1. Cloudflare R2 buckets
 
@@ -14,8 +16,8 @@ Two buckets keep read and write concerns separate:
 
 | Bucket | Purpose | Public? |
 |--------|---------|---------|
-| `flockhopper-data` | Source `cameras.geojson.gz` (US) / `cameras-ca.geojson.gz` (pipeline reads) | No |
-| `flockhopper-tiles` | Built `cameras-us.pmtiles` / `cameras-ca.pmtiles` (pipeline writes, world reads) | Yes |
+| `flockhopper-data` | Source `cameras-us-hourly.geojson.gz` / `cameras-ca-hourly.geojson.gz` (pipeline reads) | No |
+| `flockhopper-tiles` | Built `cameras-us-hourly.pmtiles` / `cameras-ca-hourly.pmtiles` (pipeline writes, world reads) | Yes |
 
 In the Cloudflare dashboard: **R2 → Create bucket**, once per bucket. Location "Automatic" is fine.
 
@@ -36,7 +38,7 @@ PMTiles needs the bucket to answer HTTP range requests, which R2 supports out of
 
 **Option A — tile-serving Worker (what this deployment uses):** a Cloudflare Worker bound to the tiles bucket unpacks the PMTiles archive and serves `/{name}/{z}/{x}/{y}.mvt` + TileJSON at `/{name}.json` on `tiles.dontgetflocked.com`. Protomaps publishes a ready-made one: [protomaps/PMTiles serverless for Cloudflare](https://docs.protomaps.com/deploy/cloudflare). Clients get plain `z/x/y` URLs — no `pmtiles` protocol adapter needed, and each tile caches independently at the edge.
 
-**Option B — direct custom domain on the bucket:** open the tiles bucket → **Settings → Public access → Custom Domains → Connect Domain** and enter a hostname on a zone you have in Cloudflare. Clients then fetch the per-country archive (`cameras-us.pmtiles` / `cameras-ca.pmtiles`) directly via HTTP range requests using the `pmtiles` JS protocol adapter.
+**Option B — direct custom domain on the bucket:** open the tiles bucket → **Settings → Public access → Custom Domains → Connect Domain** and enter a hostname on a zone you have in Cloudflare. Clients then fetch the per-country archive (`cameras-us-hourly.pmtiles` / `cameras-ca-hourly.pmtiles`) directly via HTTP range requests using the `pmtiles` JS protocol adapter.
 
 **CORS** — clients on other origins need it. Bucket → **Settings → CORS policy**:
 
@@ -88,7 +90,7 @@ Watch the log. `build.sh` loops the country table and re-invokes itself per coun
 ==> [us] Verifying tile invariants
 OK: 102998 cameras at z0, geometry-only heat range, properties intact at z12
 ==> [us] Uploading to Cloudflare R2
-==> [us] Done. Uploaded cameras-us.pmtiles (33M)
+==> [us] Done. Uploaded cameras-us-hourly.pmtiles (33M)
 ==> [ca] Fetching GeoJSON from R2
 ==> [ca] Checking whether source data changed since last build
 ==> [ca] Validating GeoJSON
@@ -99,7 +101,7 @@ OK: 102998 cameras at z0, geometry-only heat range, properties intact at z12
 ==> [ca] Verifying tile invariants
 OK: 514 cameras at z0, geometry-only heat range, properties intact at z12
 ==> [ca] Uploading to Cloudflare R2
-==> [ca] Done. Uploaded cameras-ca.pmtiles (160K)
+==> [ca] Done. Uploaded cameras-ca-hourly.pmtiles (160K)
 ==> All countries built or skipped successfully
 ```
 
@@ -110,21 +112,21 @@ Re-run it immediately and each country should instead print `Source unchanged (�
 With the Worker (Option A), check each country's TileJSON and a sample tile:
 
 ```bash
-curl -s https://tiles.dontgetflocked.com/cameras-us.json | jq '{minzoom, maxzoom, tiles}'
+curl -s https://tiles.dontgetflocked.com/cameras-us-hourly.json | jq '{minzoom, maxzoom, tiles}'
 # z0 carries every camera geometry-only (~60 KB gzipped); z11+ adds full properties
-curl -s -o /dev/null -w "%{http_code} %{size_download} bytes\n" https://tiles.dontgetflocked.com/cameras-us/0/0/0.mvt
+curl -s -o /dev/null -w "%{http_code} %{size_download} bytes\n" https://tiles.dontgetflocked.com/cameras-us-hourly/0/0/0.mvt
 ```
 
 Repeat for Canada — e.g. a Toronto-area tile:
 
 ```bash
-curl -s -o /dev/null -w "%{http_code} %{size_download} bytes\n" https://tiles.dontgetflocked.com/cameras-ca/10/286/373.mvt
+curl -s -o /dev/null -w "%{http_code} %{size_download} bytes\n" https://tiles.dontgetflocked.com/cameras-ca-hourly/10/286/373.mvt
 ```
 
 With a direct bucket domain (Option B), check range-request support instead (expect `HTTP 206`):
 
 ```bash
-curl -sI -H "Range: bytes=0-16383" https://<your-domain>/cameras-us.pmtiles | head -5
+curl -sI -H "Range: bytes=0-16383" https://<your-domain>/cameras-us-hourly.pmtiles | head -5
 ```
 
 Then point the [PMTiles viewer](https://pmtiles.io) at the file URL — geometry-only points at low zoom, full-property points from z11.
