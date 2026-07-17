@@ -13,6 +13,10 @@ set -euo pipefail
 #   R2_DATA_BUCKET   — bucket holding cameras-<cc>-hourly.geojson.gz (read)
 #   R2_TILES_BUCKET  — bucket the built PMTiles are uploaded to (write)
 #   R2_ENDPOINT      — R2 S3-compatible endpoint URL
+# Optional:
+#   R2_TILES_MIRROR_BUCKET — second bucket that receives a copy of each
+#                            archive (no hash file; skip-check state lives
+#                            only in R2_TILES_BUCKET)
 #
 # Per-country builds run as child processes, NOT functions: bash suppresses
 # `set -e` inside any function tested with `if !`, so a mid-build failure in
@@ -27,9 +31,10 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 COUNTRIES=(us ca)
 
-# Bump BUILD_CONFIG whenever tippecanoe flags change so the skip check
-# doesn't short-circuit a rebuild with unchanged source data.
-BUILD_CONFIG="v3-geomonly-heat"
+# Bump BUILD_CONFIG whenever tippecanoe flags or upload destinations change
+# so the skip check doesn't short-circuit a rebuild with unchanged source
+# data. (v4 forced one rebuild to populate the deflock-data mirror.)
+BUILD_CONFIG="v4-mirror-deflock"
 
 # Floors mirror data/cameras/fetch.mjs; sizes protect prod from truncated
 # uploads. CA archive is small (~1K cameras), hence the much lower floor.
@@ -174,6 +179,11 @@ if [ "${1:-}" = "--country" ]; then
   echo "==> [${CC}] Uploading to Cloudflare R2"
   aws s3 cp "${OUTPUT_FILE}" "s3://${R2_TILES_BUCKET}/${OUTPUT_FILE}" \
     --endpoint-url "${R2_ENDPOINT}"
+  if [ -n "${R2_TILES_MIRROR_BUCKET:-}" ]; then
+    echo "==> [${CC}] Mirroring to ${R2_TILES_MIRROR_BUCKET}"
+    aws s3 cp "${OUTPUT_FILE}" "s3://${R2_TILES_MIRROR_BUCKET}/${OUTPUT_FILE}" \
+      --endpoint-url "${R2_ENDPOINT}"
+  fi
   echo "${NEW_HASH}" | aws s3 cp - "s3://${R2_TILES_BUCKET}/${HASH_FILE}" \
     --endpoint-url "${R2_ENDPOINT}"
 

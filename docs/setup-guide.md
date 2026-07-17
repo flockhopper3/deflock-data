@@ -16,8 +16,10 @@ Two buckets keep read and write concerns separate:
 
 | Bucket | Purpose | Public? |
 |--------|---------|---------|
-| `flockhopper-data` | Source `cameras-us-hourly.geojson.gz` / `cameras-ca-hourly.geojson.gz` (pipeline reads) | No |
+| `deflock-data` | Source `cameras-us-hourly.geojson.gz` / `cameras-ca-hourly.geojson.gz` (pipeline writes then reads) + a mirror copy of each built `.pmtiles` archive | No |
 | `flockhopper-tiles` | Built `cameras-us-hourly.pmtiles` / `cameras-ca-hourly.pmtiles` (pipeline writes, world reads) | Yes |
+
+The pipeline's R2 API token is deliberately scoped to just these two buckets, so it cannot touch the separate daily dataset's bucket even by accident.
 
 In the Cloudflare dashboard: **R2 → Create bucket**, once per bucket. Location "Automatic" is fine.
 

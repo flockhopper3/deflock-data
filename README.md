@@ -14,7 +14,7 @@ The active piece today is the **camera tile pipeline**: every hour, a GitHub Act
 
 | Dataset | Cadence | Producer | GeoJSON | TileJSON |
 |---------|---------|----------|---------|----------|
-| Hourly (new app) | hourly | This repo's GitHub Actions | `https://data.dontgetflocked.com/cameras-us-hourly.geojson.gz` / `…-ca-hourly…` | `https://tiles.dontgetflocked.com/cameras-us-hourly.json` / `…-ca-hourly.json` |
+| Hourly (new app) | hourly | This repo's GitHub Actions | `deflock-data` bucket: `cameras-us-hourly.geojson.gz` / `cameras-ca-hourly.geojson.gz` (public serving TBD) | `https://tiles.dontgetflocked.com/cameras-us-hourly.json` / `…-ca-hourly.json` (archives also mirrored to `deflock-data`) |
 | Daily (FlockHopper) | daily 08:00 UTC | Cloudflare Worker cron | `https://data.dontgetflocked.com/cameras.geojson.gz` / `…-ca…` | `https://tiles.dontgetflocked.com/cameras-us.json` / `…-ca.json` (frozen: `cameras.pmtiles`) |
 
 > The daily tiles (`cameras-us.pmtiles`, `cameras-ca.pmtiles`) and the legacy merged `cameras.pmtiles` are frozen — no pipeline rebuilds them; they keep serving FlockHopper until it migrates. After migration, also delete the orphaned `cameras-us.geojson.sha256` / `cameras-ca.geojson.sha256` hash objects from the tiles bucket.
@@ -61,15 +61,15 @@ The app creates one MapLibre source per country, reusing the same [`tiles/camera
 
 Two hourly GitHub Actions run back to back:
 
-**Data ingestion** — [`.github/workflows/fetch-data.yml`](.github/workflows/fetch-data.yml) at :05 queries the Overpass API for ALPR cameras in the **US and Canada**, transforms the results to GeoJSON, validates feature counts, and uploads `cameras-us-hourly.geojson.gz` / `cameras-ca-hourly.geojson.gz` to the R2 data bucket with a 1-hour cache (no merged upload). Details in [`data/README.md`](data/README.md).
+**Data ingestion** — [`.github/workflows/fetch-data.yml`](.github/workflows/fetch-data.yml) at :05 queries the Overpass API for ALPR cameras in the **US and Canada**, transforms the results to GeoJSON, validates feature counts, and uploads `cameras-us-hourly.geojson.gz` / `cameras-ca-hourly.geojson.gz` to the `deflock-data` R2 bucket with a 1-hour cache (no merged upload). Details in [`data/README.md`](data/README.md).
 
 **Tile build** — [`.github/workflows/build-tiles.yml`](.github/workflows/build-tiles.yml) at :23 (and on manual dispatch) runs [`build.sh`](tiles/cameras/build.sh), which builds **one PMTiles archive per country** from `cameras-us-hourly.geojson.gz` / `cameras-ca-hourly.geojson.gz`. It loops the country table and re-invokes itself per country (`build.sh --country <cc>`) so a failure in one country can't block or corrupt the other's build:
 
-1. Downloads that country's source GeoJSON.gz from the private R2 data bucket — `cameras-us-hourly.geojson.gz` for US, `cameras-ca-hourly.geojson.gz` for CA
+1. Downloads that country's source GeoJSON.gz from the private `deflock-data` bucket — `cameras-us-hourly.geojson.gz` for US, `cameras-ca-hourly.geojson.gz` for CA
 2. **Skips the build if the data hasn't changed** since the last run (per-country SHA-256 compared against `cameras-<cc>-hourly.geojson.sha256`)
 3. Validates the GeoJSON against a per-country feature floor — 50,000 (US) / 300 (CA)
 4. Runs [Tippecanoe](https://github.com/felt/tippecanoe) twice — a geometry-only z0–10 heat pass and a full-property z11–14 detail pass — and merges them with `tile-join`, then verifies tile invariants (`verify.sh`)
-5. Sanity-checks the output size — 10 MB (US) / 82 KB (CA) floor — then uploads `cameras-us-hourly.pmtiles` or `cameras-ca-hourly.pmtiles` + the new per-country source hash to the public R2 tiles bucket
+5. Sanity-checks the output size — 10 MB (US) / 82 KB (CA) floor — then uploads `cameras-us-hourly.pmtiles` or `cameras-ca-hourly.pmtiles` + the new per-country source hash to the public R2 tiles bucket, and mirrors a copy of the archive to `deflock-data`
 
 The whole run takes a few minutes; a country whose data hasn't changed exits in seconds.
 

@@ -34,6 +34,6 @@ jobs:
 
       - name: Upload to R2
         env:
-          R2_DATA_BUCKET: flockhopper-data
+          R2_DATA_BUCKET: deflock-data
           R2_ENDPOINT: ${{ secrets.R2_ENDPOINT }}
         run: bash data/cameras/upload.sh /tmp/data-out
