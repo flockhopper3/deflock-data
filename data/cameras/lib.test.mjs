@@ -2,11 +2,18 @@ import { describe, it } from 'node:test';
 import assert from 'node:assert/strict';
 import {
   parseDirection,
+  parseDirections,
   transformOverpassToGeoJSON,
+  addElementsToFeatures,
   mergeFeatureCollections,
   queryOverpass,
   buildCamerasQuery,
+  retryWithBackoff,
+  tileIntegrityFailed,
+  belowMinimum,
   OVERPASS_ENDPOINTS,
+  OVERPASS_USER_AGENT,
+  TIMEOUT_MS,
 } from './lib.mjs';
 
 describe('parseDirection', () => {
@@ -22,8 +29,52 @@ describe('parseDirection', () => {
     assert.equal(parseDirection('SW'), 225);
   });
 
-  it('handles semicolon-separated values (takes first)', () => {
+  it('handles semicolon-separated numeric (takes first)', () => {
     assert.equal(parseDirection('90;270'), 90);
+  });
+
+  it('handles semicolon-separated cardinals (takes first)', () => {
+    assert.equal(parseDirection('N;S'), 0);
+    assert.equal(parseDirection('E;W'), 90);
+  });
+
+  it('handles range notation (returns midpoint)', () => {
+    // 338-23: sector from 338° clockwise to 23° -> arc=45°, midpoint=0.5°
+    assert.ok(Math.abs(parseDirection('338-23') - 0.5) < 0.1);
+    // 48-93: arc=45°, midpoint=70.5°
+    assert.ok(Math.abs(parseDirection('48-93') - 70.5) < 0.1);
+    // 0-360: full circle, arc=360° -> midpoint=180°
+    assert.ok(Math.abs(parseDirection('0-360') - 180) < 0.1);
+  });
+
+  it('handles cardinal range notation', () => {
+    // WSW(247.5)-ESE(112.5): arc = (112.5-247.5+360)%360 = 225°, midpoint = 247.5+112.5 = 0°
+    assert.ok(Math.abs(parseDirection('WSW-ESE') - 0) < 0.1);
+  });
+
+  it('handles bound directions (NB/SB/EB/WB)', () => {
+    assert.equal(parseDirection('NB'), 0);
+    assert.equal(parseDirection('SB'), 180);
+    assert.equal(parseDirection('EB'), 90);
+    assert.equal(parseDirection('WB'), 270);
+  });
+
+  it('handles spelled-out cardinals', () => {
+    assert.equal(parseDirection('north'), 0);
+    assert.equal(parseDirection('south'), 180);
+    assert.equal(parseDirection('northeast'), 45);
+    assert.equal(parseDirection('northwest'), 315);
+  });
+
+  it('normalizes degrees to 0-359', () => {
+    assert.equal(parseDirection('360'), 0);
+    assert.ok(Math.abs(parseDirection('400') - 40) < 0.1);
+    assert.ok(Math.abs(parseDirection('-10') - 350) < 0.1);
+  });
+
+  it('handles comma-separated values', () => {
+    assert.equal(parseDirection('95, 95'), 95);
+    assert.equal(parseDirection('70, 210, 300'), 70);
   });
 
   it('returns null for empty string', () => {
@@ -37,6 +88,43 @@ describe('parseDirection', () => {
   it('returns null for garbage', () => {
     assert.equal(parseDirection('not-a-direction'), null);
   });
+
+  it('returns null for unresolvable values', () => {
+    assert.equal(parseDirection('forward'), null);
+    assert.equal(parseDirection('backward'), null);
+    assert.equal(parseDirection('both'), null);
+    assert.equal(parseDirection('Flock Raven'), null);
+  });
+});
+
+describe('parseDirections', () => {
+  it('returns all directions from semicolon-separated values', () => {
+    assert.deepEqual(parseDirections('90;270'), [90, 270]);
+    assert.deepEqual(parseDirections('N;S'), [0, 180]);
+    assert.deepEqual(parseDirections('0;90;180;270'), [0, 90, 180, 270]);
+  });
+
+  it('returns all directions from comma-separated values', () => {
+    assert.deepEqual(parseDirections('70, 210, 300'), [70, 210, 300]);
+  });
+
+  it('returns single-element array for simple values', () => {
+    assert.deepEqual(parseDirections('180'), [180]);
+    assert.deepEqual(parseDirections('NW'), [315]);
+  });
+
+  it('returns empty array for empty/undefined', () => {
+    assert.deepEqual(parseDirections(''), []);
+    assert.deepEqual(parseDirections(undefined), []);
+  });
+
+  it('returns empty array for garbage', () => {
+    assert.deepEqual(parseDirections('not-a-direction'), []);
+  });
+
+  it('filters out unresolvable tokens', () => {
+    assert.deepEqual(parseDirections('180;forward;270'), [180, 270]);
+  });
 });
 
 describe('buildCamerasQuery', () => {
@@ -44,6 +132,32 @@ describe('buildCamerasQuery', () => {
     const q = buildCamerasQuery('CA');
     assert.ok(q.includes('area["ISO3166-1"="CA"]'));
     assert.ok(q.includes('surveillance:type'));
+  });
+});
+
+describe('addElementsToFeatures', () => {
+  const alprNode = (id, lat, lon) => ({
+    type: 'node',
+    id,
+    lat,
+    lon,
+    tags: { 'man_made': 'surveillance', 'surveillance:type': 'ALPR' },
+  });
+
+  it('dedupes a camera that appears in two overlapping tiles', () => {
+    const map = new Map();
+    addElementsToFeatures([alprNode(42, 38.0, -77.0)], map);
+    addElementsToFeatures([alprNode(42, 38.0, -77.0), alprNode(43, 39.0, -76.0)], map);
+    assert.equal(map.size, 2);
+    assert.ok(map.has('node/42'));
+    assert.ok(map.has('node/43'));
+  });
+
+  it('accumulates features across many batches', () => {
+    const map = new Map();
+    addElementsToFeatures([alprNode(1, 38, -77), alprNode(2, 38, -76)], map);
+    addElementsToFeatures([alprNode(3, 39, -75)], map);
+    assert.equal(map.size, 3);
   });
 });
 
@@ -192,6 +306,64 @@ describe('transformOverpassToGeoJSON', () => {
     assert.equal(fc.features[1].properties.direction, 270);
     assert.equal(fc.features[1].properties.directionCardinal, undefined);
   });
+
+  it('outputs directions array for multi-directional cameras', () => {
+    const fc = transformOverpassToGeoJSON({
+      version: 0.6,
+      generator: 'Overpass API',
+      elements: [
+        {
+          type: 'node', id: 1, lat: 38.0, lon: -77.0,
+          tags: { 'man_made': 'surveillance', 'surveillance:type': 'ALPR', 'direction': '90;270' },
+        },
+        {
+          type: 'node', id: 2, lat: 39.0, lon: -76.0,
+          tags: { 'man_made': 'surveillance', 'surveillance:type': 'ALPR', 'direction': '180' },
+        },
+      ],
+    });
+    // Multi-direction: direction=first, directions=all
+    assert.equal(fc.features[0].properties.direction, 90);
+    assert.deepEqual(fc.features[0].properties.directions, [90, 270]);
+    // Single direction: direction set, no directions array
+    assert.equal(fc.features[1].properties.direction, 180);
+    assert.equal(fc.features[1].properties.directions, undefined);
+  });
+
+  it('handles range notation in transform', () => {
+    const fc = transformOverpassToGeoJSON({
+      version: 0.6,
+      generator: 'Overpass API',
+      elements: [
+        {
+          type: 'node', id: 1, lat: 38.0, lon: -77.0,
+          tags: { 'man_made': 'surveillance', 'surveillance:type': 'ALPR', 'direction': '338-23' },
+        },
+      ],
+    });
+    assert.ok(Math.abs(fc.features[0].properties.direction - 0.5) < 0.1);
+  });
+
+  it('sets directionCardinal from first token of multi-value cardinal tag', () => {
+    const fc = transformOverpassToGeoJSON({
+      version: 0.6,
+      generator: 'Overpass API',
+      elements: [
+        {
+          type: 'node', id: 1, lat: 38.0, lon: -77.0,
+          tags: { 'man_made': 'surveillance', 'surveillance:type': 'ALPR', 'direction': 'N;S' },
+        },
+        {
+          type: 'node', id: 2, lat: 39.0, lon: -76.0,
+          tags: { 'man_made': 'surveillance', 'surveillance:type': 'ALPR', 'direction': 'NB' },
+        },
+      ],
+    });
+    // "N;S" -> first token "N" is a cardinal -> directionCardinal="N"
+    assert.equal(fc.features[0].properties.directionCardinal, 'N');
+    // "NB" is a bound direction, not a 16-point cardinal -> no directionCardinal
+    assert.equal(fc.features[1].properties.directionCardinal, undefined);
+  });
 });
 
 describe('mergeFeatureCollections', () => {
@@ -283,5 +455,136 @@ describe('queryOverpass', () => {
       OVERPASS_ENDPOINTS[0],
       'https://overpass.deflock.org/api/interpreter'
     );
+  });
+
+  it('throws on empty elements by default (allowEmpty=false)', async () => {
+    const fetchImpl = async () => jsonResponse({ version: 0.6, elements: [] });
+    await assert.rejects(
+      queryOverpass('[out:json];node(1);out;', fetchImpl),
+      /All Overpass endpoints failed/
+    );
+  });
+
+  it('returns an empty-elements result when allowEmpty is true', async () => {
+    const emptyData = { version: 0.6, elements: [] };
+    const fetchImpl = async () => jsonResponse(emptyData);
+    const result = await queryOverpass('[out:json];node(1);out;', fetchImpl, { allowEmpty: true });
+    assert.deepEqual(result, emptyData);
+  });
+
+  it('sends the contact-bearing User-Agent and Accept: application/json on every request', async () => {
+    const calls = [];
+    const fetchImpl = async (endpoint, init) => {
+      calls.push(init);
+      return jsonResponse(mockData);
+    };
+    await queryOverpass('[out:json];node(1);out;', fetchImpl);
+    assert.equal(calls[0].headers['User-Agent'], OVERPASS_USER_AGENT);
+    assert.match(calls[0].headers['User-Agent'], /dontgetflocked\.com/);
+    assert.equal(calls[0].headers['Accept'], 'application/json');
+  });
+
+  it('exports OVERPASS_USER_AGENT exactly', () => {
+    assert.equal(
+      OVERPASS_USER_AGENT,
+      'FlockHopper-Data/1.0 (+https://dontgetflocked.com; alerts@dontgetflocked.com)'
+    );
+  });
+
+  it('exports TIMEOUT_MS as 55 seconds', () => {
+    assert.equal(TIMEOUT_MS, 55_000);
+  });
+});
+
+describe('retryWithBackoff', () => {
+  it('returns result on first success', async () => {
+    let calls = 0;
+    const fn = async () => {
+      calls += 1;
+      return 'ok';
+    };
+    const result = await retryWithBackoff(fn, 3, 5);
+    assert.equal(result, 'ok');
+    assert.equal(calls, 1);
+  });
+
+  it('retries on failure and returns on eventual success', async () => {
+    let calls = 0;
+    const fn = async () => {
+      calls += 1;
+      if (calls < 3) throw new Error(`fail${calls}`);
+      return 'ok';
+    };
+    const result = await retryWithBackoff(fn, 3, 5);
+    assert.equal(result, 'ok');
+    assert.equal(calls, 3);
+  });
+
+  it('throws last error after all retries exhausted', async () => {
+    let calls = 0;
+    const fn = async () => {
+      calls += 1;
+      throw new Error(`fail${calls}`);
+    };
+    await assert.rejects(retryWithBackoff(fn, 3, 5), /fail3/);
+    assert.equal(calls, 3);
+  });
+
+  it('applies exponential backoff delays', async () => {
+    let calls = 0;
+    const timestamps = [];
+    const fn = async () => {
+      calls += 1;
+      timestamps.push(Date.now());
+      if (calls < 3) throw new Error('fail');
+      return 'ok';
+    };
+    const start = Date.now();
+    const result = await retryWithBackoff(fn, 3, 20);
+    assert.equal(result, 'ok');
+    assert.equal(calls, 3);
+    // attempt 1->2 delay ~20ms, attempt 2->3 delay ~40ms: total >= 60ms
+    assert.ok(Date.now() - start >= 55, `expected >= 55ms elapsed, got ${Date.now() - start}ms`);
+  });
+
+  it('wraps non-Error throws in Error', async () => {
+    const fn = async () => {
+      throw 'string error';
+    };
+    await assert.rejects(retryWithBackoff(fn, 1, 5), /string error/);
+  });
+});
+
+describe('tileIntegrityFailed', () => {
+  const TOL = 0.10; // tile must deliver >= 90% of its probed count
+
+  it('passes when the tile delivers what the probe promised', () => {
+    assert.equal(tileIntegrityFailed(5000, 5000, TOL), false);
+    assert.equal(tileIntegrityFailed(4800, 5000, TOL), false); // -4%, within tolerance
+    assert.equal(tileIntegrityFailed(5200, 5000, TOL), false); // more than expected is fine
+  });
+
+  it('fails when the tile returns far fewer features than probed', () => {
+    assert.equal(tileIntegrityFailed(0, 5000, TOL), true);     // empty response, should have data
+    assert.equal(tileIntegrityFailed(2500, 5000, TOL), true);  // half — partial response
+    assert.equal(tileIntegrityFailed(4000, 5000, TOL), true);  // -20%, beyond tolerance
+  });
+
+  it('does not flag genuinely empty tiles (probe was 0)', () => {
+    assert.equal(tileIntegrityFailed(0, 0, TOL), false);
+  });
+});
+
+describe('belowMinimum', () => {
+  it('is true when the count is under the floor', () => {
+    assert.equal(belowMinimum(49_999, 50_000), true);
+  });
+  it('is false at or above the floor', () => {
+    assert.equal(belowMinimum(50_000, 50_000), false);
+    assert.equal(belowMinimum(60_000, 50_000), false);
+  });
+  it('never blocks when the floor is 0 (no baseline yet)', () => {
+    assert.equal(belowMinimum(0, 0), false);
+    assert.equal(belowMinimum(5, 0), false);
   });
 });

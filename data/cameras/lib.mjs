@@ -10,7 +10,15 @@ export const OVERPASS_ENDPOINTS = [
   'https://maps.mail.ru/osm/tools/overpass/api/interpreter',
 ];
 
-const TIMEOUT_MS = 300_000; // 5 minutes, matches [timeout:300] in the query
+// DeFlock's Overpass sits behind a reverse proxy that returns 504 at ~60s of
+// wall-clock, regardless of the [timeout:N] in the query. Abort below that so a
+// stuck request fails fast to the next endpoint instead of hanging the pipeline.
+export const TIMEOUT_MS = 55_000;
+
+// Overpass mirrors (especially deflock.org) reject or rate-limit requests without
+// a User-Agent that identifies the app and provides a contact channel.
+export const OVERPASS_USER_AGENT =
+  'FlockHopper-Data/1.0 (+https://dontgetflocked.com; alerts@dontgetflocked.com)';
 
 export function buildCamerasQuery(countryCode) {
   return `[out:json][timeout:300];
@@ -24,12 +32,18 @@ out meta;
 out skel qt;`;
 }
 
-export async function queryOverpass(query, fetchImpl = fetch) {
+/**
+ * Run an Overpass query, falling back across endpoints. Rejects on an empty
+ * `elements` result unless `allowEmpty` is set — use `allowEmpty: true` for
+ * queries where a zero-result response is legitimate (e.g. a sparse tile).
+ * Returns the parsed JSON response body directly.
+ */
+export async function queryOverpass(query, fetchImpl = fetch, { allowEmpty = false } = {}) {
   const errors = [];
 
   for (const endpoint of OVERPASS_ENDPOINTS) {
-    // Cleared in finally — a dangling 300s timer would keep Node's event
-    // loop alive long after the query resolves or fails.
+    // Cleared in finally — a dangling timer would keep Node's event loop
+    // alive long after the query resolves or fails.
     const controller = new AbortController();
     const timeoutId = setTimeout(() => controller.abort(), TIMEOUT_MS);
     try {
@@ -37,7 +51,8 @@ export async function queryOverpass(query, fetchImpl = fetch) {
         method: 'POST',
         headers: {
           'Content-Type': 'application/x-www-form-urlencoded',
-          'User-Agent': 'deflock-data/1.0 (github.com/flockhopper3/deflock-data)',
+          'User-Agent': OVERPASS_USER_AGENT,
+          Accept: 'application/json',
         },
         body: new URLSearchParams({ data: query }),
         signal: controller.signal,
@@ -60,7 +75,7 @@ export async function queryOverpass(query, fetchImpl = fetch) {
         );
       }
 
-      if (!data.elements || data.elements.length === 0) {
+      if (!allowEmpty && (!data.elements || data.elements.length === 0)) {
         throw new Error(`Empty response from ${endpoint}`);
       }
 
@@ -79,6 +94,40 @@ export async function queryOverpass(query, fetchImpl = fetch) {
   );
 }
 
+/** Retry an async function with exponential backoff (base * 2^(attempt-1)). */
+export async function retryWithBackoff(fn, maxRetries, baseDelayMs) {
+  let lastError;
+
+  for (let attempt = 1; attempt <= maxRetries; attempt++) {
+    try {
+      return await fn();
+    } catch (err) {
+      lastError = err instanceof Error ? err : new Error(String(err));
+      if (attempt < maxRetries) {
+        const delay = baseDelayMs * Math.pow(2, attempt - 1);
+        await new Promise((r) => setTimeout(r, delay));
+      }
+    }
+  }
+
+  throw lastError;
+}
+
+/**
+ * Per-tile integrity check: true if a tile's fetched feature count fell short of
+ * what its count-probe promised (beyond `tolerance`). Catches a tile that returns
+ * HTTP 200 but partial/empty data — the silent-failure case tiling introduces.
+ */
+export function tileIntegrityFailed(produced, probed, tolerance) {
+  if (probed <= 0) return false;
+  return produced < probed * (1 - tolerance);
+}
+
+/** Per-country write floor: true if a dataset's count is below its minimum acceptable value. */
+export function belowMinimum(count, min) {
+  return count < min;
+}
+
 const CARDINALS = {
   N: 0, NNE: 22.5, NE: 45, ENE: 67.5,
   E: 90, ESE: 112.5, SE: 135, SSE: 157.5,
@@ -86,31 +135,99 @@ const CARDINALS = {
   W: 270, WNW: 292.5, NW: 315, NNW: 337.5,
 };
 
-export function parseDirection(value) {
-  if (!value) return null;
+const SPELLED_CARDINALS = {
+  NORTH: 0, NORTHEAST: 45, EAST: 90, SOUTHEAST: 135,
+  SOUTH: 180, SOUTHWEST: 225, WEST: 270, NORTHWEST: 315,
+};
 
-  const upper = value.toUpperCase();
+const BOUND_DIRECTIONS = {
+  NB: 0, EB: 90, SB: 180, WB: 270,
+};
+
+function normalizeDegrees(deg) {
+  return ((deg % 360) + 360) % 360;
+}
+
+/** Resolve a simple token (cardinal, spelled-out, bound, or numeric) to raw degrees. No normalization, no range/semicolon handling. */
+function resolveSimple(token) {
+  const upper = token.trim().toUpperCase();
+  if (!upper) return null;
   if (upper in CARDINALS) return CARDINALS[upper];
-
-  const str = value.includes(';') ? value.split(';')[0] : value;
-  const num = parseFloat(str);
+  if (upper in SPELLED_CARDINALS) return SPELLED_CARDINALS[upper];
+  if (upper in BOUND_DIRECTIONS) return BOUND_DIRECTIONS[upper];
+  const num = Number(upper); // Number() rejects "338-23" unlike parseFloat
   return isNaN(num) ? null : num;
 }
 
-export function transformOverpassToGeoJSON(data) {
-  // Build node lookup for way centroid calculation
+/** Compute the midpoint bearing of a clockwise sector from startDeg to endDeg (raw values, not pre-normalized). */
+function rangeMidpoint(startDeg, endDeg) {
+  const rawArc = endDeg - startDeg;
+  const arc = ((rawArc % 360) + 360) % 360;
+  // Full circle: raw values differ but normalized arc is 0 (e.g. 0->360)
+  if (arc === 0 && rawArc !== 0) return normalizeDegrees(startDeg + 180);
+  if (arc === 0) return normalizeDegrees(startDeg);
+  return normalizeDegrees(startDeg + arc / 2);
+}
+
+/** Parse a single direction token which may be a cardinal, numeric, bound, spelled-out, or range (e.g. "338-23"). */
+function parseSingleToken(token) {
+  const trimmed = token.trim();
+  if (!trimmed) return null;
+
+  // Try simple resolve first (cardinal, spelled-out, bound, numeric)
+  const simple = resolveSimple(trimmed);
+  if (simple !== null) return normalizeDegrees(simple);
+
+  // Range notation: "338-23", "WSW-ESE" — find dash that isn't a leading negative
+  const dashIdx = trimmed.indexOf('-', 1);
+  if (dashIdx > 0) {
+    const left = resolveSimple(trimmed.slice(0, dashIdx));
+    const right = resolveSimple(trimmed.slice(dashIdx + 1));
+    if (left !== null && right !== null) {
+      return rangeMidpoint(left, right);
+    }
+  }
+
+  return null;
+}
+
+/** Parse a direction tag into all resolved bearings (handles semicolons and commas). */
+export function parseDirections(value) {
+  if (!value) return [];
+  const tokens = value.split(/[;,]/).map((t) => t.trim()).filter(Boolean);
+  const results = [];
+  for (const token of tokens) {
+    const deg = parseSingleToken(token);
+    if (deg !== null) results.push(deg);
+  }
+  return results;
+}
+
+/** Parse a direction tag into a single bearing (first resolved value). Backward-compatible. */
+export function parseDirection(value) {
+  const dirs = parseDirections(value);
+  return dirs.length > 0 ? dirs[0] : null;
+}
+
+/**
+ * Transform a batch of Overpass elements (one tile's response, or a whole national
+ * response) into GeoJSON point features, merging into `featureMap`. Keyed by
+ * `${type}/${id}` so cameras appearing in two overlapping tiles are deduped to one.
+ */
+export function addElementsToFeatures(elements, featureMap) {
+  // Build node lookup for way centroid calculation (scoped to this batch; Overpass
+  // recursion `>;` keeps a selected way's child nodes in the same response).
   const nodesById = new Map();
-  for (const el of data.elements) {
+  for (const el of elements) {
     if (el.type === 'node' && el.lat !== undefined && el.lon !== undefined) {
       nodesById.set(el.id, { lat: el.lat, lon: el.lon });
     }
   }
 
-  const features = [];
-
-  for (const el of data.elements) {
+  for (const el of elements) {
     const tags = el.tags ?? {};
 
+    // Only process surveillance ALPR elements
     if (tags['man_made'] !== 'surveillance') continue;
     if (tags['surveillance:type'] !== 'ALPR') continue;
 
@@ -132,9 +249,11 @@ export function transformOverpassToGeoJSON(data) {
     if (lat === undefined || lon === undefined) continue;
 
     const directionTag = tags['direction'] || tags['camera:direction'];
-    const direction = parseDirection(directionTag);
-    // directionCardinal stores the raw tag only when it's a cardinal string (N, SW, etc.)
-    const isCardinal = directionTag ? directionTag.toUpperCase() in CARDINALS : false;
+    const directions = parseDirections(directionTag);
+    const direction = directions.length > 0 ? directions[0] : null;
+    // directionCardinal stores the original cardinal string when the (first) token is a 16-point compass point
+    const firstToken = directionTag?.split(/[;,]/)[0]?.trim();
+    const isCardinal = firstToken ? firstToken.toUpperCase() in CARDINALS : false;
 
     const properties = {
       osmId: el.id,
@@ -146,7 +265,8 @@ export function transformOverpassToGeoJSON(data) {
       properties.brand = tags['brand'] || tags['manufacturer'];
     }
     if (direction !== null) properties.direction = direction;
-    if (isCardinal) properties.directionCardinal = directionTag;
+    if (directions.length > 1) properties.directions = directions;
+    if (isCardinal) properties.directionCardinal = firstToken;
     if (tags['surveillance:zone']) properties.surveillanceZone = tags['surveillance:zone'];
     if (tags['camera:mount']) properties.mountType = tags['camera:mount'];
     if (tags['ref']) properties.ref = tags['ref'];
@@ -154,14 +274,21 @@ export function transformOverpassToGeoJSON(data) {
     if (el.timestamp) properties.osmTimestamp = el.timestamp;
     if (el.version) properties.osmVersion = el.version;
 
-    features.push({
+    featureMap.set(`${el.type}/${el.id}`, {
       type: 'Feature',
       geometry: { type: 'Point', coordinates: [lon, lat] },
       properties,
     });
   }
+}
 
-  features.sort((a, b) => a.properties.osmId - b.properties.osmId);
+export function transformOverpassToGeoJSON(data) {
+  const featureMap = new Map();
+  addElementsToFeatures(data.elements, featureMap);
+
+  const features = [...featureMap.values()].sort(
+    (a, b) => a.properties.osmId - b.properties.osmId
+  );
 
   return { type: 'FeatureCollection', features };
 }
