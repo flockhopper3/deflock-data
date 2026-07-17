@@ -1,7 +1,8 @@
 #!/usr/bin/env node
 // Fetches ALPR camera data from Overpass for the US and Canada and writes
-// per-country + merged GeoJSON to an output directory, plus meta.json with
-// the metadata upload.sh attaches to each R2 object.
+// per-country GeoJSON (hourly naming: cameras-<cc>-hourly.geojson) to an
+// output directory, plus meta.json with the metadata upload.sh attaches
+// to each R2 object.
 //
 // Usage: node data/cameras/fetch.mjs [--out <dir>]
 
@@ -11,7 +12,6 @@ import {
   buildCamerasQuery,
   queryOverpass,
   transformOverpassToGeoJSON,
-  mergeFeatureCollections,
 } from './lib.mjs';
 
 // minFeatures guards against publishing a truncated/broken Overpass response
@@ -34,7 +34,6 @@ async function main() {
 
   const lastUpdated = new Date().toISOString();
   const meta = {};
-  const collections = [];
 
   for (const [i, country] of COUNTRIES.entries()) {
     if (i > 0) await new Promise((r) => setTimeout(r, COURTESY_DELAY_MS));
@@ -53,20 +52,10 @@ async function main() {
       );
     }
 
-    const name = `cameras-${country.slug}`;
+    const name = `cameras-${country.slug}-hourly`;
     await writeFile(join(outDir, `${name}.geojson`), JSON.stringify(fc));
     meta[name] = { featureCount: count, lastUpdated, source: 'overpass' };
-    collections.push(fc);
   }
-
-  const merged = mergeFeatureCollections(collections);
-  console.log(`==> Merged: ${merged.features.length} features`);
-  await writeFile(join(outDir, 'cameras.geojson'), JSON.stringify(merged));
-  meta['cameras'] = {
-    featureCount: merged.features.length,
-    lastUpdated,
-    source: 'overpass',
-  };
 
   await writeFile(join(outDir, 'meta.json'), JSON.stringify(meta, null, 2));
   console.log(`==> Wrote ${Object.keys(meta).join(', ')} to ${outDir}/`);

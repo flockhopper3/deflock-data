@@ -2,6 +2,9 @@
 set -euo pipefail
 
 # Uploads the GeoJSON files produced by fetch.mjs to the R2 data bucket.
+# fetch.mjs emits hourly-suffixed names (cameras-<cc>-hourly.geojson), so
+# uploads land on the -hourly keys and can never touch the daily Worker
+# cron's keys (cameras.geojson.gz / cameras-ca.geojson.gz).
 #
 # Required env:
 #   R2_DATA_BUCKET — bucket the datasets are uploaded to (write)
