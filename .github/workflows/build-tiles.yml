@@ -20,6 +20,13 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Run tile unit tests
+        run: node --test tiles/cameras/*.test.mjs
+
       # The apt-packaged tippecanoe is the old Mapbox fork and can't write
       # PMTiles directly, so build felt/tippecanoe once and cache the
       # binaries. Cache key is suffixed because the cached set of binaries
