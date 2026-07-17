@@ -1,6 +1,6 @@
 # tiles/cameras
 
-The ALPR camera tileset: ~103K points served as one PMTiles archive per country — `cameras-us-hourly.pmtiles` and `cameras-ca-hourly.pmtiles` (z0–z14, layer name `cameras`).
+The ALPR camera tileset: ~117K points served as one PMTiles archive per country — `cameras-us-hourly.pmtiles` and `cameras-ca-hourly.pmtiles` (z0–z14, layer name `cameras`).
 
 | File | Purpose |
 |------|---------|

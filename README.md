@@ -8,7 +8,7 @@ Data & tiles hub for ALPR (automated license plate reader) camera locations — 
 | [`tiles/`](tiles/) | Tile pipelines — currently the cameras tileset, more to come |
 | [`analysis/`](analysis/) | Analysis & research on the dataset |
 
-The active piece today is the **camera tile pipeline**: every hour, a GitHub Action turns the latest camera GeoJSON (~103K points, sourced from OpenStreetMap surveillance tagging) into one [PMTiles](https://docs.protomaps.com/pmtiles/) archive **per country** served from Cloudflare R2 — no tile server required.
+The active piece today is the **camera tile pipeline**: every hour, a GitHub Action turns the latest camera GeoJSON (~117K points, sourced from OpenStreetMap surveillance tagging) into one [PMTiles](https://docs.protomaps.com/pmtiles/) archive **per country** served from Cloudflare R2 — no tile server required.
 
 **Anyone can use the data.** No API key, no rate limits beyond Cloudflare's defaults.
 
