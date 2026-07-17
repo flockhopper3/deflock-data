@@ -1,8 +1,9 @@
 name: Build Tiles
 
 on:
-  schedule:
-    - cron: "23 * * * *" # hourly, off the top of the hour (GitHub delays :00 jobs)
+  workflow_run:
+    workflows: ["Fetch Camera Data"]
+    types: [completed] # build right after each hourly fetch lands
   workflow_dispatch: # manual trigger
 
 concurrency:
@@ -11,6 +12,9 @@ concurrency:
 
 jobs:
   build:
+    # Skip the chained run when the fetch failed — nothing new to build,
+    # and the previous tiles keep serving.
+    if: github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success'
     runs-on: ubuntu-latest
     timeout-minutes: 20
     steps:

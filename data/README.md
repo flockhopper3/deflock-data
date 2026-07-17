@@ -20,7 +20,7 @@ There is no merged output — the merged upload key (`cameras.geojson.gz`) is th
 
 > **Note:** the `.gz` keys hold *uncompressed* JSON — the original worker always stored them that way (Cloudflare compresses at the edge) and existing consumers depend on it.
 
-The tile build (`build-tiles.yml`, hourly at :23) picks up the fresh `cameras-<cc>-hourly.geojson.gz` keys the same hour.
+The tile build (`build-tiles.yml`) is chained via `workflow_run` — it starts as soon as a fetch run completes successfully and picks up the fresh `cameras-<cc>-hourly.geojson.gz` keys immediately.
 
 ## Running locally
 

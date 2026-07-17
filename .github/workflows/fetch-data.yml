@@ -2,7 +2,7 @@ name: Fetch Camera Data
 
 on:
   schedule:
-    - cron: "5 * * * *" # hourly at :05 — tile build at :23 picks up fresh data
+    - cron: "5 * * * *" # hourly at :05 — build-tiles.yml chains off this run's completion
   workflow_dispatch: # manual trigger
 
 concurrency:
