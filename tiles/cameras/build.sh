@@ -10,7 +10,7 @@ set -euo pipefail
 #   build.sh --local <geojson> [out]  — local preview build, no R2
 #
 # R2 modes require env:
-#   R2_DATA_BUCKET   — bucket holding cameras-<cc>.geojson.gz (read)
+#   R2_DATA_BUCKET   — bucket holding cameras-<cc>-hourly.geojson.gz (read)
 #   R2_TILES_BUCKET  — bucket the built PMTiles are uploaded to (write)
 #   R2_ENDPOINT      — R2 S3-compatible endpoint URL
 #
@@ -49,13 +49,14 @@ country_min_bytes() {
   esac
 }
 
-# Source keys in R2_DATA_BUCKET. The ingest Worker writes US data under the
-# legacy un-suffixed key; switch us to cameras-us.geojson.gz when ingestion
-# moves to the Actions workflow (which writes per-country keys).
+# Source keys in R2_DATA_BUCKET — the hourly GitHub Actions ingestion's
+# outputs. The daily Worker cron's keys (cameras.geojson.gz /
+# cameras-ca.geojson.gz) are a separate dataset this pipeline never reads
+# or writes.
 country_source_key() {
   case "$1" in
-    us) echo "cameras.geojson.gz" ;;
-    ca) echo "cameras-ca.geojson.gz" ;;
+    us) echo "cameras-us-hourly.geojson.gz" ;;
+    ca) echo "cameras-ca-hourly.geojson.gz" ;;
     *) return 1 ;;
   esac
 }
@@ -125,9 +126,9 @@ if [ "${1:-}" = "--country" ]; then
   MIN_BYTES="$(country_min_bytes "${CC}")"
   SOURCE_KEY="$(country_source_key "${CC}")"
 
-  OUTPUT_FILE="cameras-${CC}.pmtiles"
-  GEOJSON_FILE="cameras-${CC}.geojson"
-  HASH_FILE="cameras-${CC}.geojson.sha256"
+  OUTPUT_FILE="cameras-${CC}-hourly.pmtiles"
+  GEOJSON_FILE="cameras-${CC}-hourly.geojson"
+  HASH_FILE="cameras-${CC}-hourly.geojson.sha256"
 
   echo "==> [${CC}] Fetching ${SOURCE_KEY} from R2"
   aws s3 cp "s3://${R2_DATA_BUCKET}/${SOURCE_KEY}" "${GEOJSON_FILE}.download" \
