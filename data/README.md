@@ -25,7 +25,7 @@ The tile build (`build-tiles.yml`) is chained via `workflow_run` — it starts a
 ## Running locally
 
 ```bash
-node --test data/cameras/lib.test.mjs   # unit tests
+node --test data/cameras/*.test.mjs   # unit tests
 node data/cameras/fetch.mjs --out /tmp/data-out
 
 export R2_DATA_BUCKET=your-data-bucket

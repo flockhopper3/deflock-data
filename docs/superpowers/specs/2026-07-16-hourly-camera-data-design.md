@@ -83,6 +83,6 @@ Carried over from the existing pipelines: per-country isolation (one country's f
 
 ## Risks
 
-- Hourly Overpass load: fetch.mjs already uses a courtesy delay and endpoint fallback; floors catch truncated responses. Overpass 200-with-`remark` partial responses remain unchecked (pre-existing caveat, floors are the mitigation).
+- Hourly Overpass load: fetch.mjs uses adaptive tiling (small batch concurrency) and endpoint fallback; floors catch truncated responses. Overpass 200-with-`remark` partial responses remain unchecked (pre-existing caveat, floors are the mitigation).
 - The old per-country archives (`cameras-us.pmtiles`, `cameras-ca.pmtiles`) go stale from re-enable day since no pipeline rebuilds them; they were built for a FlockHopper migration that hasn't happened. Acceptable per user — revisit when FlockHopper migrates.
 - Edge caches may serve the *daily* endpoint up to 24h stale (existing `s-maxage=86400`, unchanged by design).

@@ -20,6 +20,10 @@ export const TIMEOUT_MS = 55_000;
 export const OVERPASS_USER_AGENT =
   'FlockHopper-Data/1.0 (+https://dontgetflocked.com; alerts@dontgetflocked.com)';
 
+/**
+ * Legacy single-shot national query — no longer used by the production fetch path
+ * (which tiles via tiled-fetch.mjs). Kept for reference and test compatibility only.
+ */
 export function buildCamerasQuery(countryCode) {
   return `[out:json][timeout:300];
 area["ISO3166-1"="${countryCode}"]->.country;

@@ -12,7 +12,7 @@ concurrency:
 jobs:
   fetch:
     runs-on: ubuntu-latest
-    timeout-minutes: 45 # Overpass can be slow; endpoint fallback ×2 countries
+    timeout-minutes: 45 # ~100 tiled requests; if the primary endpoint hangs, each burns up to 55s before falling back — timeout fails closed
     steps:
       - uses: actions/checkout@v4
 
@@ -21,7 +21,7 @@ jobs:
           node-version: 22
 
       - name: Run unit tests
-        run: node --test data/cameras/lib.test.mjs
+        run: node --test data/cameras/*.test.mjs
 
       - name: Fetch from Overpass
         run: node data/cameras/fetch.mjs --out /tmp/data-out
