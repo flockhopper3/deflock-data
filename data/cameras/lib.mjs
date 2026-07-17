@@ -1,7 +1,10 @@
 // Camera ingestion library — ported from the FlockHopper Cloudflare data worker.
 // Queries Overpass for ALPR cameras, transforms to GeoJSON point features.
 
+// DeFlock's own instance first — it's built for exactly this query load;
+// the public instances remain as fallbacks.
 export const OVERPASS_ENDPOINTS = [
+  'https://overpass.deflock.org/api/interpreter',
   'https://overpass-api.de/api/interpreter',
   'https://overpass.kumi.systems/api/interpreter',
   'https://maps.mail.ru/osm/tools/overpass/api/interpreter',

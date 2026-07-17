@@ -258,7 +258,11 @@ describe('queryOverpass', () => {
     );
   });
 
-  it('exports the 3 known endpoints', () => {
-    assert.equal(OVERPASS_ENDPOINTS.length, 3);
+  it('exports the 4 known endpoints, DeFlock first', () => {
+    assert.equal(OVERPASS_ENDPOINTS.length, 4);
+    assert.equal(
+      OVERPASS_ENDPOINTS[0],
+      'https://overpass.deflock.org/api/interpreter'
+    );
   });
 });
