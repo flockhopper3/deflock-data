@@ -250,6 +250,25 @@ describe('queryOverpass', () => {
     );
   });
 
+  it('includes the response body head when an endpoint returns non-JSON', async () => {
+    let calls = 0;
+    const fetchImpl = async () => {
+      calls += 1;
+      if (calls === 1) return new Response('<?xml version="1.0"?><error/>', { status: 200 });
+      return jsonResponse(mockData);
+    };
+    const messages = [];
+    const origError = console.error;
+    console.error = (msg) => messages.push(msg);
+    try {
+      const result = await queryOverpass('[out:json];node(1);out;', fetchImpl);
+      assert.deepEqual(result, mockData);
+    } finally {
+      console.error = origError;
+    }
+    assert.match(messages.join('\n'), /Non-JSON response from .*<\?xml/);
+  });
+
   it('throws on non-200 status from every endpoint', async () => {
     const fetchImpl = async () => new Response('error', { status: 429 });
     await assert.rejects(

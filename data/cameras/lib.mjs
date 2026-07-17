@@ -47,7 +47,18 @@ export async function queryOverpass(query, fetchImpl = fetch) {
         throw new Error(`HTTP ${response.status} from ${endpoint}`);
       }
 
-      const data = await response.json();
+      // Overpass instances can return HTTP 200 with an XML/HTML error
+      // document (rate limits, WAF blocks) — surface the body's head so
+      // the CI log shows WHY an endpoint was skipped.
+      const text = await response.text();
+      let data;
+      try {
+        data = JSON.parse(text);
+      } catch {
+        throw new Error(
+          `Non-JSON response from ${endpoint}: ${text.slice(0, 200)}`
+        );
+      }
 
       if (!data.elements || data.elements.length === 0) {
         throw new Error(`Empty response from ${endpoint}`);
