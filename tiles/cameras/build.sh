@@ -43,8 +43,9 @@ COUNTRIES=(us ca)
 
 # Bump BUILD_CONFIG whenever tippecanoe flags or upload destinations change
 # so the skip check doesn't short-circuit a rebuild with unchanged source
-# data. (v5 forced one rebuild to populate the filter companion artifacts.)
-BUILD_CONFIG="v5-filter-companion"
+# data. (v6 forced one rebuild with --buffer=0, removing the tile-edge
+# duplicates that made translucent dots shimmer.)
+BUILD_CONFIG="v6-buffer0"
 
 # Floors mirror data/cameras/fetch.mjs; sizes protect prod from truncated
 # uploads. CA archive is small (~1K cameras), hence the much lower floor.
@@ -92,6 +93,7 @@ build_tiles() {
     --no-feature-limit \
     --no-tile-size-limit \
     --drop-rate=1 \
+    --buffer=0 \
     --minimum-zoom=0 \
     --maximum-zoom=10 \
     --no-tile-stats \
@@ -105,6 +107,7 @@ build_tiles() {
     --no-feature-limit \
     --no-tile-size-limit \
     --drop-rate=1 \
+    --buffer=0 \
     --minimum-zoom=11 \
     --maximum-zoom=14 \
     --no-tile-stats \
@@ -128,6 +131,7 @@ build_filter_tiles() {
     --no-feature-limit \
     --no-tile-size-limit \
     --drop-rate=1 \
+    --buffer=0 \
     --minimum-zoom=0 \
     --maximum-zoom=10 \
     --no-tile-stats \
@@ -142,14 +146,17 @@ build_filter_tiles() {
     --no-feature-limit \
     --no-tile-size-limit \
     --drop-rate=1 \
+    --buffer=0 \
     --minimum-zoom=11 \
     --maximum-zoom=14 \
     --no-tile-stats \
     --layer=cameras \
     "$1"
 
+  local FILTER_NAME="${3:-cameras-filter}"
   echo "==> Merging filter zoom ranges with tile-join"
   tile-join -o "$2" --force --no-tile-size-limit \
+    -n "${FILTER_NAME}" \
     "${FILTER_HEAT_TMP}" "${FILTER_DETAIL_TMP}"
 }
 
@@ -173,7 +180,8 @@ if [ "${1:-}" = "--local" ]; then
   echo "==> Enriching with filter codes + building manifest"
   node "${SCRIPT_DIR}/enrich.mjs" "${GEOJSON_FILE}" "${ENRICHED_FILE}" "${MANIFEST_FILE}"
 
-  build_filter_tiles "${ENRICHED_FILE}" "${FILTER_OUTPUT_FILE}"
+  FILTER_VERSION=$(jq -r '.version' "${MANIFEST_FILE}")
+  build_filter_tiles "${ENRICHED_FILE}" "${FILTER_OUTPUT_FILE}" "cameras-filter ${FILTER_VERSION}"
   rm -f "${ENRICHED_FILE}"
 
   echo "==> Verifying filter tile invariants"
@@ -244,7 +252,8 @@ if [ "${1:-}" = "--country" ]; then
   echo "==> [${CC}] Enriching with filter codes + building manifest"
   node "${SCRIPT_DIR}/enrich.mjs" "${GEOJSON_FILE}" "${ENRICHED_FILE}" "${MANIFEST_FILE}"
 
-  build_filter_tiles "${ENRICHED_FILE}" "${FILTER_OUTPUT_FILE}"
+  FILTER_VERSION=$(jq -r '.version' "${MANIFEST_FILE}")
+  build_filter_tiles "${ENRICHED_FILE}" "${FILTER_OUTPUT_FILE}" "cameras-filter ${FILTER_VERSION}"
   rm -f "${ENRICHED_FILE}"
 
   echo "==> [${CC}] Verifying filter tile invariants"
@@ -270,6 +279,12 @@ if [ "${1:-}" = "--country" ]; then
   aws s3 cp "${MANIFEST_FILE}.gz" "s3://${R2_TILES_BUCKET}/${MANIFEST_FILE}" \
     --content-encoding gzip --content-type application/json \
     --endpoint-url "${R2_ENDPOINT}"
+  if [ "${CC}" = "us" ]; then
+    echo "==> [${CC}] Publishing manifest to data bucket"
+    aws s3 cp "${MANIFEST_FILE}" "s3://${R2_DATA_BUCKET}/cameras-manifest.json" \
+      --content-type application/json \
+      --endpoint-url "${R2_ENDPOINT}"
+  fi
   if [ -n "${R2_TILES_MIRROR_BUCKET:-}" ]; then
     echo "==> [${CC}] Mirroring to ${R2_TILES_MIRROR_BUCKET}"
     aws s3 cp "${OUTPUT_FILE}" "s3://${R2_TILES_MIRROR_BUCKET}/${OUTPUT_FILE}" \
