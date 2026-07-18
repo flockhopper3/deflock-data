@@ -11,10 +11,10 @@ The ALPR camera tileset: ~117K points served as one PMTiles archive per country 
 
 ## Zoom strategy
 
-- **z0–z10** — raw, geometry-only points (`--exclude-all --drop-rate=1`, no clustering); every camera sits at its true location at every zoom so the heatmap never shifts on zoom transitions
-- **z11–z14** — raw points with all source properties (`brand`, `direction`, `operator`, …) for dots, popups, and direction cones
+- **z0–z8** — raw, geometry-only points (`--exclude-all --drop-rate=1`, no clustering); every camera sits at its true location at every zoom so the heatmap never shifts on zoom transitions
+- **z9–z14** — raw points with all source properties (`brand`, `direction`, `operator`, …) for dots, popups, and direction cones
 
-The filter archive mirrors this exactly (same drop settings, so per-tile feature counts match), except its z0–z10 range carries the four filter codes instead of nothing — the app attaches it only while a brand/operator/zone/mount filter is active, and resolves labels→ids at runtime through the manifest.
+The filter archive mirrors this exactly (same drop settings, so per-tile feature counts match), except its z0–z8 range carries the four filter codes instead of nothing — the app attaches it only while a brand/operator/zone/mount filter is active, and resolves labels→ids at runtime through the manifest.
 
 ## Manual build
 

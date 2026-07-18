@@ -24,8 +24,8 @@ set -euo pipefail
 # live and the parent only inspects its exit code.
 #
 # Zoom strategy (heatmap → dots), identical for every archive:
-#   z0–z10  geometry-only raw points — heat anchors never move across zooms
-#   z11–z14 raw points with all properties — dots, popups, direction cones
+#   z0–z8   geometry-only raw points — heat anchors never move across zooms
+#   z9–z14  raw points with all properties — dots, popups, direction cones
 #
 # Each country also gets a filter companion set, built from the same GeoJSON
 # in the same run (ids in the manifest are build-scoped, so the three
@@ -43,9 +43,9 @@ COUNTRIES=(us ca)
 
 # Bump BUILD_CONFIG whenever tippecanoe flags or upload destinations change
 # so the skip check doesn't short-circuit a rebuild with unchanged source
-# data. (v6 forced one rebuild with --buffer=0, removing the tile-edge
-# duplicates that made translucent dots shimmer.)
-BUILD_CONFIG="v6-buffer0"
+# data. (v7 forced one rebuild moving the detail-range start from z11 to
+# z9, so full properties are available two zooms earlier.)
+BUILD_CONFIG="v7-detail-z9"
 
 # Floors mirror data/cameras/fetch.mjs; sizes protect prod from truncated
 # uploads. CA archive is small (~1K cameras), hence the much lower floor.
@@ -85,7 +85,7 @@ trap 'rm -f "${HEAT_TMP}" "${DETAIL_TMP}" "${FILTER_HEAT_TMP}" "${FILTER_DETAIL_
 
 # build_tiles <geojson> <output.pmtiles> — two-pass build + merge
 build_tiles() {
-  echo "==> Tippecanoe pass 1/2: heat range (z0–10, geometry-only, unclustered)"
+  echo "==> Tippecanoe pass 1/2: heat range (z0–8, geometry-only, unclustered)"
   tippecanoe \
     -o "${HEAT_TMP}" \
     --force \
@@ -95,12 +95,12 @@ build_tiles() {
     --drop-rate=1 \
     --buffer=0 \
     --minimum-zoom=0 \
-    --maximum-zoom=10 \
+    --maximum-zoom=8 \
     --no-tile-stats \
     --layer=cameras \
     "$1"
 
-  echo "==> Tippecanoe pass 2/2: detail range (z11–14, all properties)"
+  echo "==> Tippecanoe pass 2/2: detail range (z9–14, all properties)"
   tippecanoe \
     -o "${DETAIL_TMP}" \
     --force \
@@ -108,7 +108,7 @@ build_tiles() {
     --no-tile-size-limit \
     --drop-rate=1 \
     --buffer=0 \
-    --minimum-zoom=11 \
+    --minimum-zoom=9 \
     --maximum-zoom=14 \
     --no-tile-stats \
     --layer=cameras \
@@ -124,7 +124,7 @@ build_tiles() {
 # counts match the main archive, but the heat range keeps the four integer
 # filter codes instead of stripping all attributes.
 build_filter_tiles() {
-  echo "==> Tippecanoe filter 1/2: heat range (z0–10, b/o/z/m codes only)"
+  echo "==> Tippecanoe filter 1/2: heat range (z0–8, b/o/z/m codes only)"
   tippecanoe \
     -o "${FILTER_HEAT_TMP}" \
     --force \
@@ -133,13 +133,13 @@ build_filter_tiles() {
     --drop-rate=1 \
     --buffer=0 \
     --minimum-zoom=0 \
-    --maximum-zoom=10 \
+    --maximum-zoom=8 \
     --no-tile-stats \
     --include=b --include=o --include=z --include=m \
     --layer=cameras \
     "$1"
 
-  echo "==> Tippecanoe filter 2/2: detail range (z11–14, all properties + codes)"
+  echo "==> Tippecanoe filter 2/2: detail range (z9–14, all properties + codes)"
   tippecanoe \
     -o "${FILTER_DETAIL_TMP}" \
     --force \
@@ -147,7 +147,7 @@ build_filter_tiles() {
     --no-tile-size-limit \
     --drop-rate=1 \
     --buffer=0 \
-    --minimum-zoom=11 \
+    --minimum-zoom=9 \
     --maximum-zoom=14 \
     --no-tile-stats \
     --layer=cameras \
