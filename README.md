@@ -14,7 +14,7 @@ The active piece today is the **camera tile pipeline**: every hour, a GitHub Act
 
 | Dataset | Cadence | Producer | GeoJSON | TileJSON |
 |---------|---------|----------|---------|----------|
-| Hourly (new app) | hourly | This repo's GitHub Actions | `deflock-data` bucket: `cameras-us-hourly.geojson.gz` / `cameras-ca-hourly.geojson.gz` (public serving TBD) | `https://tiles.dontgetflocked.com/cameras-us-hourly.json` / `…-ca-hourly.json` (archives also mirrored to `deflock-data`) |
+| Hourly (new app) | hourly | This repo's GitHub Actions | `deflock-data` bucket: `cameras-us-hourly.geojson.gz` / `cameras-ca-hourly.geojson.gz` (public serving TBD) | `https://tiles.dontgetflocked.com/cameras-us-hourly.json` / `…-ca-hourly.json` (archives also mirrored to `deflock-data`) + `…-index.bin` / `…-index.json` (positions index for in-app viewport counting; **edge serving pending the Worker `.bin` route** — see `docs/superpowers/handoffs/2026-07-18-tiles-worker-bin-route.md`) |
 | Daily (FlockHopper) | daily 08:00 UTC | Cloudflare Worker cron | `https://data.dontgetflocked.com/cameras.geojson.gz` / `…-ca…` | `https://tiles.dontgetflocked.com/cameras-us.json` / `…-ca.json` (frozen: `cameras.pmtiles`) |
 
 > The daily tiles (`cameras-us.pmtiles`, `cameras-ca.pmtiles`) and the legacy merged `cameras.pmtiles` are frozen — no pipeline rebuilds them; they keep serving FlockHopper until it migrates. After migration, also delete the orphaned `cameras-us.geojson.sha256` / `cameras-ca.geojson.sha256` hash objects from the tiles bucket.

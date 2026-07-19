@@ -41,11 +41,10 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 COUNTRIES=(us ca)
 
-# Bump BUILD_CONFIG whenever tippecanoe flags or upload destinations change
-# so the skip check doesn't short-circuit a rebuild with unchanged source
-# data. (v7 forced one rebuild moving the detail-range start from z11 to
-# z9, so full properties are available two zooms earlier.)
-BUILD_CONFIG="v7-detail-z9"
+# Bump BUILD_CONFIG whenever tippecanoe flags, upload destinations, or the set
+# of emitted artifacts change so the skip check doesn't short-circuit a rebuild
+# with unchanged source data. (v8 adds the per-country positions index.)
+BUILD_CONFIG="v8-positions-index"
 
 # Floors mirror data/cameras/fetch.mjs; sizes protect prod from truncated
 # uploads. CA archive is small (~1K cameras), hence the much lower floor.
@@ -187,7 +186,13 @@ if [ "${1:-}" = "--local" ]; then
   echo "==> Verifying filter tile invariants"
   bash "${SCRIPT_DIR}/verify-filter.sh" "${FILTER_OUTPUT_FILE}" "${FEATURE_COUNT}"
 
-  echo "==> Done (local). Built ${OUTPUT_FILE} ($(du -h "${OUTPUT_FILE}" | cut -f1)), ${FILTER_OUTPUT_FILE} ($(du -h "${FILTER_OUTPUT_FILE}" | cut -f1)), ${MANIFEST_FILE}"
+  INDEX_BIN_FILE="${OUTPUT_FILE%.pmtiles}-index.bin"
+  INDEX_JSON_FILE="${OUTPUT_FILE%.pmtiles}-index.json"
+  echo "==> Building positions index"
+  node "${SCRIPT_DIR}/positions-index.mjs" \
+    "${GEOJSON_FILE}" "${INDEX_BIN_FILE}" "${INDEX_JSON_FILE}" "${FEATURE_COUNT}"
+
+  echo "==> Done (local). Built ${OUTPUT_FILE} ($(du -h "${OUTPUT_FILE}" | cut -f1)), ${FILTER_OUTPUT_FILE} ($(du -h "${FILTER_OUTPUT_FILE}" | cut -f1)), ${MANIFEST_FILE}, ${INDEX_BIN_FILE}, ${INDEX_JSON_FILE}"
   exit 0
 fi
 
@@ -207,6 +212,8 @@ if [ "${1:-}" = "--country" ]; then
   FILTER_OUTPUT_FILE="cameras-${CC}-hourly-filter.pmtiles"
   MANIFEST_FILE="cameras-${CC}-hourly-manifest.json"
   ENRICHED_FILE="cameras-${CC}-hourly-enriched.geojson.tmp"
+  INDEX_BIN_FILE="cameras-${CC}-hourly-index.bin"
+  INDEX_JSON_FILE="cameras-${CC}-hourly-index.json"
 
   echo "==> [${CC}] Fetching ${SOURCE_KEY} from R2"
   aws s3 cp "s3://${R2_DATA_BUCKET}/${SOURCE_KEY}" "${GEOJSON_FILE}.download" \
@@ -267,6 +274,23 @@ if [ "${1:-}" = "--country" ]; then
     exit 1
   fi
 
+  echo "==> [${CC}] Building positions index"
+  node "${SCRIPT_DIR}/positions-index.mjs" \
+    "${GEOJSON_FILE}" "${INDEX_BIN_FILE}" "${INDEX_JSON_FILE}" "${FEATURE_COUNT}"
+
+  # positions-index.mjs already asserts header count == FEATURE_COUNT; re-check the
+  # header at the shell layer so a mismatch aborts before any upload.
+  INDEX_COUNT=$(node -e 'process.stdout.write(String(require("fs").readFileSync(process.argv[1]).readUInt32LE(8)))' "${INDEX_BIN_FILE}")
+  if [ "${INDEX_COUNT}" != "${FEATURE_COUNT}" ]; then
+    echo "ERROR: [${CC}] index count ${INDEX_COUNT} != ${FEATURE_COUNT} features — aborting."
+    exit 1
+  fi
+
+  # Served gzipped with content-encoding, same as the manifest.
+  gzip -9 -c "${INDEX_BIN_FILE}" > "${INDEX_BIN_FILE}.gz"
+  gzip -9 -c "${INDEX_JSON_FILE}" > "${INDEX_JSON_FILE}.gz"
+  echo "    index: ${INDEX_BIN_FILE} $(du -h "${INDEX_BIN_FILE}" | cut -f1) raw / $(du -h "${INDEX_BIN_FILE}.gz" | cut -f1) gzipped, ${INDEX_JSON_FILE} $(du -h "${INDEX_JSON_FILE}" | cut -f1)"
+
   # Manifest is served gzipped; TTL policy lives in the serving worker, same
   # as the pmtiles objects (no cache-control metadata set at upload).
   gzip -9 -c "${MANIFEST_FILE}" > "${MANIFEST_FILE}.gz"
@@ -277,6 +301,12 @@ if [ "${1:-}" = "--country" ]; then
   aws s3 cp "${FILTER_OUTPUT_FILE}" "s3://${R2_TILES_BUCKET}/${FILTER_OUTPUT_FILE}" \
     --endpoint-url "${R2_ENDPOINT}"
   aws s3 cp "${MANIFEST_FILE}.gz" "s3://${R2_TILES_BUCKET}/${MANIFEST_FILE}" \
+    --content-encoding gzip --content-type application/json \
+    --endpoint-url "${R2_ENDPOINT}"
+  aws s3 cp "${INDEX_BIN_FILE}.gz" "s3://${R2_TILES_BUCKET}/${INDEX_BIN_FILE}" \
+    --content-encoding gzip --content-type application/octet-stream \
+    --endpoint-url "${R2_ENDPOINT}"
+  aws s3 cp "${INDEX_JSON_FILE}.gz" "s3://${R2_TILES_BUCKET}/${INDEX_JSON_FILE}" \
     --content-encoding gzip --content-type application/json \
     --endpoint-url "${R2_ENDPOINT}"
   if [ "${CC}" = "us" ]; then
@@ -294,12 +324,19 @@ if [ "${1:-}" = "--country" ]; then
     aws s3 cp "${MANIFEST_FILE}.gz" "s3://${R2_TILES_MIRROR_BUCKET}/${MANIFEST_FILE}" \
       --content-encoding gzip --content-type application/json \
       --endpoint-url "${R2_ENDPOINT}"
+    aws s3 cp "${INDEX_BIN_FILE}.gz" "s3://${R2_TILES_MIRROR_BUCKET}/${INDEX_BIN_FILE}" \
+      --content-encoding gzip --content-type application/octet-stream \
+      --endpoint-url "${R2_ENDPOINT}"
+    aws s3 cp "${INDEX_JSON_FILE}.gz" "s3://${R2_TILES_MIRROR_BUCKET}/${INDEX_JSON_FILE}" \
+      --content-encoding gzip --content-type application/json \
+      --endpoint-url "${R2_ENDPOINT}"
   fi
   echo "${NEW_HASH}" | aws s3 cp - "s3://${R2_TILES_BUCKET}/${HASH_FILE}" \
     --endpoint-url "${R2_ENDPOINT}"
 
-  rm -f "${GEOJSON_FILE}" "${MANIFEST_FILE}.gz"
-  echo "==> [${CC}] Done. Uploaded ${OUTPUT_FILE} ($(du -h "${OUTPUT_FILE}" | cut -f1)), ${FILTER_OUTPUT_FILE} ($(du -h "${FILTER_OUTPUT_FILE}" | cut -f1)), ${MANIFEST_FILE}"
+  rm -f "${GEOJSON_FILE}" "${MANIFEST_FILE}.gz" \
+    "${INDEX_BIN_FILE}" "${INDEX_BIN_FILE}.gz" "${INDEX_JSON_FILE}" "${INDEX_JSON_FILE}.gz"
+  echo "==> [${CC}] Done. Uploaded ${OUTPUT_FILE} ($(du -h "${OUTPUT_FILE}" | cut -f1)), ${FILTER_OUTPUT_FILE} ($(du -h "${FILTER_OUTPUT_FILE}" | cut -f1)), ${MANIFEST_FILE}, ${INDEX_BIN_FILE}, ${INDEX_JSON_FILE}"
   exit 0
 fi
 
