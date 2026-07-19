@@ -30,7 +30,10 @@ if (key.endsWith('-index.bin') || key.endsWith('-index.json')) {
   headers.set('etag', obj.httpEtag);
   headers.set('Access-Control-Allow-Origin', '*');
   headers.set('Cache-Control', 'public, max-age=300, s-maxage=3600');
-  if (obj.body === null) return new Response(null, { status: 304, headers });
+  // A conditional-fail `.get({onlyIf})` returns a plain R2Object with NO body
+  // (obj.body is undefined, not null) — test truthiness, not `=== null`, or the
+  // 304 branch never fires and you serve an empty-body 200.
+  if (!obj.body) return new Response(null, { status: 304, headers });
   return new Response(obj.body, { headers });
 }
 ```

@@ -289,7 +289,7 @@ if [ "${1:-}" = "--country" ]; then
   # Served gzipped with content-encoding, same as the manifest.
   gzip -9 -c "${INDEX_BIN_FILE}" > "${INDEX_BIN_FILE}.gz"
   gzip -9 -c "${INDEX_JSON_FILE}" > "${INDEX_JSON_FILE}.gz"
-  echo "    index: $(du -h "${INDEX_BIN_FILE}" | cut -f1) raw, $(du -h "${INDEX_BIN_FILE}.gz" | cut -f1) gzipped"
+  echo "    index: ${INDEX_BIN_FILE} $(du -h "${INDEX_BIN_FILE}" | cut -f1) raw / $(du -h "${INDEX_BIN_FILE}.gz" | cut -f1) gzipped, ${INDEX_JSON_FILE} $(du -h "${INDEX_JSON_FILE}" | cut -f1)"
 
   # Manifest is served gzipped; TTL policy lives in the serving worker, same
   # as the pmtiles objects (no cache-control metadata set at upload).

@@ -236,7 +236,10 @@ export function encodeIndex(records) {
 // Buffers at odd byte offsets).
 export function decodeIndex(bytes) {
   const u8 = bytes instanceof Uint8Array ? bytes : new Uint8Array(bytes);
-  const buf = u8.slice().buffer;
+  // Force a real copy: Node overrides Buffer.prototype.slice to alias (like
+  // subarray), so `u8.slice().buffer` would leak a pooled Buffer's shared 8KB
+  // ArrayBuffer at the wrong offset. The base TypedArray slice always copies.
+  const buf = Uint8Array.prototype.slice.call(u8).buffer;
   const dv = new DataView(buf);
   const magic = String.fromCharCode(...new Uint8Array(buf, 0, 4));
   const version = dv.getUint32(4, true);
