@@ -363,7 +363,10 @@ Expected: prints `positions index: 3 cameras, 3 brand slots, build <hash> — ..
 node -e '
 const fs = require("fs");
 const dir = process.argv[1];
-const buf = fs.readFileSync(dir + "/out.bin").buffer;
+// Copy into a fresh, zero-offset ArrayBuffer — a small file's Buffer is pooled
+// (non-zero byteOffset into the shared 8KB pool), so .buffer directly would
+// misread. Mirrors the spec's `new Uint8Array(arrayBuffer).buffer` construction.
+const buf = new Uint8Array(fs.readFileSync(dir + "/out.bin")).buffer;
 const dv = new DataView(buf);
 const magic = String.fromCharCode(...new Uint8Array(buf, 0, 4));
 const n = dv.getUint32(8, true);
