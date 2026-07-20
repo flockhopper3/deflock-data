@@ -90,11 +90,14 @@ Same check, before the integrity comparison. A remark-bearing response should be
 
 ### Test changes
 
-`tiled-fetch.test.mjs:137` (`'drops a tile whose probe count is zero'`) currently asserts the buggy behavior is correct. It must be split:
+`tiled-fetch.test.mjs:87` (`'returns 0 when the tile is empty (allowEmpty tolerated)'`) mocks `{ elements: [] }` and asserts it yields `0`. Real Overpass never produces that shape for `out count;` — verified 2026-07-20, an empty bbox returns a count element with `total: "0"`. The test asserts fictional behavior and must be replaced with:
 
-- a tile probing `total: '0'` is still dropped (unchanged behavior for real empty regions)
-- a tile whose probe returns `elements: []` + `remark` **throws**
-- a tile whose probe returns a malformed `total` **throws**
+- a probe returning a count element with `total: '0'` still yields `0` (real empty regions, unchanged)
+- a probe returning `elements: []` **throws** (no count element = failed query)
+- a probe carrying a failure `remark` **throws**
+- a probe returning a malformed `total` **throws**
+
+`tiled-fetch.test.mjs:137` (`'drops a tile whose probe count is zero'`) already mocks `{ tags: { total: '0' } }`, so it exercises the legitimate empty-region path and needs no change.
 
 Plus a truth table for `overpassFailed`, and an `fetchCountryArea` case proving an empty-with-remark MX response throws while an empty-without-remark one returns an empty map.
 
