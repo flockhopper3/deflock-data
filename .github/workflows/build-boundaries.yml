@@ -1,0 +1,64 @@
+name: Build Boundaries Tiles
+
+# Manual only — Census cartographic boundary files change roughly annually
+# (bump VINTAGE in tiles/boundaries/build.sh, then dispatch this).
+on:
+  workflow_dispatch:
+
+concurrency:
+  group: boundaries-build
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Install prep dependencies
+        run: npm ci --prefix tiles/boundaries
+
+      - name: Run boundaries unit tests
+        run: node --test tiles/boundaries/*.test.mjs
+
+      # The apt-packaged tippecanoe is the old Mapbox fork and can't write
+      # PMTiles directly, so build felt/tippecanoe once and cache the
+      # binaries. Same cache key as build-tiles.yml — the workflows share
+      # the cached binaries.
+      - name: Cache tippecanoe
+        id: cache-tippecanoe
+        uses: actions/cache@v4
+        with:
+          path: ~/tippecanoe-bin
+          key: tippecanoe-2.79.0-r2
+
+      - name: Build tippecanoe
+        if: steps.cache-tippecanoe.outputs.cache-hit != 'true'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y build-essential libsqlite3-dev zlib1g-dev
+          git clone --depth 1 --branch 2.79.0 https://github.com/felt/tippecanoe.git /tmp/tippecanoe
+          make -C /tmp/tippecanoe -j"$(nproc)"
+          mkdir -p ~/tippecanoe-bin
+          cp /tmp/tippecanoe/tippecanoe /tmp/tippecanoe/tippecanoe-decode /tmp/tippecanoe/tile-join ~/tippecanoe-bin/
+
+      - name: Add tippecanoe to PATH
+        run: echo "$HOME/tippecanoe-bin" >> "$GITHUB_PATH"
+
+      - name: Configure AWS CLI for R2
+        run: |
+          aws configure set aws_access_key_id "${{ secrets.R2_ACCESS_KEY_ID }}"
+          aws configure set aws_secret_access_key "${{ secrets.R2_SECRET_ACCESS_KEY }}"
+          aws configure set default.region auto
+
+      - name: Build and upload boundaries tiles
+        env:
+          R2_TILES_BUCKET: flockhopper-tiles
+          R2_TILES_MIRROR_BUCKET: deflock-data
+          R2_ENDPOINT: ${{ secrets.R2_ENDPOINT }}
+        run: bash tiles/boundaries/build.sh
