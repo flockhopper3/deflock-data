@@ -73,11 +73,12 @@ The `type` attribute makes the layer a superset the client filters:
    (active government) to drop water/undefined/nonfunctioning areas. `type`
    from LSAD (`town`, `township`, `plantation`, …).
 3. **Dedup:** where a cousub duplicates an incorporated place (coextensive
-   cities, e.g. most MI/WI cities appear in both files), drop the cousub when
-   a place with the same name exists in the same state+county. Places win
-   because their LSAD typing is cleaner. Known limitation: NY villages sit
-   *inside* towns — both are legitimate municipalities and both are kept
-   (they are different names, so dedup doesn't touch them); the client sees
+   cities, e.g. most MI/WI cities appear in both files), drop the cousub by
+   *type*: any cousub whose derived type is `city`, `village`, or `borough`
+   is excluded, because incorporated places already carry those governments.
+   This is deterministic (no name matching) and never drops New England/NY
+   towns or townships. Known limitation: NY villages sit *inside* towns —
+   both are legitimate municipalities and both are kept; the client sees
    overlapping polygons and can filter by `type`.
 
 ## County-name join
