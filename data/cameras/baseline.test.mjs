@@ -8,6 +8,8 @@ import {
   baselineFor,
   evaluate,
   appendCapped,
+  parseArgs,
+  formatReport,
 } from './baseline.mjs';
 
 /** Build `n` accepted history entries all holding the same value for every field. */
@@ -169,5 +171,64 @@ describe('appendCapped', () => {
     const entries = [{ a: 1 }];
     appendCapped(entries, { a: 2 }, 5);
     assert.equal(entries.length, 1);
+  });
+});
+
+describe('parseArgs', () => {
+  it('parses the required flags', () => {
+    const args = parseArgs(['--meta', '/tmp/meta.json', '--history', '/tmp/h.jsonl']);
+    assert.equal(args.meta, '/tmp/meta.json');
+    assert.equal(args.history, '/tmp/h.jsonl');
+    assert.equal(args.report, null);
+    assert.equal(args.runId, null);
+  });
+
+  it('parses the optional flags', () => {
+    const args = parseArgs([
+      '--meta', 'm', '--history', 'h', '--report', 'r.md', '--run-id', '123',
+    ]);
+    assert.equal(args.report, 'r.md');
+    assert.equal(args.runId, '123');
+  });
+
+  it('rejects an unknown flag rather than ignoring it', () => {
+    assert.throws(() => parseArgs(['--meta', 'm', '--history', 'h', '--oops']), /unknown argument/i);
+  });
+
+  it('rejects a missing required flag', () => {
+    assert.throws(() => parseArgs(['--meta', 'm']), /--history/);
+  });
+
+  it('rejects a flag with no value', () => {
+    assert.throws(() => parseArgs(['--meta', '--history', 'h']), /--meta/);
+  });
+});
+
+describe('formatReport', () => {
+  it('names every below-floor field and includes the numbers', () => {
+    const result = {
+      status: 'rejected',
+      checks: [
+        { field: 'us', observed: 94_000, baseline: 100_000, samples: 24, floor: 95_000, verdict: 'below-floor' },
+        { field: 'ca', observed: 540, baseline: 538, samples: 24, floor: 511.1, verdict: 'ok' },
+        { field: 'rawTotal', observed: 95_000, baseline: 100_000, samples: 24, floor: 95_000, verdict: 'ok' },
+      ],
+    };
+    const md = formatReport(result, '29721490530');
+    assert.match(md, /\bus\b/);
+    assert.match(md, /94,?000/);
+    assert.match(md, /100,?000/);
+    assert.match(md, /29721490530/);
+    assert.match(md, /below-floor/);
+  });
+
+  it('renders an observing check without inventing a floor', () => {
+    const result = {
+      status: 'accepted',
+      checks: [{ field: 'us', observed: 100, baseline: null, samples: 2, floor: null, verdict: 'observing' }],
+    };
+    const md = formatReport(result, null);
+    assert.match(md, /observing/);
+    assert.doesNotMatch(md, /NaN|null%/);
   });
 });

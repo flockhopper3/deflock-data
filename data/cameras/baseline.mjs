@@ -13,6 +13,9 @@
 // Exits 0 when the run is accepted, 1 when it is rejected. The history file is
 // rewritten with the new entry in BOTH cases, so a rejected run is recorded.
 
+import { readFile, writeFile } from 'node:fs/promises';
+import { pathToFileURL } from 'node:url';
+
 export const DEFAULT_CONFIG = {
   fields: ['us', 'ca', 'rawTotal'],
   window: 24, // accepted runs considered for the median (~1 day at hourly cadence)
@@ -98,4 +101,111 @@ export function evaluate(observed, entries, config = DEFAULT_CONFIG) {
 
 export function appendCapped(entries, entry, cap) {
   return [...entries, entry].slice(-cap);
+}
+
+const FLAGS = { '--meta': 'meta', '--history': 'history', '--report': 'report', '--run-id': 'runId' };
+
+export function parseArgs(argv) {
+  const out = { meta: null, history: null, report: null, runId: null };
+
+  for (let i = 0; i < argv.length; i++) {
+    const key = FLAGS[argv[i]];
+    if (!key) throw new Error(`Unknown argument: ${argv[i]}`);
+    const value = argv[i + 1];
+    if (value === undefined || FLAGS[value]) throw new Error(`Missing value for ${argv[i]}`);
+    out[key] = value;
+    i++;
+  }
+
+  for (const required of ['meta', 'history']) {
+    if (!out[required]) throw new Error(`Missing required argument: --${required}`);
+  }
+
+  return out;
+}
+
+const fmt = (n) => (typeof n === 'number' && Number.isFinite(n) ? Math.round(n).toLocaleString('en-US') : '—');
+
+export function formatReport(result, runId) {
+  const lines = [
+    `**Status:** ${result.status}`,
+    '',
+    '| field | observed | baseline (median) | floor | samples | verdict |',
+    '|---|---|---|---|---|---|',
+  ];
+
+  for (const c of result.checks) {
+    lines.push(
+      `| \`${c.field}\` | ${fmt(c.observed)} | ${fmt(c.baseline)} | ${fmt(c.floor)} | ${c.samples} | ${c.verdict} |`
+    );
+  }
+
+  lines.push('');
+  if (result.status === 'rejected') {
+    lines.push(
+      'The upload was **blocked**. The previously published data is still serving.',
+      '',
+      'Either the upstream fetch lost data, or the dataset genuinely changed and the',
+      'baseline needs to catch up. Check the run log for Overpass remarks first.'
+    );
+  }
+  if (runId) {
+    lines.push('', `Run: https://github.com/${process.env.GITHUB_REPOSITORY ?? 'flockhopper3/deflock-data'}/actions/runs/${runId}`);
+  }
+
+  return lines.join('\n');
+}
+
+async function main() {
+  const args = parseArgs(process.argv.slice(2));
+
+  const meta = JSON.parse(await readFile(args.meta, 'utf8'));
+  const observed = meta.totals;
+  if (!observed) throw new Error(`${args.meta} has no "totals" key — is fetch.mjs up to date?`);
+
+  let historyText = '';
+  try {
+    historyText = await readFile(args.history, 'utf8');
+  } catch (err) {
+    if (err.code !== 'ENOENT') throw err;
+    console.log('No history file yet — first run, observe-only.');
+  }
+
+  const entries = parseHistory(historyText);
+  const result = evaluate(observed, entries, DEFAULT_CONFIG);
+
+  for (const c of result.checks) {
+    console.log(
+      `${c.field}: observed=${fmt(c.observed)} baseline=${fmt(c.baseline)} floor=${fmt(c.floor)} samples=${c.samples} -> ${c.verdict}`
+    );
+  }
+
+  const entry = {
+    ts: new Date().toISOString(),
+    ...observed,
+    status: result.status,
+    ...(args.runId ? { runId: args.runId } : {}),
+  };
+  // Written on BOTH paths so a rejected run is recorded for forensics. It is
+  // excluded from future baselines by its status, not by its absence.
+  await writeFile(args.history, serializeHistory(appendCapped(entries, entry, DEFAULT_CONFIG.historyCap)));
+
+  const report = formatReport(result, args.runId);
+  if (args.report) await writeFile(args.report, report);
+
+  if (result.status === 'rejected') {
+    console.error('\nBaseline check FAILED — refusing to publish.\n');
+    console.error(report);
+    process.exit(1);
+  }
+
+  console.log('\nBaseline check passed.');
+}
+
+// Only run as a CLI, never on import — baseline.test.mjs imports this module.
+if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {
+  main().catch((err) => {
+    console.error(err.message ?? err);
+    process.exit(1);
+  });
 }
