@@ -1,0 +1,9 @@
+{
+  "name": "boundaries-tiles",
+  "private": true,
+  "type": "module",
+  "description": "US boundaries tileset prep — see build.sh",
+  "dependencies": {
+    "mapshaper": "0.7.46"
+  }
+}
