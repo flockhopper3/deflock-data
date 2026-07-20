@@ -16,7 +16,7 @@ Two buckets keep read and write concerns separate:
 
 | Bucket | Purpose | Public? |
 |--------|---------|---------|
-| `deflock-data` | Source `cameras-us-hourly.geojson.gz` / `cameras-ca-hourly.geojson.gz` (pipeline writes then reads) + a mirror copy of each built `.pmtiles` archive | No |
+| `deflock-data` | Source `cameras-us-hourly.geojson.gz` / `cameras-ca-hourly.geojson.gz` (pipeline writes then reads) + a mirror copy of each built `.pmtiles` archive + `pipeline/counts-history.jsonl` (the national count baseline gate's run history, read and rewritten every hourly run) | No |
 | `flockhopper-tiles` | Built `cameras-us-hourly.pmtiles` / `cameras-ca-hourly.pmtiles` (pipeline writes, world reads) | Yes |
 
 The pipeline's R2 API token is deliberately scoped to just these two buckets, so it cannot touch the separate daily dataset's bucket even by accident.
@@ -72,6 +72,8 @@ PMTiles needs the bucket to answer HTTP range requests, which R2 supports out of
 Bucket names are not secret; they're set as plain env vars in the workflow file — edit them there if yours differ.
 
 The same three secrets power both workflows — data ingestion (`Fetch Camera Data`) and the tile build (`Build Tiles`).
+
+`Fetch Camera Data` additionally needs `issues: write` — granted via the `permissions:` block at the top of `fetch-data.yml`, not a secret. It's what lets the national count baseline gate file or update a GitHub issue when it blocks an upload; the default `contents: read`-only repo permissions don't allow that.
 
 ## 5. First run
 
@@ -167,3 +169,4 @@ To tune the look, edit the paint expressions in `tiles/cameras/layers.json` and 
 | Browser gets CORS errors on the tiles URL | CORS policy missing on the tiles bucket (step 3) |
 | Map shows stale data hours after a build | Edge cache TTL too long — add the cache rule from step 3 |
 | Action fails with `SignatureDoesNotMatch` | Wrong `R2_SECRET_ACCESS_KEY` or endpoint account ID mismatch |
+| `Fetch Camera Data` keeps filing/updating the same blocked-baseline issue every hour | **The block is sticky by design.** Rejected runs are recorded in `pipeline/counts-history.jsonl` but never evict accepted history, so the gate does not self-heal — it will keep rejecting on the old median forever, even if the new, lower count is correct. If the drop is a real, intentional dataset shrink (not a fetch failure), a human has to prune the stale accepted entries or otherwise accept the new baseline in `pipeline/counts-history.jsonl`; waiting it out will not work. |

@@ -154,6 +154,16 @@ describe('evaluate', () => {
     const result = evaluate({}, accepted(6, 100_000), config);
     assert.equal(result.status, 'rejected');
   });
+
+  it('never returns "ok" when the accepted history for a field is all zeros/nulls (non-positive baseline)', () => {
+    const zeroHistory = [
+      ...accepted(6, 0),
+      { ts: 'null-entry', us: null, ca: null, rawTotal: null, status: 'accepted' },
+    ];
+    const result = evaluate({ us: 5 }, zeroHistory, config);
+    assert.notEqual(result.checks[0].verdict, 'ok', 'a non-positive baseline must never silently pass');
+    assert.equal(result.checks[0].verdict, 'observing');
+  });
 });
 
 describe('appendCapped', () => {

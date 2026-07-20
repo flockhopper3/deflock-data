@@ -84,6 +84,17 @@ export function evaluate(observed, entries, config = DEFAULT_CONFIG) {
       continue;
     }
 
+    // A null or non-positive baseline (e.g. accepted history that is all
+    // zeros/nulls for this field) must never compute a floor: `value < NaN`
+    // and `value < 0` for any non-negative observed value are both `false`,
+    // which would silently return 'ok' instead of blocking. Fall back to
+    // 'observing' — the same "not enough to judge by" signal used below
+    // minSamples — rather than let a degenerate baseline pass anything.
+    if (typeof baseline !== 'number' || !Number.isFinite(baseline) || baseline <= 0) {
+      checks.push({ field, observed: value, baseline, samples, floor: null, verdict: 'observing' });
+      continue;
+    }
+
     const floor = baseline * config.floorRatio;
     checks.push({
       field,

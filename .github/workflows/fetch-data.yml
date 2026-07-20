@@ -83,15 +83,24 @@ jobs:
           R2_ENDPOINT: ${{ secrets.R2_ENDPOINT }}
         run: bash data/cameras/upload.sh /tmp/data-out
 
-      # Runs even when the gate blocked, so a rejected run is recorded. Skipped
-      # only when the gate never ran (e.g. the fetch itself failed).
+      # Runs even when the gate blocked, so a rejected run is recorded. Gated on
+      # outcome == 'success' || 'failure' rather than != 'skipped': when a prior
+      # step fails, the steps context for a step that never started is not
+      # populated, so `steps.baseline.outcome` resolves to '' — and '' !=
+      # 'skipped' is true. That would run this step with whatever is on disk in
+      # /tmp/counts-history.jsonl, which the download step may have left
+      # 0-byte. The explicit success/failure check only runs when the gate step
+      # itself actually executed and produced a real result. The non-empty
+      # guard below is a second, independent line of defence against ever
+      # uploading an empty file over real history.
       - name: Upload count history
-        if: always() && steps.baseline.outcome != 'skipped'
+        if: always() && (steps.baseline.outcome == 'success' || steps.baseline.outcome == 'failure')
         env:
           R2_DATA_BUCKET: deflock-data
           R2_ENDPOINT: ${{ secrets.R2_ENDPOINT }}
         run: |
           set -euo pipefail
+          [ -s /tmp/counts-history.jsonl ] || { echo "gate wrote no history — refusing to overwrite" >&2; exit 1; }
           aws s3 cp /tmp/counts-history.jsonl "s3://${R2_DATA_BUCKET}/pipeline/counts-history.jsonl" \
             --endpoint-url "${R2_ENDPOINT}" \
             --content-type "application/x-ndjson" \

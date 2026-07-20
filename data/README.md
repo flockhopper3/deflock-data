@@ -9,12 +9,14 @@ Ingestion code — the scripts that pull raw camera data (OpenStreetMap surveill
 1. [`fetch.mjs`](cameras/fetch.mjs) queries the [Overpass API](https://wiki.openstreetmap.org/wiki/Overpass_API) for `man_made=surveillance` + `surveillance:type=ALPR` nodes/ways, once for the **US** and once for **Canada**, with automatic fallback across three Overpass endpoints
 2. Elements are transformed to GeoJSON point features (way geometries become centroids; direction tags are normalized to degrees) — logic ported from the original Cloudflare data worker, tested in [`lib.test.mjs`](cameras/lib.test.mjs)
 3. Feature counts are validated against per-country minimums so a truncated Overpass response never overwrites good data
-4. [`upload.sh`](cameras/upload.sh) uploads the two per-country datasets to the R2 data bucket with `Cache-Control: public, max-age=3600` (1-hour cache) and `x-last-updated` / `x-feature-count` / `x-source` metadata
+4. [`baseline.mjs`](cameras/baseline.mjs) compares this run's national feature counts (`us` / `ca` / `rawTotal`) against the median of the last 24 ACCEPTED runs in `pipeline/counts-history.jsonl` and blocks the upload when a count falls below 95% of that median. Every run — accepted or rejected — is appended to the history so a rejection is recorded for forensics and can never itself become the new baseline. The check is **observe-only** (never blocks) until 6 accepted samples exist for a field. A block files/updates a GitHub issue and leaves the previously published data untouched.
+5. [`upload.sh`](cameras/upload.sh) uploads the two per-country datasets to the R2 data bucket with `Cache-Control: public, max-age=3600` (1-hour cache) and `x-last-updated` / `x-feature-count` / `x-source` metadata
 
 | R2 key | Contents |
 |--------|----------|
 | `cameras-us-hourly.geojson.gz` | US only |
 | `cameras-ca-hourly.geojson.gz` | Canada only |
+| `pipeline/counts-history.jsonl` | Newline-delimited JSON, one entry per hourly run (`ts`, `us`, `ca`, `rawTotal`, `status: accepted\|rejected`, `runId`) — the count-baseline gate's history, capped at ~30 days (720 entries) |
 
 There is no merged output — the merged upload key (`cameras.geojson.gz`) is the daily Worker cron's US key, and this pipeline must never write the daily dataset.
 
