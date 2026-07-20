@@ -247,5 +247,5 @@ export async function fetchAllCameras(fetchImpl = fetch) {
   console.log(`  dataset US: ${us.features.length}`);
   console.log(`  dataset CA: ${ca.features.length}`);
 
-  return { us, ca };
+  return { us, ca, rawTotal };
 }

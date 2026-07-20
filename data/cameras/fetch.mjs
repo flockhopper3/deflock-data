@@ -25,7 +25,7 @@ async function main() {
   await mkdir(outDir, { recursive: true });
 
   const lastUpdated = new Date().toISOString();
-  const { us, ca } = await fetchAllCameras();
+  const { us, ca, rawTotal } = await fetchAllCameras();
 
   const datasets = [
     { slug: 'us', fc: us, minFeatures: US_MIN_FEATURES },
@@ -47,6 +47,15 @@ async function main() {
     await writeFile(join(outDir, `${name}.geojson`), JSON.stringify(fc));
     meta[name] = { featureCount: count, lastUpdated, source: 'overpass' };
   }
+
+  // National totals for the count baseline (data/cameras/baseline.mjs). Kept as
+  // a sibling of the per-object metadata; upload.sh iterates files, not meta
+  // keys, so this extra key is inert to it.
+  meta.totals = {
+    us: us.features.length,
+    ca: ca.features.length,
+    rawTotal,
+  };
 
   await writeFile(join(outDir, 'meta.json'), JSON.stringify(meta, null, 2));
   console.log(`==> Wrote ${Object.keys(meta).join(', ')} to ${outDir}/`);

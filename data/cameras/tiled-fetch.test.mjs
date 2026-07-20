@@ -376,4 +376,42 @@ describe('fetchAllCameras', () => {
     // TILE_RETRIES=3, TILE_RETRY_DELAY_MS=1000 -> real backoff delays of ~1000ms + ~2000ms.
     assert.ok(Date.now() - start >= 2500, `expected real retry backoff delay, got ${Date.now() - start}ms`);
   });
+
+  it('returns the pre-subtraction raw total alongside the datasets', async () => {
+    const fetchImpl = async (endpoint, init) => {
+      const query = init.body.get('data');
+      if (query.includes('out count;')) {
+        // Deliberately <= SPLIT_THRESHOLD (5000): a probe total of 60000 (matching
+        // the tile-fetch branch below) is > SPLIT_THRESHOLD for every one of the 27
+        // seed tiles, so planLeafTiles would quarter every seed tile down to
+        // MIN_TILE_SPAN (~65K leaves from a single continental seed alone, confirmed
+        // empirically) before a single tile is ever fetched. Keeping the probe under
+        // the split threshold gives 1 leaf per seed tile; tileIntegrityFailed only
+        // rejects an *undershoot* vs. the probe (see lib.mjs), so the 60,000-element
+        // tile-fetch response below still passes the integrity check even though it
+        // "overshoots" this smaller probe number.
+        return jsonResponse({ elements: [{ type: 'count', tags: { total: '2000' } }] });
+      }
+      if (query.includes('area["ISO3166-1"="CA"]')) {
+        // CA_AREA_MIN_COUNT (tiled-fetch.mjs, Task 1-3 hardening) requires >= 300
+        // features or fetchCountryArea throws; a single-element response (as
+        // originally drafted) trips that floor and fails this test for the wrong
+        // reason (an area-integrity error, not the rawTotal assertions below).
+        return jsonResponse({ elements: Array.from({ length: 300 }, (_, i) => alprNode(9_000_001 + i)) });
+      }
+      if (query.includes('area["ISO3166-1"="MX"]')) {
+        return jsonResponse({ elements: [] });
+      }
+      // Tile fetch: every leaf (1 per seed tile) returns the same 60,000 IDs, so
+      // dedup across the 27 leaves converges on exactly 60,000 unique features.
+      return jsonResponse({ elements: Array.from({ length: 60_000 }, (_, i) => alprNode(i + 1)) });
+    };
+
+    const { us, ca, rawTotal } = await fetchAllCameras(fetchImpl);
+    assert.equal(typeof rawTotal, 'number');
+    assert.equal(rawTotal, 60_000);
+    // rawTotal is pre-subtraction, so it is >= the published US count.
+    assert.ok(rawTotal >= us.features.length);
+    assert.equal(ca.features.length, 300);
+  });
 });
