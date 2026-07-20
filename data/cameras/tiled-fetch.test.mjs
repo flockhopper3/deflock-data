@@ -84,10 +84,40 @@ describe('countTile', () => {
     assert.equal(n, 1234);
   });
 
-  it('returns 0 when the tile is empty (allowEmpty tolerated)', async () => {
-    const fetchImpl = async () => jsonResponse({ elements: [] });
+  it('returns 0 for a genuinely empty bbox (count element with total 0)', async () => {
+    // Verified live 2026-07-20: overpass-api.de returns a count element with
+    // total "0" for an empty bbox — never an empty elements array.
+    const fetchImpl = async () =>
+      jsonResponse({ elements: [{ type: 'count', id: 0, tags: { nodes: '0', ways: '0', relations: '0', total: '0' } }] });
     const n = await countTile({ s: 0, w: 0, n: 1, e: 1 }, fetchImpl);
     assert.equal(n, 0);
+  });
+
+  it('throws when the probe returns no count element (failed query, not an empty region)', async () => {
+    const fetchImpl = async () => jsonResponse({ elements: [] });
+    await assert.rejects(
+      () => countTile({ s: 0, w: 0, n: 1, e: 1 }, fetchImpl),
+      /no count element/
+    );
+  });
+
+  it('throws when the probe carries a server-failure remark', async () => {
+    const fetchImpl = async () =>
+      jsonResponse({ elements: [], remark: 'runtime error: Query timed out in "query" at line 1' });
+    await assert.rejects(
+      () => countTile({ s: 0, w: 0, n: 1, e: 1 }, fetchImpl),
+      /probe failed/
+    );
+  });
+
+  it('throws on a non-numeric total instead of subdividing forever', async () => {
+    // NaN is neither === 0 nor <= SPLIT_THRESHOLD, so planLeafTiles would split
+    // this tile until MIN_TILE_SPAN — ~65K requests against public mirrors.
+    const fetchImpl = async () => jsonResponse({ elements: [{ type: 'count', tags: { total: 'many' } }] });
+    await assert.rejects(
+      () => countTile({ s: 0, w: 0, n: 1, e: 1 }, fetchImpl),
+      /non-numeric total/
+    );
   });
 
   it('sends a [timeout:60] count query, never the national [timeout:300] query', async () => {

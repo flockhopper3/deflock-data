@@ -7,7 +7,7 @@
 // queries and subtracted from the US tile grid by node/way id (their ALPR nodes bleed
 // into the border tiles).
 
-import { queryOverpass, retryWithBackoff, tileIntegrityFailed, belowMinimum, addElementsToFeatures } from './lib.mjs';
+import { queryOverpass, retryWithBackoff, tileIntegrityFailed, belowMinimum, addElementsToFeatures, overpassFailed } from './lib.mjs';
 
 const SPLIT_THRESHOLD = 5_000; // split a tile holding more cameras than this
 const MIN_TILE_SPAN = 0.05; // deg — safety floor; stop subdividing below this size
@@ -54,11 +54,30 @@ export function tileSelector(t) {
 
 /** Cheap (<1s) count probe used to decide whether a tile needs splitting. */
 export async function countTile(t, fetchImpl = fetch) {
+  const bbox = `${t.s},${t.w},${t.n},${t.e}`;
   const query = `[out:json][timeout:60];(${tileSelector(t)});out count;`;
   const data = await queryOverpass(query, fetchImpl, { allowEmpty: true });
-  const countEl = data.elements?.[0];
-  const total = countEl?.tags?.total;
-  return total ? Number(total) : 0;
+
+  if (overpassFailed(data)) {
+    throw new Error(`Count probe failed (${bbox}): ${data.remark}`);
+  }
+
+  // `out count;` always returns exactly one count element — a genuinely empty
+  // bbox yields total "0", not an absent element (verified against
+  // overpass-api.de 0.7.62.11, 2026-07-20). A missing element therefore means
+  // the query failed, and dropping the tile would silently delete the region
+  // from the work plan.
+  const total = data.elements?.[0]?.tags?.total;
+  if (total === undefined) {
+    throw new Error(`Count probe (${bbox}) returned no count element — treating as a failed query`);
+  }
+
+  const parsed = Number(total);
+  if (!Number.isFinite(parsed) || parsed < 0) {
+    throw new Error(`Count probe (${bbox}) returned a non-numeric total ${JSON.stringify(total)}`);
+  }
+
+  return parsed;
 }
 
 /** Expand the seed grid into leaf tiles each holding <= SPLIT_THRESHOLD cameras. */
