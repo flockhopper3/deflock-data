@@ -44,7 +44,7 @@ COUNTRIES=(us ca)
 # Bump BUILD_CONFIG whenever tippecanoe flags, upload destinations, or the set
 # of emitted artifacts change so the skip check doesn't short-circuit a rebuild
 # with unchanged source data. (v8 adds the per-country positions index.)
-BUILD_CONFIG="v8-positions-index"
+BUILD_CONFIG="v9-cache-control"
 
 # Floors mirror data/cameras/fetch.mjs; sizes protect prod from truncated
 # uploads. CA archive is small (~1K cameras), hence the much lower floor.
@@ -291,44 +291,56 @@ if [ "${1:-}" = "--country" ]; then
   gzip -9 -c "${INDEX_JSON_FILE}" > "${INDEX_JSON_FILE}.gz"
   echo "    index: ${INDEX_BIN_FILE} $(du -h "${INDEX_BIN_FILE}" | cut -f1) raw / $(du -h "${INDEX_BIN_FILE}.gz" | cut -f1) gzipped, ${INDEX_JSON_FILE} $(du -h "${INDEX_JSON_FILE}" | cut -f1)"
 
-  # Manifest is served gzipped; TTL policy lives in the serving worker, same
-  # as the pmtiles objects (no cache-control metadata set at upload).
+  # Manifest is served gzipped. Cache-control travels with every object: these
+  # are also mirrored to a bucket exposed directly as an R2 custom domain with
+  # no Worker in front, so the TTL has to be stored on the object itself.
   gzip -9 -c "${MANIFEST_FILE}" > "${MANIFEST_FILE}.gz"
 
   echo "==> [${CC}] Uploading to Cloudflare R2"
   aws s3 cp "${OUTPUT_FILE}" "s3://${R2_TILES_BUCKET}/${OUTPUT_FILE}" \
+    --cache-control "public, max-age=3600" \
     --endpoint-url "${R2_ENDPOINT}"
   aws s3 cp "${FILTER_OUTPUT_FILE}" "s3://${R2_TILES_BUCKET}/${FILTER_OUTPUT_FILE}" \
+    --cache-control "public, max-age=3600" \
     --endpoint-url "${R2_ENDPOINT}"
   aws s3 cp "${MANIFEST_FILE}.gz" "s3://${R2_TILES_BUCKET}/${MANIFEST_FILE}" \
     --content-encoding gzip --content-type application/json \
+    --cache-control "public, max-age=3600" \
     --endpoint-url "${R2_ENDPOINT}"
   aws s3 cp "${INDEX_BIN_FILE}.gz" "s3://${R2_TILES_BUCKET}/${INDEX_BIN_FILE}" \
     --content-encoding gzip --content-type application/octet-stream \
+    --cache-control "public, max-age=3600" \
     --endpoint-url "${R2_ENDPOINT}"
   aws s3 cp "${INDEX_JSON_FILE}.gz" "s3://${R2_TILES_BUCKET}/${INDEX_JSON_FILE}" \
     --content-encoding gzip --content-type application/json \
+    --cache-control "public, max-age=3600" \
     --endpoint-url "${R2_ENDPOINT}"
   if [ "${CC}" = "us" ]; then
     echo "==> [${CC}] Publishing manifest to data bucket"
     aws s3 cp "${MANIFEST_FILE}" "s3://${R2_DATA_BUCKET}/cameras-manifest.json" \
       --content-type application/json \
+      --cache-control "public, max-age=3600" \
       --endpoint-url "${R2_ENDPOINT}"
   fi
   if [ -n "${R2_TILES_MIRROR_BUCKET:-}" ]; then
     echo "==> [${CC}] Mirroring to ${R2_TILES_MIRROR_BUCKET}"
     aws s3 cp "${OUTPUT_FILE}" "s3://${R2_TILES_MIRROR_BUCKET}/${OUTPUT_FILE}" \
+      --cache-control "public, max-age=3600" \
       --endpoint-url "${R2_ENDPOINT}"
     aws s3 cp "${FILTER_OUTPUT_FILE}" "s3://${R2_TILES_MIRROR_BUCKET}/${FILTER_OUTPUT_FILE}" \
+      --cache-control "public, max-age=3600" \
       --endpoint-url "${R2_ENDPOINT}"
     aws s3 cp "${MANIFEST_FILE}.gz" "s3://${R2_TILES_MIRROR_BUCKET}/${MANIFEST_FILE}" \
       --content-encoding gzip --content-type application/json \
+      --cache-control "public, max-age=3600" \
       --endpoint-url "${R2_ENDPOINT}"
     aws s3 cp "${INDEX_BIN_FILE}.gz" "s3://${R2_TILES_MIRROR_BUCKET}/${INDEX_BIN_FILE}" \
       --content-encoding gzip --content-type application/octet-stream \
+      --cache-control "public, max-age=3600" \
       --endpoint-url "${R2_ENDPOINT}"
     aws s3 cp "${INDEX_JSON_FILE}.gz" "s3://${R2_TILES_MIRROR_BUCKET}/${INDEX_JSON_FILE}" \
       --content-encoding gzip --content-type application/json \
+      --cache-control "public, max-age=3600" \
       --endpoint-url "${R2_ENDPOINT}"
   fi
   echo "${NEW_HASH}" | aws s3 cp - "s3://${R2_TILES_BUCKET}/${HASH_FILE}" \

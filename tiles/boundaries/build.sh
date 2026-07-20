@@ -145,10 +145,12 @@ fi
 
 echo "==> Uploading to Cloudflare R2"
 aws s3 cp "${OUTPUT_FILE}" "s3://${R2_TILES_BUCKET}/${OUTPUT_FILE}" \
+  --cache-control "public, max-age=86400" \
   --endpoint-url "${R2_ENDPOINT}"
 if [ -n "${R2_TILES_MIRROR_BUCKET:-}" ]; then
   echo "==> Mirroring to ${R2_TILES_MIRROR_BUCKET}"
   aws s3 cp "${OUTPUT_FILE}" "s3://${R2_TILES_MIRROR_BUCKET}/${OUTPUT_FILE}" \
+    --cache-control "public, max-age=86400" \
     --endpoint-url "${R2_ENDPOINT}"
 fi
 
