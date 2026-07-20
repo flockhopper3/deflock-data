@@ -79,3 +79,40 @@ export function shapeCousub(f, countyNames) {
     fips: p.GEOID,
   });
 }
+
+const collection = (features) => ({ type: 'FeatureCollection', features });
+
+export function buildLayers({ states, counties, places, cousubs }) {
+  const countyNames = new Map(counties.features.map((f) => [f.properties.GEOID, f.properties.NAME]));
+  return {
+    states: collection(states.features.map(shapeState)),
+    counties: collection(counties.features.map(shapeCounty)),
+    municipalities: collection([
+      ...places.features.map(shapePlace),
+      ...cousubs.features.filter((f) => keepCousub(f.properties)).map((f) => shapeCousub(f, countyNames)),
+    ]),
+  };
+}
+
+const isMain = process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href;
+if (isMain) {
+  const [statesIn, countiesIn, placesIn, cousubsIn, outDir] = process.argv.slice(2);
+  if (!statesIn || !countiesIn || !placesIn || !cousubsIn || !outDir) {
+    console.error('usage: node prep.mjs <states.json> <counties.json> <places.json> <cousubs.json> <outdir>');
+    process.exit(1);
+  }
+  const load = (p) => JSON.parse(readFileSync(p, 'utf8'));
+  const layers = buildLayers({
+    states: load(statesIn),
+    counties: load(countiesIn),
+    places: load(placesIn),
+    cousubs: load(cousubsIn),
+  });
+  mkdirSync(outDir, { recursive: true });
+  for (const [name, fc] of Object.entries(layers)) {
+    writeFileSync(join(outDir, `${name}.geojson`), JSON.stringify(fc));
+  }
+  console.log(
+    `states=${layers.states.features.length} counties=${layers.counties.features.length} municipalities=${layers.municipalities.features.length}`
+  );
+}

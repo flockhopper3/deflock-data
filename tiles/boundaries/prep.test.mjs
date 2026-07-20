@@ -148,3 +148,34 @@ test('shapeCousub with unknown county gets county null', () => {
   );
   assert.equal(f.properties.county, null);
 });
+
+// ── buildLayers ─────────────────────────────────────────────────────────
+
+test('buildLayers shapes all three layers and filters cousubs', async () => {
+  const { buildLayers } = await import('./prep.mjs');
+  const fc = (features) => ({ type: 'FeatureCollection', features });
+  const f = (properties) => ({ type: 'Feature', properties, geometry: geom });
+
+  const out = buildLayers({
+    states: fc([f({ NAME: 'Pennsylvania', STUSPS: 'PA', GEOID: '42' })]),
+    counties: fc([f({ NAME: 'Delaware', STUSPS: 'PA', GEOID: '42045', STATEFP: '42' })]),
+    places: fc([
+      f({ NAME: 'Chester', NAMELSAD: 'Chester city', STUSPS: 'PA', GEOID: '4213208', co_name: 'Delaware', co_geoid: '42045' }),
+    ]),
+    cousubs: fc([
+      // kept: active township in strong-MCD state
+      f({ NAME: 'Radnor', NAMELSAD: 'Radnor township', STUSPS: 'PA', STATEFP: '42', COUNTYFP: '045', GEOID: '4204563624', FUNCSTAT: 'A', ALAND: 1 }),
+      // dropped: coextensive city already in places
+      f({ NAME: 'Chester', NAMELSAD: 'Chester city', STUSPS: 'PA', STATEFP: '42', COUNTYFP: '045', GEOID: '4204513208', FUNCSTAT: 'A', ALAND: 1 }),
+      // dropped: inactive
+      f({ NAME: 'Ghost', NAMELSAD: 'Ghost township', STUSPS: 'PA', STATEFP: '42', COUNTYFP: '045', GEOID: '4204500001', FUNCSTAT: 'S', ALAND: 1 }),
+    ]),
+  });
+
+  assert.equal(out.states.features.length, 1);
+  assert.equal(out.counties.features.length, 1);
+  assert.deepEqual(
+    out.municipalities.features.map((x) => [x.properties.name, x.properties.type, x.properties.county]),
+    [['Chester', 'city', 'Delaware'], ['Radnor', 'township', 'Delaware']]
+  );
+});
