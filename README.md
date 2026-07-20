@@ -57,6 +57,15 @@ const map = new maplibregl.Map({
 
 The app creates one MapLibre source per country, reusing the same [`tiles/cameras/layers.json`](tiles/cameras/layers.json) layer definitions for both. Only tiles in the current viewport are fetched.
 
+## Boundaries tileset
+
+`https://tiles.dontgetflocked.com/boundaries-us.json` — US states,
+counties, and municipalities as polygon layers with name/state/county/FIPS
+attributes at every zoom, for client-side filtering (e.g. outline one
+county, or every municipality in a state). Rebuilt manually from Census
+cartographic boundary files roughly once a year — see
+[`tiles/boundaries/`](tiles/boundaries/).
+
 ## How the pipeline works
 
 Two GitHub Actions run in a chain each hour:
