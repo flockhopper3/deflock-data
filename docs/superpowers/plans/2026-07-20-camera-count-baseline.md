@@ -231,7 +231,7 @@ export async function countTile(t, fetchImpl = fetch) {
   const data = await queryOverpass(query, fetchImpl, { allowEmpty: true });
 
   if (overpassFailed(data)) {
-    throw new Error(`Count probe (${bbox}) failed: ${data.remark}`);
+    throw new Error(`Count probe failed (${bbox}): ${data.remark}`);
   }
 
   // `out count;` always returns exactly one count element — a genuinely empty
