@@ -26,7 +26,10 @@ const RAW_MIN_TOTAL = 50_000;
 // CA's full ALPR set was measured at ~500+ nodes; 300 catches a >~40% truncation
 // (stricter than prod's 250 floor — deliberate, see task report).
 const CA_AREA_MIN_COUNT = 300;
-// MX is subtract-only and may legitimately be 0 — never throw on an empty MX response.
+// MX is subtract-only and may legitimately be 0. That is only safe because
+// overpassFailed() now distinguishes an empty response from a failed one — a
+// failed MX query throws rather than silently skipping the subtraction, which
+// would leak Mexican border cameras into the US dataset with the count going up.
 const MX_AREA_MIN_COUNT = 0;
 
 /** Coarse seed grid covering the continental US + AK/HI/PR. Splitting handles density. */
@@ -124,6 +127,10 @@ export async function fetchTileInto(t, featureMap, fetchImpl = fetch) {
   const query = `[out:json][timeout:60];(${tileSelector(t)});out meta;>;out skel qt;`;
   const data = await queryOverpass(query, fetchImpl, { allowEmpty: true });
 
+  if (overpassFailed(data)) {
+    throw new Error(`Tile query failed (${t.s},${t.w},${t.n},${t.e}): ${data.remark}`);
+  }
+
   // Build into a local map first so we can integrity-check this tile in isolation
   // (counting against the shared map would be skewed by neighbour-tile overlap).
   const local = new Map();
@@ -153,6 +160,11 @@ export async function fetchCountryArea(iso, minCount, fetchImpl = fetch) {
     `way["man_made"="surveillance"]["surveillance:type"="ALPR"](area.a););` +
     `out meta;>;out skel qt;`;
   const data = await queryOverpass(query, fetchImpl, { allowEmpty: true });
+
+  if (overpassFailed(data)) {
+    throw new Error(`Area query failed (${iso}): ${data.remark}`);
+  }
+
   const map = new Map();
   addElementsToFeatures(data.elements, map);
 

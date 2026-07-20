@@ -258,6 +258,31 @@ describe('fetchCountryArea', () => {
     const map = await fetchCountryArea('MX', 0, fetchImpl);
     assert.equal(map.size, 0);
   });
+
+  it('throws on a failure remark even when minCount is 0 (MX subtract-only)', async () => {
+    const fetchImpl = async () =>
+      jsonResponse({ elements: [], remark: 'runtime error: Query timed out in "area" at line 1' });
+    await assert.rejects(() => fetchCountryArea('MX', 0, fetchImpl), /area query failed/i);
+  });
+
+  it('still returns an empty map for a genuinely empty area when minCount is 0', async () => {
+    const fetchImpl = async () => jsonResponse({ elements: [] });
+    const map = await fetchCountryArea('MX', 0, fetchImpl);
+    assert.equal(map.size, 0);
+  });
+});
+
+describe('fetchTileInto failure discrimination', () => {
+  it('throws on a failure remark rather than reporting an integrity mismatch', async () => {
+    const fetchImpl = async () =>
+      jsonResponse({ elements: [], remark: 'runtime error: Query timed out in "query" at line 1' });
+    const map = new Map();
+    await assert.rejects(
+      () => fetchTileInto({ s: 0, w: 0, n: 1, e: 1, probed: 100 }, map, fetchImpl),
+      /tile query failed/i
+    );
+    assert.equal(map.size, 0);
+  });
 });
 
 describe('subtractForeign', () => {
