@@ -899,7 +899,14 @@ Expected: FAIL — no export named `parseArgs`.
 
 - [ ] **Step 3: Write the implementation**
 
-Append to `data/cameras/baseline.mjs`:
+First add these two imports at the **top** of `data/cameras/baseline.mjs`, immediately below the header comment block and above `export const DEFAULT_CONFIG`:
+
+```js
+import { readFile, writeFile } from 'node:fs/promises';
+import { pathToFileURL } from 'node:url';
+```
+
+Then append the rest to the **end** of `data/cameras/baseline.mjs`:
 
 ```js
 const FLAGS = { '--meta': 'meta', '--history': 'history', '--report': 'report', '--run-id': 'runId' };
@@ -956,7 +963,6 @@ export function formatReport(result, runId) {
 }
 
 async function main() {
-  const { readFile, writeFile } = await import('node:fs/promises');
   const args = parseArgs(process.argv.slice(2));
 
   const meta = JSON.parse(await readFile(args.meta, 'utf8'));
@@ -1002,8 +1008,8 @@ async function main() {
   console.log('\nBaseline check passed.');
 }
 
-// Only run as a CLI, never on import (the tests import this module).
-if (process.argv[1] && process.argv[1].endsWith('baseline.mjs')) {
+// Only run as a CLI, never on import — baseline.test.mjs imports this module.
+if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {
   main().catch((err) => {
     console.error(err.message ?? err);
     process.exit(1);
