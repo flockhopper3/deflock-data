@@ -2,7 +2,7 @@
 
 End-to-end walkthrough for deploying the hourly tile pipeline from scratch. At the end you'll have one PMTiles archive per country (`cameras-us-hourly.pmtiles`, `cameras-ca-hourly.pmtiles`) rebuilding hourly and served from public URLs.
 
-The same R2 buckets also hold the **daily** dataset (legacy un-suffixed names, e.g. `cameras.geojson.gz` / `cameras-us.pmtiles`), produced by a separate Cloudflare Worker cron for FlockHopper — that pipeline is out of scope for this guide.
+The tiles bucket also holds the **daily** dataset's archives (legacy un-suffixed names, e.g. `cameras-us.pmtiles`), produced by a separate Cloudflare Worker cron for FlockHopper that stores its source data in its own `deflock-data` bucket — that pipeline is out of scope for this guide and a fresh deployment doesn't need it.
 
 ## Prerequisites
 
@@ -10,25 +10,26 @@ The same R2 buckets also hold the **daily** dataset (legacy un-suffixed names, e
 - A GitHub account
 - The source data: gzipped GeoJSON FeatureCollections of camera points, uploaded to R2 as `cameras-us-hourly.geojson.gz` / `cameras-ca-hourly.geojson.gz`
 
-## 1. Cloudflare R2 buckets
+## 1. Cloudflare R2 bucket
 
-Two buckets keep read and write concerns separate:
+Everything lives in a single bucket named `flockhopper-tiles`:
 
-| Bucket | Purpose | Public? |
-|--------|---------|---------|
-| `deflock-data` | Source `cameras-us-hourly.geojson.gz` / `cameras-ca-hourly.geojson.gz` (pipeline writes then reads) + a mirror copy of each built `.pmtiles` archive + `pipeline/counts-history.jsonl` (the national count baseline gate's run history, read and rewritten every hourly run) | No |
-| `flockhopper-tiles` | Built `cameras-us-hourly.pmtiles` / `cameras-ca-hourly.pmtiles` (pipeline writes, world reads) | Yes |
+| Objects | Written by | Served publicly? |
+|---------|-----------|------------------|
+| `cameras-us-hourly.pmtiles` / `cameras-ca-hourly.pmtiles` + manifests and position indexes | tile build (hourly) | Yes — via the tile-serving Worker |
+| `cameras-us-hourly.geojson.gz` / `cameras-ca-hourly.geojson.gz` (source data the tile build reads back) | data fetch (hourly) | No — the Worker's route allowlist never matches these keys |
+| `pipeline/counts-history.jsonl` (national count baseline gate's run history, read and rewritten every hourly run) | data fetch (hourly) | No — same reason |
 
-The pipeline's R2 API token is deliberately scoped to just these two buckets, so it cannot touch the separate daily dataset's bucket even by accident.
+The Worker only serves an explicit set of route patterns (`*.pmtiles`, tiles, manifests, indexes, fonts/sprites), so the pipeline-internal objects in the same bucket are not reachable from the public hostname.
 
-In the Cloudflare dashboard: **R2 → Create bucket**, once per bucket. Location "Automatic" is fine.
+In the Cloudflare dashboard: **R2 → Create bucket**, name it `flockhopper-tiles`. Location "Automatic" is fine.
 
 ## 2. R2 API token
 
 The GitHub Action talks to R2 through the S3-compatible API.
 
 1. **R2 → Manage R2 API Tokens → Create API Token**
-2. Permissions: **Object Read & Write**, scoped to only the two buckets above
+2. Permissions: **Object Read & Write**, scoped to only the `flockhopper-tiles` bucket
 3. Save the three values it shows you:
    - Access Key ID
    - Secret Access Key

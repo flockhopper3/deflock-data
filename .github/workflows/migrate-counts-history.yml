@@ -1,0 +1,66 @@
+name: Migrate count history (one-time)
+
+# One-time migration for the single-bucket consolidation: copies
+# pipeline/counts-history.jsonl from the old deflock-data bucket into
+# flockhopper-tiles so the national count baseline gate keeps its run
+# history across the cutover. Manual dispatch only. Safe to delete after
+# it has run once — a fresh deployment (no deflock-data bucket) never
+# needs it.
+
+on:
+  workflow_dispatch:
+    inputs:
+      force:
+        description: "Overwrite an existing destination object (use if an hourly run already wrote fresh history to the new bucket)"
+        type: boolean
+        default: false
+
+concurrency:
+  group: data-fetch # serialize against fetch-data.yml so the copy can't race an hourly history rewrite
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  migrate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Configure AWS CLI for R2
+        run: |
+          aws configure set aws_access_key_id "${{ secrets.R2_ACCESS_KEY_ID }}"
+          aws configure set aws_secret_access_key "${{ secrets.R2_SECRET_ACCESS_KEY }}"
+          aws configure set default.region auto
+
+      - name: Copy pipeline/counts-history.jsonl
+        env:
+          SRC_BUCKET: deflock-data
+          DST_BUCKET: flockhopper-tiles
+          R2_ENDPOINT: ${{ secrets.R2_ENDPOINT }}
+          FORCE: ${{ inputs.force }}
+        run: |
+          set -euo pipefail
+          KEY="pipeline/counts-history.jsonl"
+
+          if [ -z "${R2_ENDPOINT}" ]; then
+            echo "R2_ENDPOINT is empty." >&2
+            exit 1
+          fi
+
+          if [ "${FORCE}" != "true" ] && aws s3api head-object \
+              --bucket "${DST_BUCKET}" --key "${KEY}" \
+              --endpoint-url "${R2_ENDPOINT}" >/dev/null 2>&1; then
+            echo "Destination already has ${KEY} — refusing to overwrite. Re-run with force=true if the old history should win." >&2
+            exit 1
+          fi
+
+          aws s3 cp "s3://${SRC_BUCKET}/${KEY}" /tmp/counts-history.jsonl \
+            --endpoint-url "${R2_ENDPOINT}"
+          [ -s /tmp/counts-history.jsonl ] || { echo "Source history is empty — refusing to copy." >&2; exit 1; }
+          echo "Copying $(wc -l < /tmp/counts-history.jsonl) history lines."
+
+          aws s3 cp /tmp/counts-history.jsonl "s3://${DST_BUCKET}/${KEY}" \
+            --endpoint-url "${R2_ENDPOINT}" \
+            --content-type "application/x-ndjson" \
+            --cache-control "no-store"

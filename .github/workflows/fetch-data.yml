@@ -41,7 +41,7 @@ jobs:
       # observe-only.
       - name: Download count history
         env:
-          R2_DATA_BUCKET: deflock-data
+          R2_DATA_BUCKET: flockhopper-tiles
           R2_ENDPOINT: ${{ secrets.R2_ENDPOINT }}
         run: |
           set -euo pipefail
@@ -79,7 +79,7 @@ jobs:
 
       - name: Upload to R2
         env:
-          R2_DATA_BUCKET: deflock-data
+          R2_DATA_BUCKET: flockhopper-tiles
           R2_ENDPOINT: ${{ secrets.R2_ENDPOINT }}
         run: bash data/cameras/upload.sh /tmp/data-out
 
@@ -96,7 +96,7 @@ jobs:
       - name: Upload count history
         if: always() && (steps.baseline.outcome == 'success' || steps.baseline.outcome == 'failure')
         env:
-          R2_DATA_BUCKET: deflock-data
+          R2_DATA_BUCKET: flockhopper-tiles
           R2_ENDPOINT: ${{ secrets.R2_ENDPOINT }}
         run: |
           set -euo pipefail

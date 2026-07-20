@@ -59,8 +59,7 @@ jobs:
 
       - name: Build and upload tiles
         env:
-          R2_DATA_BUCKET: deflock-data
+          R2_DATA_BUCKET: flockhopper-tiles
           R2_TILES_BUCKET: flockhopper-tiles
-          R2_TILES_MIRROR_BUCKET: deflock-data
           R2_ENDPOINT: ${{ secrets.R2_ENDPOINT }}
         run: bash tiles/cameras/build.sh
