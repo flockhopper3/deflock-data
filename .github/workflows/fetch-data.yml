@@ -46,8 +46,26 @@ jobs:
         run: |
           set -euo pipefail
           : > /tmp/counts-history.jsonl
-          aws s3 cp "s3://${R2_DATA_BUCKET}/pipeline/counts-history.jsonl" /tmp/counts-history.jsonl \
-            --endpoint-url "${R2_ENDPOINT}" || echo "No existing history — first run."
+
+          if [ -z "${R2_ENDPOINT}" ]; then
+            echo "R2_ENDPOINT is empty — refusing to treat this as a first run." >&2
+            exit 1
+          fi
+
+          if HEAD_ERR=$(aws s3api head-object \
+              --bucket "${R2_DATA_BUCKET}" \
+              --key "pipeline/counts-history.jsonl" \
+              --endpoint-url "${R2_ENDPOINT}" 2>&1 >/dev/null); then
+            aws s3 cp "s3://${R2_DATA_BUCKET}/pipeline/counts-history.jsonl" /tmp/counts-history.jsonl \
+              --endpoint-url "${R2_ENDPOINT}"
+          elif echo "${HEAD_ERR}" | grep -qiE '404|not found'; then
+            echo "No existing history — first run, observe-only."
+          else
+            echo "Failed to check for existing history object:" >&2
+            echo "${HEAD_ERR}" >&2
+            exit 1
+          fi
+
           wc -l < /tmp/counts-history.jsonl
 
       - name: Check national counts against baseline

@@ -172,6 +172,76 @@ describe('appendCapped', () => {
     appendCapped(entries, { a: 2 }, 5);
     assert.equal(entries.length, 1);
   });
+
+  it('evicts oldest rejected entries first, preserving accepted entries, when history is mostly rejected', () => {
+    const entries = [
+      { a: 1, status: 'accepted' },
+      { a: 2, status: 'rejected' },
+      { a: 3, status: 'rejected' },
+      { a: 4, status: 'rejected' },
+    ];
+    const out = appendCapped(entries, { a: 5, status: 'rejected' }, 3);
+    assert.equal(out.length, 3);
+    assert.deepEqual(
+      out.find((e) => e.status === 'accepted'),
+      { a: 1, status: 'accepted' },
+      'the accepted entry must survive eviction'
+    );
+    // Chronological order preserved: accepted entry stays first, oldest rejected (a:2, a:3) dropped.
+    assert.deepEqual(out.map((e) => e.a), [1, 4, 5]);
+  });
+
+  it('regression: a sustained run of rejected entries never evicts enough accepted history to collapse the baseline', () => {
+    const cap = 10;
+    const acceptedCount = 3;
+    let history = accepted(acceptedCount, 100_000);
+
+    // Fill the remaining slots up to cap with rejected entries, one append at a time
+    // (mirrors how the pipeline calls appendCapped once per run).
+    for (let i = 0; history.length < cap; i++) {
+      history = appendCapped(history, { ts: `fill-${i}`, us: 1, status: 'rejected' }, cap);
+    }
+    assert.equal(history.length, cap);
+
+    // Simulate a sustained outage: far more consecutive rejected runs than the cap.
+    for (let i = 0; i < 50; i++) {
+      history = appendCapped(history, { ts: `outage-${i}`, us: 1, status: 'rejected' }, cap);
+    }
+
+    assert.equal(history.length, cap, 'history must never exceed cap');
+    const { samples } = baselineFor(history, 'us', 24);
+    assert.ok(
+      samples >= acceptedCount,
+      `expected at least ${acceptedCount} accepted samples to survive the outage, got ${samples}`
+    );
+  });
+
+  it('drops the oldest accepted entries when the whole history is accepted and over cap (existing behavior preserved)', () => {
+    const entries = accepted(5, 100);
+    const out = appendCapped(entries, { us: 999, status: 'accepted' }, 3);
+    assert.equal(out.length, 3);
+    assert.deepEqual(out.map((e) => e.us), [100, 100, 999]);
+  });
+
+  it('never returns more entries than cap regardless of accepted/rejected composition', () => {
+    const mixed = Array.from({ length: 20 }, (_, i) => ({
+      a: i,
+      status: i % 3 === 0 ? 'accepted' : 'rejected',
+    }));
+    const out = appendCapped(mixed, { a: 99, status: 'rejected' }, 7);
+    assert.ok(out.length <= 7);
+  });
+
+  it('does not mutate its input when evicting rejected entries ahead of accepted ones', () => {
+    const entries = [
+      { a: 1, status: 'accepted' },
+      { a: 2, status: 'rejected' },
+      { a: 3, status: 'rejected' },
+    ];
+    const snapshot = JSON.parse(JSON.stringify(entries));
+    appendCapped(entries, { a: 4, status: 'rejected' }, 2);
+    assert.deepEqual(entries, snapshot);
+  });
 });
 
 describe('parseArgs', () => {

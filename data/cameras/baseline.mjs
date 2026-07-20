@@ -99,8 +99,32 @@ export function evaluate(observed, entries, config = DEFAULT_CONFIG) {
   return { status, checks };
 }
 
+/**
+ * Append `entry` and trim to `cap`, evicting the oldest REJECTED entries first.
+ * Only once every rejected entry has been dropped does trimming fall back to
+ * the oldest remaining (accepted) entries. Without this, a sustained outage —
+ * every run rejected — would eventually evict all accepted history via a plain
+ * tail slice, collapsing samples to 0 and silently reopening the gate. Chrono
+ * order of the surviving entries is preserved; the input is never mutated.
+ */
 export function appendCapped(entries, entry, cap) {
-  return [...entries, entry].slice(-cap);
+  const combined = [...entries, entry];
+  const overflow = combined.length - cap;
+  if (overflow <= 0) return combined;
+
+  const rejectedIdx = [];
+  const otherIdx = [];
+  combined.forEach((e, i) => (e?.status === 'rejected' ? rejectedIdx : otherIdx).push(i));
+
+  const evict = new Set(rejectedIdx.slice(0, overflow));
+  if (evict.size < overflow) {
+    for (const i of otherIdx) {
+      if (evict.size >= overflow) break;
+      evict.add(i);
+    }
+  }
+
+  return combined.filter((_, i) => !evict.has(i));
 }
 
 const FLAGS = { '--meta': 'meta', '--history': 'history', '--report': 'report', '--run-id': 'runId' };
