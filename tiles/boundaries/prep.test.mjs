@@ -40,7 +40,7 @@ const cousubProps = (over = {}) => ({
   NAMELSAD: 'Radnor township',
   STATEFP: '42',
   COUNTYFP: '045',
-  FUNCSTAT: 'A',
+  LSAD: '44',
   ALAND: 35786405,
   ...over,
 });
@@ -53,8 +53,16 @@ test('cousub: non-MCD state dropped (VA county subdivisions are statistical)', (
   assert.equal(keepCousub(cousubProps({ STATEFP: '51' })), false);
 });
 
-test('cousub: nonfunctioning government dropped', () => {
-  assert.equal(keepCousub(cousubProps({ FUNCSTAT: 'S' })), false);
+test('cousub: unorganized territory (LSAD 46, Maine "UT") dropped', () => {
+  assert.equal(keepCousub(cousubProps({ STATEFP: '23', NAME: 'Seboomook Lake', NAMELSAD: 'Seboomook Lake UT', LSAD: '46' })), false);
+});
+
+test('cousub: reservation (LSAD 86) dropped', () => {
+  assert.equal(keepCousub(cousubProps({ LSAD: '86' })), false);
+});
+
+test('cousub: undefined/consolidated county subdivision (LSAD 00) dropped', () => {
+  assert.equal(keepCousub(cousubProps({ NAME: 'Princeton', NAMELSAD: 'Princeton', LSAD: '00' })), false);
 });
 
 test('cousub: water-only subdivision dropped', () => {
@@ -164,11 +172,11 @@ test('buildLayers shapes all three layers and filters cousubs', async () => {
     ]),
     cousubs: fc([
       // kept: active township in strong-MCD state
-      f({ NAME: 'Radnor', NAMELSAD: 'Radnor township', STUSPS: 'PA', STATEFP: '42', COUNTYFP: '045', GEOID: '4204563624', FUNCSTAT: 'A', ALAND: 1 }),
+      f({ NAME: 'Radnor', NAMELSAD: 'Radnor township', STUSPS: 'PA', STATEFP: '42', COUNTYFP: '045', GEOID: '4204563624', LSAD: '44', ALAND: 1 }),
       // dropped: coextensive city already in places
-      f({ NAME: 'Chester', NAMELSAD: 'Chester city', STUSPS: 'PA', STATEFP: '42', COUNTYFP: '045', GEOID: '4204513208', FUNCSTAT: 'A', ALAND: 1 }),
-      // dropped: inactive
-      f({ NAME: 'Ghost', NAMELSAD: 'Ghost township', STUSPS: 'PA', STATEFP: '42', COUNTYFP: '045', GEOID: '4204500001', FUNCSTAT: 'S', ALAND: 1 }),
+      f({ NAME: 'Chester', NAMELSAD: 'Chester city', STUSPS: 'PA', STATEFP: '42', COUNTYFP: '045', GEOID: '4204513208', LSAD: '25', ALAND: 1 }),
+      // dropped: unorganized territory (Maine-style LSAD 46, no functioning government)
+      f({ NAME: 'Ghost', NAMELSAD: 'Ghost UT', STUSPS: 'PA', STATEFP: '42', COUNTYFP: '045', GEOID: '4204500001', LSAD: '46', ALAND: 1 }),
     ]),
   });
 

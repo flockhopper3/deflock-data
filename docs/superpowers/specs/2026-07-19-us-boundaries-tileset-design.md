@@ -69,9 +69,13 @@ The `type` attribute makes the layer a superset the client filters:
    tagged `type: "CDP"` so the client can hide them.
 2. **County subdivisions in the 12 strong-MCD states** (CT, ME, MA, NH, RI,
    VT, NY, NJ, PA, MI, WI, MN), where MCDs are functioning municipal
-   governments (New England towns, townships). Filtered to `FUNCSTAT = A`
-   (active government) to drop water/undefined/nonfunctioning areas. `type`
-   from LSAD (`town`, `township`, `plantation`, …).
+   governments (New England towns, townships). The cartographic boundary
+   files carry no `FUNCSTAT` (that field is TIGER/Line-only); filtering
+   instead excludes LSAD `00` (undefined/consolidated, already covered by
+   its place), `46` (unorganized territory — no functioning government),
+   and `86` (reservation — not a municipal government), keeping only
+   functioning municipal governments. `type` from LSAD (`town`, `township`,
+   `plantation`, …).
 3. **Dedup:** where a cousub duplicates an incorporated place (coextensive
    cities, e.g. most MI/WI cities appear in both files), drop the cousub by
    *type*: any cousub whose derived type is `city`, `village`, or `borough`

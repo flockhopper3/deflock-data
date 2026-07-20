@@ -25,6 +25,14 @@ export const STRONG_MCD_STATEFPS = new Set([
 // these types is the same government appearing in both source files.
 const PLACE_COVERED_TYPES = new Set(['city', 'village', 'borough']);
 
+// The Census *cartographic boundary* cousub file (cb_2024_us_cousub_500k)
+// carries no FUNCSTAT — that field only exists in TIGER/Line. These LSAD
+// codes serve the same intent (excluding non-governmental subdivisions):
+// 00 = county subdivision not defined / consolidated oddities already
+// covered by their place, 46 = unorganized territory (Maine "UT" — no
+// functioning government), 86 = reservation (not a municipal government).
+const NONMUNICIPAL_LSADS = new Set(['00', '46', '86']);
+
 // NAMELSAD is NAME plus the LSAD descriptor ("Springfield city",
 // "Bethesda CDP", "Town of X"). The descriptor may prefix or suffix the
 // name; whatever remains after removing NAME is the type.
@@ -39,9 +47,9 @@ export function deriveType(name, namelsad) {
 
 export function keepCousub(props) {
   return (
-    props.FUNCSTAT === 'A' &&
     STRONG_MCD_STATEFPS.has(props.STATEFP) &&
     (props.ALAND ?? 0) > 0 &&
+    !NONMUNICIPAL_LSADS.has(props.LSAD) &&
     !PLACE_COVERED_TYPES.has(deriveType(props.NAME, props.NAMELSAD))
   );
 }

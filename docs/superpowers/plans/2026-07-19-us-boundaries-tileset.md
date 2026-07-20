@@ -16,7 +16,7 @@
 - Archive: `boundaries-us.pmtiles`, layers `states` (z0–12), `counties` (z2–12), `municipalities` (z5–12).
 - Attributes exactly: states `name, abbrev, fips`; counties `name, state, fips`; municipalities `name, type, state, county, fips`. Nothing else survives into tiles.
 - Strong-MCD states (cousubs kept): CT ME MA NH RI VT NY NJ PA MI WI MN → STATEFP `09 23 25 33 44 50 36 34 42 26 55 27`.
-- Cousub keep rule: `FUNCSTAT === 'A'` AND strong-MCD state AND `ALAND > 0` AND derived type NOT in {city, village, borough}.
+- Cousub keep rule: strong-MCD state AND `ALAND > 0` AND LSAD NOT in {00, 46, 86} (CB files carry no `FUNCSTAT`; this excludes undefined/consolidated, unorganized territory, and reservation subdivisions) AND derived type NOT in {city, village, borough}.
 - Sanity floors before upload: states == 56, counties ≥ 3000, municipalities ≥ 30000, archive ≥ 5 MB.
 - Uploads: `R2_TILES_BUCKET` + optional `R2_TILES_MIRROR_BUCKET`, `aws s3 cp --endpoint-url "${R2_ENDPOINT}"`. No skip-hash machinery. **Never** deploy Cloudflare Workers from this repo.
 - Workflow: `workflow_dispatch` only. Reuse the tippecanoe cache pattern from `.github/workflows/build-tiles.yml` (cache key `tippecanoe-2.79.0-r2`).
