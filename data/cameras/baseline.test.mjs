@@ -1,0 +1,173 @@
+import { describe, it } from 'node:test';
+import assert from 'node:assert/strict';
+import {
+  DEFAULT_CONFIG,
+  parseHistory,
+  serializeHistory,
+  median,
+  baselineFor,
+  evaluate,
+  appendCapped,
+} from './baseline.mjs';
+
+/** Build `n` accepted history entries all holding the same value for every field. */
+const accepted = (n, value) =>
+  Array.from({ length: n }, (_, i) => ({
+    ts: `2026-07-${String(i + 1).padStart(2, '0')}T00:00:00Z`,
+    us: value,
+    ca: value,
+    rawTotal: value,
+    status: 'accepted',
+  }));
+
+describe('median', () => {
+  it('returns null for no values', () => {
+    assert.equal(median([]), null);
+  });
+
+  it('returns the middle value for an odd count', () => {
+    assert.equal(median([3, 1, 2]), 2);
+  });
+
+  it('averages the two middle values for an even count', () => {
+    assert.equal(median([1, 2, 3, 4]), 2.5);
+  });
+
+  it('does not mutate its input', () => {
+    const values = [3, 1, 2];
+    median(values);
+    assert.deepEqual(values, [3, 1, 2]);
+  });
+});
+
+describe('parseHistory', () => {
+  it('parses newline-delimited JSON and tolerates a trailing newline', () => {
+    const entries = parseHistory('{"us":1}\n{"us":2}\n');
+    assert.equal(entries.length, 2);
+    assert.equal(entries[1].us, 2);
+  });
+
+  it('returns an empty array for empty, whitespace, or nullish input', () => {
+    assert.deepEqual(parseHistory(''), []);
+    assert.deepEqual(parseHistory('  \n \n'), []);
+    assert.deepEqual(parseHistory(undefined), []);
+  });
+
+  it('skips malformed lines rather than throwing', () => {
+    const entries = parseHistory('{"us":1}\nNOT JSON\n{"us":3}\n');
+    assert.equal(entries.length, 2);
+    assert.deepEqual(entries.map((e) => e.us), [1, 3]);
+  });
+
+  it('round-trips through serializeHistory', () => {
+    const entries = [{ us: 1, status: 'accepted' }, { us: 2, status: 'rejected' }];
+    assert.deepEqual(parseHistory(serializeHistory(entries)), entries);
+  });
+});
+
+describe('baselineFor', () => {
+  it('reports zero samples for empty history', () => {
+    assert.deepEqual(baselineFor([], 'us', 24), { baseline: null, samples: 0 });
+  });
+
+  it('ignores rejected entries', () => {
+    const entries = [
+      ...accepted(3, 100),
+      { ts: 'x', us: 1, ca: 1, rawTotal: 1, status: 'rejected' },
+    ];
+    assert.deepEqual(baselineFor(entries, 'us', 24), { baseline: 100, samples: 3 });
+  });
+
+  it('uses only the most recent `window` accepted values', () => {
+    const entries = [...accepted(5, 100), ...accepted(3, 200)];
+    assert.deepEqual(baselineFor(entries, 'us', 3), { baseline: 200, samples: 3 });
+  });
+
+  it('ignores entries missing the field or holding a non-finite value', () => {
+    const entries = [
+      { ts: 'a', us: 100, status: 'accepted' },
+      { ts: 'b', status: 'accepted' },
+      { ts: 'c', us: null, status: 'accepted' },
+      { ts: 'd', us: 'oops', status: 'accepted' },
+    ];
+    assert.deepEqual(baselineFor(entries, 'us', 24), { baseline: 100, samples: 1 });
+  });
+});
+
+describe('evaluate', () => {
+  const config = { ...DEFAULT_CONFIG, fields: ['us'], minSamples: 6, window: 24, floorRatio: 0.95 };
+
+  it('is observe-only below minSamples, however far off the value is', () => {
+    const result = evaluate({ us: 1 }, accepted(5, 100_000), config);
+    assert.equal(result.status, 'accepted');
+    assert.equal(result.checks[0].verdict, 'observing');
+  });
+
+  it('accepts a value exactly at the floor', () => {
+    const result = evaluate({ us: 95_000 }, accepted(6, 100_000), config);
+    assert.equal(result.status, 'accepted');
+    assert.equal(result.checks[0].verdict, 'ok');
+    assert.equal(result.checks[0].floor, 95_000);
+  });
+
+  it('rejects a value one below the floor', () => {
+    const result = evaluate({ us: 94_999 }, accepted(6, 100_000), config);
+    assert.equal(result.status, 'rejected');
+    assert.equal(result.checks[0].verdict, 'below-floor');
+  });
+
+  it('accepts a value above baseline (growth is never blocked)', () => {
+    const result = evaluate({ us: 200_000 }, accepted(6, 100_000), config);
+    assert.equal(result.status, 'accepted');
+  });
+
+  it('rejects when any one of several fields is below its floor', () => {
+    const multi = { ...config, fields: ['us', 'ca', 'rawTotal'] };
+    const result = evaluate({ us: 100_000, ca: 1, rawTotal: 100_000 }, accepted(6, 100_000), multi);
+    assert.equal(result.status, 'rejected');
+    assert.deepEqual(
+      result.checks.map((c) => c.verdict),
+      ['ok', 'below-floor', 'ok']
+    );
+  });
+
+  it('is observe-only for a field with no history, even when others have history', () => {
+    const multi = { ...config, fields: ['us', 'newField'] };
+    const result = evaluate({ us: 100_000, newField: 5 }, accepted(6, 100_000), multi);
+    assert.equal(result.status, 'accepted');
+    assert.equal(result.checks[1].verdict, 'observing');
+  });
+
+  it('resists poisoning: a run of rejected entries does not move the baseline', () => {
+    const poisoned = [
+      ...accepted(6, 100_000),
+      ...Array.from({ length: 20 }, () => ({ ts: 'bad', us: 1_000, status: 'rejected' })),
+    ];
+    const result = evaluate({ us: 94_999 }, poisoned, config);
+    assert.equal(result.status, 'rejected', 'rejected entries must never become the new normal');
+    assert.equal(result.checks[0].baseline, 100_000);
+  });
+
+  it('treats a missing observed value as a rejection, not a pass', () => {
+    const result = evaluate({}, accepted(6, 100_000), config);
+    assert.equal(result.status, 'rejected');
+  });
+});
+
+describe('appendCapped', () => {
+  it('appends within the cap', () => {
+    assert.deepEqual(appendCapped([{ a: 1 }], { a: 2 }, 5), [{ a: 1 }, { a: 2 }]);
+  });
+
+  it('drops the oldest entries beyond the cap', () => {
+    const entries = Array.from({ length: 5 }, (_, i) => ({ a: i }));
+    const out = appendCapped(entries, { a: 99 }, 3);
+    assert.deepEqual(out, [{ a: 3 }, { a: 4 }, { a: 99 }]);
+  });
+
+  it('does not mutate its input', () => {
+    const entries = [{ a: 1 }];
+    appendCapped(entries, { a: 2 }, 5);
+    assert.equal(entries.length, 1);
+  });
+});
