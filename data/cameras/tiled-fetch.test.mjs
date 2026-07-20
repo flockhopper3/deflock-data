@@ -397,7 +397,12 @@ describe('fetchAllCameras', () => {
         // features or fetchCountryArea throws; a single-element response (as
         // originally drafted) trips that floor and fails this test for the wrong
         // reason (an area-integrity error, not the rawTotal assertions below).
-        return jsonResponse({ elements: Array.from({ length: 300 }, (_, i) => alprNode(9_000_001 + i)) });
+        //
+        // These 300 IDs (1..300) are deliberately INSIDE the tile mock's 1..60,000
+        // range below, not the disjoint 9,000,001+ range used elsewhere in this
+        // file: subtractForeign only proves anything if subtraction actually
+        // removes features, so the CA set must genuinely overlap the US tile set.
+        return jsonResponse({ elements: Array.from({ length: 300 }, (_, i) => alprNode(i + 1)) });
       }
       if (query.includes('area["ISO3166-1"="MX"]')) {
         return jsonResponse({ elements: [] });
@@ -409,9 +414,17 @@ describe('fetchAllCameras', () => {
 
     const { us, ca, rawTotal } = await fetchAllCameras(fetchImpl);
     assert.equal(typeof rawTotal, 'number');
+    // rawTotal must be the pre-subtraction merged size...
     assert.equal(rawTotal, 60_000);
-    // rawTotal is pre-subtraction, so it is >= the published US count.
-    assert.ok(rawTotal >= us.features.length);
+    // ...while the published US set has the 300 CA-overlapping IDs subtracted out.
+    assert.equal(us.features.length, 59_700);
+    // Strict: if fetchAllCameras regressed to return rawTotal post-subtraction
+    // (e.g. usFeatures.length instead of merged.size), rawTotal would equal
+    // us.features.length here and this would fail.
+    assert.ok(
+      rawTotal > us.features.length,
+      `expected rawTotal (${rawTotal}) to strictly exceed the post-subtraction US count (${us.features.length})`
+    );
     assert.equal(ca.features.length, 300);
   });
 });
