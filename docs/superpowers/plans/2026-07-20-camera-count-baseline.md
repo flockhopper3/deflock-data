@@ -402,24 +402,38 @@ Append inside the existing `describe('fetchAllCameras', ...)` block:
     const fetchImpl = async (endpoint, init) => {
       const query = init.body.get('data');
       if (query.includes('out count;')) {
-        return jsonResponse({ elements: [{ type: 'count', tags: { total: '60000' } }] });
+        // MUST stay <= SPLIT_THRESHOLD (5000). A probe of 60000 makes planLeafTiles
+        // quarter every one of the 27 seed tiles down to MIN_TILE_SPAN (~65K leaves
+        // from one continental seed alone — confirmed empirically) before a single
+        // tile is fetched, hanging the suite. tileIntegrityFailed only rejects an
+        // UNDERSHOOT vs the probe, so the 60,000-element fetch below still passes.
+        return jsonResponse({ elements: [{ type: 'count', tags: { total: '2000' } }] });
       }
       if (query.includes('area["ISO3166-1"="CA"]')) {
-        return jsonResponse({ elements: [alprNode(9_000_001)] });
+        // >= CA_AREA_MIN_COUNT (300) or fetchCountryArea throws. IDs 1..300 sit
+        // INSIDE the tile mock's 1..60,000 range on purpose: subtractForeign only
+        // proves anything if subtraction actually removes features.
+        return jsonResponse({ elements: Array.from({ length: 300 }, (_, i) => alprNode(i + 1)) });
       }
       if (query.includes('area["ISO3166-1"="MX"]')) {
         return jsonResponse({ elements: [] });
       }
-      // Tile fetch: return exactly the probed count so the integrity check passes.
+      // Tile fetch: every leaf (1 per seed tile) returns the same 60,000 IDs, so
+      // dedup across the 27 leaves converges on exactly 60,000 unique features.
       return jsonResponse({ elements: Array.from({ length: 60_000 }, (_, i) => alprNode(i + 1)) });
     };
 
     const { us, ca, rawTotal } = await fetchAllCameras(fetchImpl);
     assert.equal(typeof rawTotal, 'number');
     assert.equal(rawTotal, 60_000);
-    // rawTotal is pre-subtraction, so it is >= the published US count.
-    assert.ok(rawTotal >= us.features.length);
-    assert.equal(ca.features.length, 1);
+    assert.equal(us.features.length, 59_700);
+    // Strict: if rawTotal regressed to the post-subtraction count it would equal
+    // us.features.length here and this would fail.
+    assert.ok(
+      rawTotal > us.features.length,
+      `expected rawTotal (${rawTotal}) to strictly exceed the post-subtraction US count (${us.features.length})`
+    );
+    assert.equal(ca.features.length, 300);
   });
 ```
 
