@@ -9,6 +9,10 @@ concurrency:
   group: data-fetch
   cancel-in-progress: false
 
+permissions:
+  contents: read
+  issues: write # baseline blocks file/refresh an issue; default repo perms are read-only
+
 jobs:
   fetch:
     runs-on: ubuntu-latest
@@ -32,8 +36,63 @@ jobs:
           aws configure set aws_secret_access_key "${{ secrets.R2_SECRET_ACCESS_KEY }}"
           aws configure set default.region auto
 
+      # Baseline history lives beside the data it describes. A missing object is
+      # the first-run case, not an error — baseline.mjs treats empty history as
+      # observe-only.
+      - name: Download count history
+        env:
+          R2_DATA_BUCKET: deflock-data
+          R2_ENDPOINT: ${{ secrets.R2_ENDPOINT }}
+        run: |
+          set -euo pipefail
+          : > /tmp/counts-history.jsonl
+          aws s3 cp "s3://${R2_DATA_BUCKET}/pipeline/counts-history.jsonl" /tmp/counts-history.jsonl \
+            --endpoint-url "${R2_ENDPOINT}" || echo "No existing history — first run."
+          wc -l < /tmp/counts-history.jsonl
+
+      - name: Check national counts against baseline
+        id: baseline
+        run: |
+          node data/cameras/baseline.mjs \
+            --meta /tmp/data-out/meta.json \
+            --history /tmp/counts-history.jsonl \
+            --report /tmp/baseline-report.md \
+            --run-id "${{ github.run_id }}"
+
       - name: Upload to R2
         env:
           R2_DATA_BUCKET: deflock-data
           R2_ENDPOINT: ${{ secrets.R2_ENDPOINT }}
         run: bash data/cameras/upload.sh /tmp/data-out
+
+      # Runs even when the gate blocked, so a rejected run is recorded. Skipped
+      # only when the gate never ran (e.g. the fetch itself failed).
+      - name: Upload count history
+        if: always() && steps.baseline.outcome != 'skipped'
+        env:
+          R2_DATA_BUCKET: deflock-data
+          R2_ENDPOINT: ${{ secrets.R2_ENDPOINT }}
+        run: |
+          set -euo pipefail
+          aws s3 cp /tmp/counts-history.jsonl "s3://${R2_DATA_BUCKET}/pipeline/counts-history.jsonl" \
+            --endpoint-url "${R2_ENDPOINT}" \
+            --content-type "application/x-ndjson" \
+            --cache-control "no-store"
+
+      - name: File or update the baseline issue
+        if: failure() && steps.baseline.outcome == 'failure'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          TITLE="Camera pipeline blocked: national count below baseline"
+          BODY_FILE=/tmp/baseline-report.md
+          [ -f "${BODY_FILE}" ] || echo "Baseline check failed before producing a report." > "${BODY_FILE}"
+
+          EXISTING="$(gh issue list --state open --search "${TITLE} in:title" --json number --jq '.[0].number // empty')"
+          if [ -n "${EXISTING}" ]; then
+            gh issue comment "${EXISTING}" --body-file "${BODY_FILE}"
+            echo "Commented on issue #${EXISTING}"
+          else
+            gh issue create --title "${TITLE}" --body-file "${BODY_FILE}"
+          fi
