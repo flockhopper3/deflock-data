@@ -14,7 +14,7 @@ served like every other archive at
 |-------|-------|------------|
 | `states` | z0–12 | `name` ("Illinois"), `abbrev` ("IL"), `fips` ("17") |
 | `counties` | z2–12 | `name` ("Cook"), `state` ("IL"), `fips` ("17031") |
-| `municipalities` | z5–12 | `name` ("Chicago"), `type` ("city"), `state` ("IL"), `county` ("Cook"), `fips` (place or cousub GEOID) |
+| `municipalities` | z5–12 | `name` ("Chicago"), `type` ("city"), `state` ("IL"), `county` ("Cook"), `fips` (place or county-subdivision GEOID) |
 
 - Attributes exist at **all** zooms in each layer's range — filter
   expressions work everywhere. MapLibre overzooms past z12.

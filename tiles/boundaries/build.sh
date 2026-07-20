@@ -35,6 +35,9 @@ UPLOAD=1
 if [ "${1:-}" = "--local" ]; then
   UPLOAD=0
   OUTPUT_FILE="${2:-boundaries-us-local.pmtiles}"
+elif [ -n "${1:-}" ]; then
+  echo "ERROR: unknown argument '$1' (expected --local or no arguments)"
+  exit 1
 fi
 
 WORK_DIR="${BOUNDARIES_WORK_DIR:-$(mktemp -d)}"

@@ -70,6 +70,10 @@ test('cousub: water-only subdivision dropped', () => {
   assert.equal(keepCousub(cousubProps({ ALAND: undefined })), false);
 });
 
+test('cousub: missing LSAD field is kept, not silently dropped', () => {
+  assert.equal(keepCousub(cousubProps({ LSAD: undefined })), true);
+});
+
 test('cousub: place-covered types dropped (coextensive MI/WI cities, NY villages)', () => {
   assert.equal(keepCousub(cousubProps({ STATEFP: '26', NAME: 'Warren', NAMELSAD: 'Warren city' })), false);
   assert.equal(keepCousub(cousubProps({ STATEFP: '36', NAME: 'Massena', NAMELSAD: 'Massena village' })), false);
