@@ -11,6 +11,7 @@ import {
   retryWithBackoff,
   tileIntegrityFailed,
   belowMinimum,
+  overpassFailed,
   OVERPASS_ENDPOINTS,
   OVERPASS_USER_AGENT,
   TIMEOUT_MS,
@@ -586,5 +587,42 @@ describe('belowMinimum', () => {
   it('never blocks when the floor is 0 (no baseline yet)', () => {
     assert.equal(belowMinimum(0, 0), false);
     assert.equal(belowMinimum(5, 0), false);
+  });
+});
+
+describe('overpassFailed', () => {
+  it('is false for a normal response with no remark', () => {
+    assert.equal(overpassFailed({ elements: [] }), false);
+    assert.equal(overpassFailed({ elements: [{ type: 'count', tags: { total: '0' } }] }), false);
+  });
+
+  it('detects a server-side query timeout', () => {
+    assert.equal(
+      overpassFailed({ elements: [], remark: 'runtime error: Query timed out in "query" at line 1' }),
+      true
+    );
+  });
+
+  it('detects out-of-memory and rate-limit remarks', () => {
+    assert.equal(overpassFailed({ elements: [], remark: 'runtime error: Out of memory' }), true);
+    assert.equal(overpassFailed({ elements: [], remark: 'Too many requests, please wait' }), true);
+  });
+
+  it('detects a failure remark even when elements are present (partial result)', () => {
+    assert.equal(
+      overpassFailed({ elements: [{ type: 'node', id: 1 }], remark: 'runtime error: Query timed out' }),
+      true
+    );
+  });
+
+  it('ignores a benign remark so an unrecognized notice cannot halt the pipeline', () => {
+    assert.equal(overpassFailed({ elements: [], remark: 'Data generated at 2026-07-20' }), false);
+  });
+
+  it('tolerates null, undefined, and non-string remarks', () => {
+    assert.equal(overpassFailed(undefined), false);
+    assert.equal(overpassFailed(null), false);
+    assert.equal(overpassFailed({}), false);
+    assert.equal(overpassFailed({ remark: 42 }), false);
   });
 });

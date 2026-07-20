@@ -79,6 +79,12 @@ export async function queryOverpass(query, fetchImpl = fetch, { allowEmpty = fal
         );
       }
 
+      // Surface every remark, matched or not — an unrecognized failure remark
+      // would otherwise pass overpassFailed() silently.
+      if (typeof data.remark === 'string') {
+        console.warn(`Overpass remark from ${endpoint}: ${data.remark}`);
+      }
+
       if (!allowEmpty && (!data.elements || data.elements.length === 0)) {
         throw new Error(`Empty response from ${endpoint}`);
       }
@@ -130,6 +136,23 @@ export function tileIntegrityFailed(produced, probed, tolerance) {
 /** Per-country write floor: true if a dataset's count is below its minimum acceptable value. */
 export function belowMinimum(count, min) {
   return count < min;
+}
+
+// Overpass reports a server-side failure (query timeout, out of memory, rate
+// limit) as HTTP 200 with a top-level `remark` and absent or partial elements.
+// Non-JSON and non-2xx failures are already caught in queryOverpass; this is
+// the remaining shape.
+const OVERPASS_ERROR_REMARK = /timed out|runtime error|out of memory|too many requests/i;
+
+/**
+ * True if an Overpass response carries a server-failure remark. Callers passing
+ * `allowEmpty: true` bypass the empty-response guard in queryOverpass, so they
+ * must use this to tell "genuinely empty" from "the query failed".
+ */
+export function overpassFailed(data) {
+  const remark = data?.remark;
+  if (typeof remark !== 'string') return false;
+  return OVERPASS_ERROR_REMARK.test(remark);
 }
 
 const CARDINALS = {
