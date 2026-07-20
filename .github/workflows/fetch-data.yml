@@ -58,7 +58,7 @@ jobs:
               --endpoint-url "${R2_ENDPOINT}" 2>&1 >/dev/null); then
             aws s3 cp "s3://${R2_DATA_BUCKET}/pipeline/counts-history.jsonl" /tmp/counts-history.jsonl \
               --endpoint-url "${R2_ENDPOINT}"
-          elif echo "${HEAD_ERR}" | grep -qiE '404|not found'; then
+          elif echo "${HEAD_ERR}" | grep -qiE '404|not found|nosuchkey|does not exist'; then
             echo "No existing history — first run, observe-only."
           else
             echo "Failed to check for existing history object:" >&2

@@ -229,7 +229,7 @@ describe('appendCapped', () => {
       status: i % 3 === 0 ? 'accepted' : 'rejected',
     }));
     const out = appendCapped(mixed, { a: 99, status: 'rejected' }, 7);
-    assert.ok(out.length <= 7);
+    assert.equal(out.length, 7);
   });
 
   it('does not mutate its input when evicting rejected entries ahead of accepted ones', () => {
