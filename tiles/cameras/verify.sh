@@ -40,11 +40,17 @@ ATTRS=$(jq '[.features[].features[].properties | length] | add // 0' <<<"${Z0_JS
 # one of them is a genuine z12 tile (verified via the decoded output's own
 # `.properties.zoom`, which reflects the tile actually returned, not the one
 # requested) containing osmId.
+#
+# tippecanoe-decode prints coordinates rounded to 6 decimal places, so the
+# corner value parsed here can land a hair on either side of the true corner
+# (~5e-6 tile units at z12). Round to the nearest corner instead of flooring —
+# flooring a just-below-corner value shifts the whole candidate window one
+# tile west/north and misses the camera's actual tile.
 read -r LON LAT <<<"$(jq -r '.features[0].features[0].geometry.coordinates | "\(.[0]) \(.[1])"' <<<"${Z0_JSON}")"
 read -r TX TY <<<"$(awk -v lon="${LON}" -v lat="${LAT}" 'BEGIN {
   z = 12; n = 2^z; pi = 3.14159265358979; r = lat * pi / 180;
-  x = int((lon + 180) / 360 * n);
-  y = int((1 - log(sin(r)/cos(r) + 1/cos(r)) / pi) / 2 * n);
+  x = int((lon + 180) / 360 * n + 0.5);
+  y = int((1 - log(sin(r)/cos(r) + 1/cos(r)) / pi) / 2 * n + 0.5);
   print x, y }')"
 
 TX_LO=$((TX - 1)); [ "${TX_LO}" -lt 0 ] && TX_LO=0
