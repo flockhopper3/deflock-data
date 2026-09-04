@@ -62,15 +62,14 @@ No R2 credentials are used. Nothing is uploaded anywhere but the run's own artif
 
 The floors sit far below the 2026-04 reference (6,461 features / 906 portals / 272,290 edges); they catch a truncated or broken build, not a real decline.
 
-## Reference run
+## Reference runs
 
-Offline rebuild of the 2026-04-24 snapshot with this code (908 portals in):
+| Run | in: portals | featureCount | portalCount | adjacencyKeys | directedEdges | geocode methods |
+|---|---|---|---|---|---|---|
+| 2026-04-24 snapshot, offline rebuild with this code | 908 | 6,461 | 906 | 528 | 272,290 | place 3,712 · county 1,014 · google 1,399 (cache) · place_variant 279 · junk 37 · state 19 · manual 1 |
+| 2026-09-04 live fetch, cache-only, no prior | 1,046 | 6,793 | 1,044 | 608 | 289,794 | place 3,900 · county 1,062 · google 1,367 (cache) · place_variant 291 · state 132 · junk 28 · default 12 · manual 1 |
 
-| featureCount | portalCount | adjacencyKeys | directedEdges | geocode methods |
-|---|---|---|---|---|
-| 6,461 | 906 | 528 | 272,290 | place 3,712 · county 1,014 · google 1,399 (all from cache) · place_variant 279 · junk 37 · state 19 · manual 1 |
-
-Identical to the research repo's last run except that `connectionCount` is now consistent with the adjacency file for all nodes (66 disagreed before — see METHODOLOGY, step 3).
+The April rebuild is identical to the research repo's last run except that `connectionCount` is now consistent with the adjacency file for all nodes (66 disagreed before — see METHODOLOGY, step 3). The September run passed every step-06 invariant on a first-run path (no prior snapshot). Its 144 `state`/`default` orgs are agencies added since April that the committed Google cache has never seen; a run with `GOOGLEMAPSAPI` set would resolve most of them and grow the cache. Step 00's diff against the April snapshot: 138 portals added, 0 removed, 536 sharing lists changed.
 
 ## Refreshing the gazetteers
 

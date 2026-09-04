@@ -1,6 +1,6 @@
 # EyesOnFlock Pipeline Implementation Plan
 
-> **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
+> **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [x]`) syntax for tracking.
 
 **Goal:** Port the sharing-network pipeline from the research repo into a self-contained `eyesonflock/` hub and run it on GitHub Actions, producing verified artifacts (no Cloudflare upload yet).
 
@@ -35,7 +35,7 @@
 **Interfaces:**
 - Produces: the five test modules resolve scripts via `Path(__file__).resolve().parent.parent / "scripts"`.
 
-- [ ] **Step 1: Write CLAUDE.md**
+- [x] **Step 1: Write CLAUDE.md**
 
 ```markdown
 # deflock-data — working rules
@@ -53,7 +53,7 @@ fine. Asking once and being told yes covers that one action, not the session.
 Each hub is independent; don't share code across them.
 ```
 
-- [ ] **Step 2: Copy files, fix the test `sys.path` line**
+- [x] **Step 2: Copy files, fix the test `sys.path` line**
 
 ```bash
 R="/Users/jackcauthen/Documents/Developer/FLOCK/FLOCKHOPPER DATA RESEARCH"
@@ -68,12 +68,12 @@ printf 'work/\n.env\n' > eyesonflock/.gitignore
 printf 'pytest>=8\n' > eyesonflock/requirements-dev.txt
 ```
 
-- [ ] **Step 3: Run the ported tests**
+- [x] **Step 3: Run the ported tests**
 
 Run: `venv/bin/python -m pytest eyesonflock/tests -q`
 Expected: `115 passed`
 
-- [ ] **Step 4: Commit**
+- [x] **Step 4: Commit**
 
 ```bash
 git add CLAUDE.md eyesonflock
@@ -104,7 +104,7 @@ git commit -m "Port the EyesOnFlock sharing-network pipeline into eyesonflock/"
   NODES_FILE, ADJACENCY_FILE, META_FILE: Path
   ```
 
-- [ ] **Step 1: Write the failing test**
+- [x] **Step 1: Write the failing test**
 
 ```python
 # eyesonflock/tests/test_paths.py
@@ -138,11 +138,11 @@ def test_gazetteer_files_exist():
         assert f.is_file(), f
 ```
 
-- [ ] **Step 2: Run to verify it fails** — `pytest eyesonflock/tests/test_paths.py -q` → `ModuleNotFoundError: paths`
-- [ ] **Step 3: Write `paths.py`** (the interface above, ~40 lines, `WORK_DIR = Path(os.environ.get("EYESONFLOCK_WORK_DIR") or EOF_ROOT / "work").resolve()`).
-- [ ] **Step 4: Re-root each script.** For each `0*.py`: delete its `BASE_DIR = Path(__file__)…` block and file constants; `from paths import …`; call `X.parent.mkdir(parents=True, exist_ok=True)` inside `main()` before writing. Keep module-level names that tests monkeypatch (`GEOCODED_ORGS`, `EYESONFLOCK`, `OUTPUT_FILE` in 03; `OUTPUT_FILE` in 00).
-- [ ] **Step 5: Run all tests** → `118 passed`.
-- [ ] **Step 6: Offline smoke run** against a copy of the April snapshot:
+- [x] **Step 2: Run to verify it fails** — `pytest eyesonflock/tests/test_paths.py -q` → `ModuleNotFoundError: paths`
+- [x] **Step 3: Write `paths.py`** (the interface above, ~40 lines, `WORK_DIR = Path(os.environ.get("EYESONFLOCK_WORK_DIR") or EOF_ROOT / "work").resolve()`).
+- [x] **Step 4: Re-root each script.** For each `0*.py`: delete its `BASE_DIR = Path(__file__)…` block and file constants; `from paths import …`; call `X.parent.mkdir(parents=True, exist_ok=True)` inside `main()` before writing. Keep module-level names that tests monkeypatch (`GEOCODED_ORGS`, `EYESONFLOCK`, `OUTPUT_FILE` in 03; `OUTPUT_FILE` in 00).
+- [x] **Step 5: Run all tests** → `118 passed`.
+- [x] **Step 6: Offline smoke run** against a copy of the April snapshot:
 
 ```bash
 export EYESONFLOCK_WORK_DIR=/tmp/eof-smoke; mkdir -p $EYESONFLOCK_WORK_DIR/raw
@@ -151,7 +151,7 @@ python eyesonflock/scripts/run_pipeline.py --skip-fetch   # --skip-fetch lands i
 ```
 Expected: outputs under `/tmp/eof-smoke/output/`, feature count 6461 (identical to the reference run — same snapshot, same code).
 
-- [ ] **Step 7: Commit** — `git commit -m "eyesonflock: route all paths through paths.py"`
+- [x] **Step 7: Commit** — `git commit -m "eyesonflock: route all paths through paths.py"`
 
 ---
 
@@ -161,7 +161,7 @@ Expected: outputs under `/tmp/eof-smoke/output/`, feature count 6461 (identical 
 - Modify: `eyesonflock/scripts/00_fetch_eyesonflock.py` (`check_sanity`)
 - Test: `eyesonflock/tests/test_fetch_eyesonflock.py` (add to `TestCheckSanity`)
 
-- [ ] **Step 1: Failing tests**
+- [x] **Step 1: Failing tests**
 
 ```python
 def test_absolute_floor_without_prior(self):
@@ -175,9 +175,9 @@ def test_absolute_floor_met_without_prior(self):
 ```
 Existing `test_no_prior_passes` uses a 1-portal snapshot; change it to build `MIN_PORTAL_COUNT_ABS` portals.
 
-- [ ] **Step 2: Run** → FAIL (`AttributeError: MIN_PORTAL_COUNT_ABS`)
-- [ ] **Step 3: Implement** — `MIN_PORTAL_COUNT_ABS = 500`; in `check_sanity`, before the prior logic: `if new_n < MIN_PORTAL_COUNT_ABS: raise ValueError(f"new snapshot has only {new_n} portals, below the absolute floor of {MIN_PORTAL_COUNT_ABS}. Refusing to overwrite.")`
-- [ ] **Step 4: Run** → PASS. **Step 5: Commit** — `"eyesonflock: absolute portal-count floor in step 00"`
+- [x] **Step 2: Run** → FAIL (`AttributeError: MIN_PORTAL_COUNT_ABS`)
+- [x] **Step 3: Implement** — `MIN_PORTAL_COUNT_ABS = 500`; in `check_sanity`, before the prior logic: `if new_n < MIN_PORTAL_COUNT_ABS: raise ValueError(f"new snapshot has only {new_n} portals, below the absolute floor of {MIN_PORTAL_COUNT_ABS}. Refusing to overwrite.")`
+- [x] **Step 4: Run** → PASS. **Step 5: Commit** — `"eyesonflock: absolute portal-count floor in step 00"`
 
 ---
 
@@ -191,7 +191,7 @@ Existing `test_no_prior_passes` uses a 1-portal snapshot; change it to build `MI
 **Interfaces:**
 - `GoogleGeocoder(api_key: str | None, cache_path: Path | None)`; with `api_key=None`, `geocode_org` returns cached hits and `None` on misses, never touching the network; `api_calls_made == 0`.
 
-- [ ] **Step 1: Failing tests**
+- [x] **Step 1: Failing tests**
 
 ```python
 class TestCacheOnlyMode:
@@ -215,9 +215,9 @@ class TestCacheOnlyMode:
         assert g.cache_size == 0   # a keyed run later must still be able to try
 ```
 
-- [ ] **Step 2: Run** → FAIL. **Step 3: Implement** — in `geocode_org`, on a miss: `if not self.api_key: return None` before `_call_api`; keep negative caching only for real API misses. **Step 4:** PASS.
-- [ ] **Step 5: Update 02a `main()`** — always construct the client; if `api_key` is None print `WARNING: GOOGLEMAPSAPI not set — cache-only mode; uncached candidates stay at state centroids.` and continue. Summary line adds `Mode: cache-only|live`.
-- [ ] **Step 6: Run all tests** → PASS. **Step 7: Commit** — `"eyesonflock: apply Google geocode cache even without an API key"`
+- [x] **Step 2: Run** → FAIL. **Step 3: Implement** — in `geocode_org`, on a miss: `if not self.api_key: return None` before `_call_api`; keep negative caching only for real API misses. **Step 4:** PASS.
+- [x] **Step 5: Update 02a `main()`** — always construct the client; if `api_key` is None print `WARNING: GOOGLEMAPSAPI not set — cache-only mode; uncached candidates stay at state centroids.` and continue. Summary line adds `Mode: cache-only|live`.
+- [x] **Step 6: Run all tests** → PASS. **Step 7: Commit** — `"eyesonflock: apply Google geocode cache even without an API key"`
 
 ---
 
@@ -234,12 +234,12 @@ class TestCacheOnlyMode:
 - `main() -> int` loads the three files from `paths`, prints violations, writes `META_FILE` on success, returns 0/1.
 - Thresholds as module constants: `MIN_FEATURES = 5000`, `MIN_PORTALS = 700`, `MIN_DIRECTED_EDGES = 100_000`, `MAX_DEFAULT_SHARE = 0.02`, `EXPECTED_PROPERTY_KEYS = frozenset({...18 keys...})`.
 
-- [ ] **Step 1: Failing tests** — a `_good()` fixture builder that generates `MIN_FEATURES` synthetic nodes (`MIN_PORTALS` of them portals) and an adjacency with ≥ `MIN_DIRECTED_EDGES` edges where `connectionCount` is derived from it; then one test per invariant that breaks the fixture and asserts the matching substring appears in `verify(...)`:
+- [x] **Step 1: Failing tests** — a `_good()` fixture builder that generates `MIN_FEATURES` synthetic nodes (`MIN_PORTALS` of them portals) and an adjacency with ≥ `MIN_DIRECTED_EDGES` edges where `connectionCount` is derived from it; then one test per invariant that breaks the fixture and asserts the matching substring appears in `verify(...)`:
   `"FeatureCollection"`, `"fewer than"`, `"coordinates"`, `"property keys"`, `"duplicate id"`, `"portalSlug"`, `"portals"`, `"unknown node"`, `"sorted"`, `"self-edge"`, `"directed edges"`, `"connectionCount"`, `"default"`. Plus `test_good_fixture_has_no_violations` and `test_main_writes_meta(tmp_path, monkeypatch)` asserting `meta["featureCount"] == MIN_FEATURES`.
-- [ ] **Step 2: Run** → FAIL (module missing). **Step 3: Implement** the module. **Step 4:** PASS.
-- [ ] **Step 5: Orchestrator** — `SCRIPTS` gains `"06_verify_outputs.py"`; `argparse` with `--skip-fetch` (drops `00_fetch_eyesonflock.py`); step 06 failure exits 1 like any other. Final print lists `NODES_FILE`, `ADJACENCY_FILE`, `META_FILE`.
-- [ ] **Step 6: Offline run** with `--skip-fetch` on the April snapshot → `PIPELINE COMPLETE`, `meta.json` present, `featureCount == 6461`.
-- [ ] **Step 7: Commit** — `"eyesonflock: fail-closed output verification + meta.json"`
+- [x] **Step 2: Run** → FAIL (module missing). **Step 3: Implement** the module. **Step 4:** PASS.
+- [x] **Step 5: Orchestrator** — `SCRIPTS` gains `"06_verify_outputs.py"`; `argparse` with `--skip-fetch` (drops `00_fetch_eyesonflock.py`); step 06 failure exits 1 like any other. Final print lists `NODES_FILE`, `ADJACENCY_FILE`, `META_FILE`.
+- [x] **Step 6: Offline run** with `--skip-fetch` on the April snapshot → `PIPELINE COMPLETE`, `meta.json` present, `featureCount == 6461`.
+- [x] **Step 7: Commit** — `"eyesonflock: fail-closed output verification + meta.json"`
 
 ---
 
@@ -250,20 +250,20 @@ class TestCacheOnlyMode:
 - Create: `eyesonflock/README.md`, `eyesonflock/.env.example`
 - Modify: `README.md` (repo layout table + hub row), `eyesonflock/METHODOLOGY.md` (paths, step 06, cache-only note)
 
-- [ ] **Step 1: Write the workflow.** Job summary step:
+- [x] **Step 1: Write the workflow.** Job summary step:
   ```bash
   { echo "## EyesOnFlock sharing network"; echo; echo '```json'; cat "$W/output/meta.json"; echo '```';
     echo; echo "<details><summary>Geocode audit</summary>"; echo; echo '```'; cat "$W/intermediate/geocode_audit.txt"; echo '```'; echo "</details>"; } >> "$GITHUB_STEP_SUMMARY"
   ```
-- [ ] **Step 2: Validate** — `python -c "import yaml,sys; yaml.safe_load(open('.github/workflows/eyesonflock-pipeline.yml'))"` (install `pyyaml` in the scratch venv) and eyeball against `fetch-data.yml` conventions (concurrency, permissions, timeout).
-- [ ] **Step 3: README** — sections: what it produces, run locally, the workflow, artifacts, secrets (optional `GOOGLEMAPSAPI`), gazetteer refresh, phase 2/3 plan.
-- [ ] **Step 4: Commit** — `"eyesonflock: GitHub Actions workflow + docs"`
+- [x] **Step 2: Validate** — `python -c "import yaml,sys; yaml.safe_load(open('.github/workflows/eyesonflock-pipeline.yml'))"` (install `pyyaml` in the scratch venv) and eyeball against `fetch-data.yml` conventions (concurrency, permissions, timeout).
+- [x] **Step 3: README** — sections: what it produces, run locally, the workflow, artifacts, secrets (optional `GOOGLEMAPSAPI`), gazetteer refresh, phase 2/3 plan.
+- [x] **Step 4: Commit** — `"eyesonflock: GitHub Actions workflow + docs"`
 
 ---
 
 ### Task 7: End-to-end live run and reference comparison
 
-- [ ] **Step 1:** `EYESONFLOCK_WORK_DIR=/tmp/eof-live python eyesonflock/scripts/run_pipeline.py` (one live fetch; local `.env` may supply the Google key — copy from the research repo if the owner's key is there, otherwise cache-only).
-- [ ] **Step 2:** Compare `meta.json` with `scratchpad/reference-schema.json`: same 18 keys, `dangling == 0`, counts within ±10% of 6461 / 906 / 272290 or explained by the snapshot diff printed by step 00.
-- [ ] **Step 3:** Record the numbers in `eyesonflock/README.md` ("Reference run") and commit — `"eyesonflock: record first end-to-end run"`.
-- [ ] **Step 4:** Write a memory note (project) with location, phase status, and the no-push rule; final report to the owner with the design decisions to confirm and the exact command to push when ready.
+- [x] **Step 1:** `EYESONFLOCK_WORK_DIR=/tmp/eof-live python eyesonflock/scripts/run_pipeline.py` (one live fetch; local `.env` may supply the Google key — copy from the research repo if the owner's key is there, otherwise cache-only).
+- [x] **Step 2:** Compare `meta.json` with `scratchpad/reference-schema.json`: same 18 keys, `dangling == 0`, counts within ±10% of 6461 / 906 / 272290 or explained by the snapshot diff printed by step 00.
+- [x] **Step 3:** Record the numbers in `eyesonflock/README.md` ("Reference run") and commit — `"eyesonflock: record first end-to-end run"`.
+- [x] **Step 4:** Write a memory note (project) with location, phase status, and the no-push rule; final report to the owner with the design decisions to confirm and the exact command to push when ready.

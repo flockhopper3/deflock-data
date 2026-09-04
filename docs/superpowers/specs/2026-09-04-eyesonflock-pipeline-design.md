@@ -1,7 +1,7 @@
 # EyesOnFlock sharing-network pipeline — Design
 
 **Date:** 2026-09-04
-**Status:** Proposed (built autonomously; awaiting owner review before any push)
+**Status:** Built on branch `eyesonflock-pipeline`; awaiting owner review before any push
 
 ## Goal
 
@@ -128,6 +128,10 @@ On success it writes `output/meta.json`:
 
 Phase 2's uploader reads `meta.json` for object metadata, mirroring `data/cameras/upload.sh`.
 
+### Steps 03/04: one name→slug resolver
+
+Discovered while building step 06: the documented invariant `connectionCount == |outbound ∪ inbound|` did not hold. Step 03 resolved sharing-list names with the bare `canonical_slug()` while step 04 consulted the `parsed_orgs.json` alias map first, so names that only resolve through aliases (the bare `"Berkeley"` manual alias, rescued stateless sheriff's-office forms) counted in one file and not the other — 66 nodes disagreed on the April snapshot (`berkeley-ca-pd`: 71 vs 148). `parse_orgs_lib` gains `build_alias_map()` and `make_shared_name_resolver()`; both steps use them. This is the one behaviour change in the port beyond the three additions above; it makes the outputs self-consistent and METHODOLOGY truthful.
+
 ### Orchestrator
 
 `run_pipeline.py` runs 00 → 01 → 02 → 02a → 03 → 04 → 05 → 06, stopping at the first non-zero exit. `--skip-fetch` skips 00 for offline iteration against an existing snapshot. `--work-dir` is not a flag; `EYESONFLOCK_WORK_DIR` is the one knob, so the workflow and the scripts agree by construction.
@@ -166,13 +170,14 @@ Created at the repo root with the owner's rule: never `git push`, never deploy o
 
 ## Testing
 
-- All 115 original tests ported (path fix only) and passing.
-- New tests: `paths.py` env override; `GoogleGeocoder` cache-only mode (hit, miss, zero API calls, invalidate); step 00 absolute floor; step 06 — each invariant has a failing fixture and the happy path writes `meta.json`.
-- End-to-end: full local run against the live API; step 06 passes; output schema matches the reference; feature/portal/edge counts within a few percent of the April reference.
-- Workflow YAML parsed and reviewed. It cannot be executed until the branch is pushed, which is the owner's call.
+- All 115 original tests ported (path fix only) and passing; 171 total with the new ones.
+- New tests: `paths.py` env override; `GoogleGeocoder` cache-only mode (hit, miss, zero API calls, no negative caching, invalidate); step 00 absolute floor; shared resolver + alias-aware `connectionCount`; step 06 — every invariant has a failing fixture, the happy path writes `meta.json`, `main()` returns 1 on violation or missing files.
+- Offline rebuild of the 2026-04-24 snapshot reproduces the reference exactly (6,461 / 906 / 528 / 272,290) and passes step 06.
+- Live run 2026-09-04, cache-only, no prior: 1,046 portals in → 6,793 features / 1,044 portals / 608 keys / 289,794 edges; schema identical to the reference; step 06 passes; 12 `default` (0.18%) and 132 `state` orgs are new agencies the cache has never seen.
+- Workflow YAML parsed and structurally checked. It cannot be executed until the branch is pushed, which is the owner's call.
 
 ## Out of scope
 
 - Any Cloudflare change, any push.
 - Committing raw snapshots or generated outputs to git (repo policy: generated data is not versioned).
-- Changing parsing, geocoding, or slugging behaviour. The port is behaviour-preserving apart from the three additions above.
+- Changing parsing, geocoding, or slugging behaviour. The port is behaviour-preserving apart from the three additions above and the step 03/04 resolver fix.
