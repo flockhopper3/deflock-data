@@ -12,10 +12,12 @@ file written here. The snapshot is the "as of" of every resulting analysis.
 1. GET the API with a timeout.
 2. Validate that the response is JSON with a non-empty `portals` list and
    a `summary` key (the contract our pipeline depends on).
-3. Sanity-check the new snapshot against the previous one (if any):
-   - Fail loudly if the portal count dropped by >50% (guards against API
-     returning a corrupt partial response that would silently nuke the
-     existing snapshot).
+3. Sanity-check the new snapshot:
+   - Fail loudly if it has fewer than MIN_PORTAL_COUNT_ABS portals — an
+     always-on floor that needs no prior snapshot (CI may not have one).
+   - Fail loudly if the portal count dropped by >50% vs the previous
+     snapshot, when one exists (guards against API returning a corrupt
+     partial response that would silently nuke the existing snapshot).
 4. Print a one-page diff summary: new portals, removed portals, and portals
    whose sharing list or metadata changed.
 5. Write the new snapshot atomically (tempfile → rename) so a crash
@@ -53,8 +55,13 @@ REQUEST_TIMEOUT_S = 60
 
 # If the new snapshot reports fewer than this fraction of the prior portal
 # count, abort rather than overwrite. Guards against API errors that return
-# a partial dataset.
+# a partial dataset. Only applies when a prior snapshot is available.
 MIN_PORTAL_COUNT_RATIO = 0.5
+
+# Absolute floor, applied on every run whether or not a prior exists. The
+# 2026-04 reference snapshot had 908 portals and the count only grows; a
+# response below this is a truncated or broken payload, never real data.
+MIN_PORTAL_COUNT_ABS = 500
 
 
 def fetch() -> dict:
@@ -127,11 +134,20 @@ def diff_summary(prior: dict | None, new: dict) -> tuple[int, int, int, int]:
 
 
 def check_sanity(prior: dict | None, new: dict) -> None:
-    """Raise ValueError if the new snapshot looks dangerously smaller than the prior."""
+    """Raise ValueError if the new snapshot is implausibly small.
+
+    Two guards: an absolute floor (always), and a relative drop vs the prior
+    snapshot (only when a prior exists).
+    """
+    new_n = len(new.get("portals", []))
+    if new_n < MIN_PORTAL_COUNT_ABS:
+        raise ValueError(
+            f"new snapshot has only {new_n} portals, below the absolute floor "
+            f"of {MIN_PORTAL_COUNT_ABS}. Refusing to overwrite."
+        )
     if prior is None:
         return
     prior_n = len(prior.get("portals", []))
-    new_n = len(new.get("portals", []))
     if prior_n == 0:
         return
     if new_n < MIN_PORTAL_COUNT_RATIO * prior_n:

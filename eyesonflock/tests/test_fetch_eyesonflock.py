@@ -103,30 +103,51 @@ class TestDiffSummary:
         assert _fetch.diff_summary(prior, new) == (0, 0, 1, 1)
 
 
+def _big_snapshot(n: int) -> dict:
+    return _snapshot([_portal(f"p{i}") for i in range(n)])
+
+
 class TestCheckSanity:
     def test_no_prior_passes(self):
-        _fetch.check_sanity(None, _snapshot([_portal("a")]))
+        _fetch.check_sanity(None, _big_snapshot(_fetch.MIN_PORTAL_COUNT_ABS))
+
+    def test_absolute_floor_without_prior(self):
+        tiny = _big_snapshot(_fetch.MIN_PORTAL_COUNT_ABS - 1)
+        with pytest.raises(ValueError, match="absolute floor"):
+            _fetch.check_sanity(None, tiny)
+
+    def test_absolute_floor_applies_even_when_prior_is_small(self):
+        # A tiny prior must not let a tiny new snapshot through.
+        prior = _big_snapshot(10)
+        new = _big_snapshot(10)
+        with pytest.raises(ValueError, match="absolute floor"):
+            _fetch.check_sanity(prior, new)
+
+    def test_absolute_floor_is_sane(self):
+        # Reference snapshot (2026-04) had 908 portals; the floor must sit well
+        # below that but far above zero.
+        assert 200 <= _fetch.MIN_PORTAL_COUNT_ABS <= 800
 
     def test_similar_size_passes(self):
-        prior = _snapshot([_portal(f"p{i}") for i in range(100)])
-        new = _snapshot([_portal(f"p{i}") for i in range(95)])
+        prior = _snapshot([_portal(f"p{i}") for i in range(1000)])
+        new = _snapshot([_portal(f"p{i}") for i in range(950)])
         _fetch.check_sanity(prior, new)  # 95% retained — fine
 
     def test_modest_growth_passes(self):
-        prior = _snapshot([_portal(f"p{i}") for i in range(100)])
-        new = _snapshot([_portal(f"p{i}") for i in range(200)])
+        prior = _snapshot([_portal(f"p{i}") for i in range(1000)])
+        new = _snapshot([_portal(f"p{i}") for i in range(2000)])
         _fetch.check_sanity(prior, new)
 
     def test_drop_below_threshold_fails(self):
-        prior = _snapshot([_portal(f"p{i}") for i in range(100)])
-        new = _snapshot([_portal(f"p{i}") for i in range(40)])  # 40% — below 50% floor
+        prior = _snapshot([_portal(f"p{i}") for i in range(2000)])
+        new = _snapshot([_portal(f"p{i}") for i in range(800)])  # 40% — below 50% floor
         with pytest.raises(ValueError, match="Refusing to overwrite"):
             _fetch.check_sanity(prior, new)
 
     def test_prior_empty_passes(self):
         prior = _snapshot([])
         # empty prior shouldn't trigger division-by-zero or false reject
-        new = _snapshot([_portal("a")])
+        new = _big_snapshot(_fetch.MIN_PORTAL_COUNT_ABS)
         _fetch.check_sanity(prior, new)
 
 
