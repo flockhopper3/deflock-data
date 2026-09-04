@@ -9,6 +9,11 @@ Usage:
     client = GoogleGeocoder(api_key="...")
     lat, lng = client.geocode_org(org)
 
+Cache-only mode: pass ``api_key=None`` and the client serves cache hits but
+never calls the network — misses return None and are *not* recorded, so a
+later keyed run can still resolve them. This is how CI runs without a key
+while keeping the ~1,400 precise geocodes the committed cache already holds.
+
 Cache lives at eyesonflock/google_geocode_cache.json (see paths.GOOGLE_CACHE_FILE).
 """
 
@@ -28,14 +33,14 @@ _GEOCODE_API_URL = "https://maps.googleapis.com/maps/api/geocode/json"
 class GoogleGeocoder:
     """Cached Google Maps Geocoding API client."""
 
-    def __init__(self, api_key: str, cache_path: Path | None = None):
+    def __init__(self, api_key: str | None, cache_path: Path | None = None):
         """Initialize the geocoder.
 
         Args:
-            api_key: Google Maps API key.
-            cache_path: Path to JSON cache file. If None, uses default location.
+            api_key: Google Maps API key, or None for cache-only mode.
+            cache_path: Path to JSON cache file. If None, nothing is persisted.
         """
-        self.api_key = api_key
+        self.api_key = api_key or None
         self.cache_path = cache_path
         self._cache: dict[str, dict] = {}
         self._last_request_time = 0.0
@@ -58,6 +63,11 @@ class GoogleGeocoder:
             self.cache_path.parent.mkdir(parents=True, exist_ok=True)
             with open(self.cache_path, "w") as f:
                 json.dump(self._cache, f, indent=2)
+
+    @property
+    def is_live(self) -> bool:
+        """True when an API key is present and cache misses will hit Google."""
+        return self.api_key is not None
 
     @property
     def api_calls_made(self) -> int:
@@ -167,6 +177,10 @@ class GoogleGeocoder:
             if cached is None:
                 return None
             return (cached["lat"], cached["lng"])
+
+        # Cache-only mode: never hit the network, never record the miss.
+        if not self.is_live:
+            return None
 
         # Call API
         result = self._call_api(query)

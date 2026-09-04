@@ -13,9 +13,10 @@ result — upgrades the org to lat/lng with method='google'.
 Entries with method='junk' are NEVER upgraded (that's a deliberate tag).
 Entries already at place/place_variant/county precision are not touched.
 
-If GOOGLEMAPSAPI is missing, the step logs a warning and exits 0 so the
-pipeline remains runnable without paid API access. Results are cached on
-disk so re-runs are free.
+If GOOGLEMAPSAPI is missing, the step runs in cache-only mode: cached results
+are still applied (no network calls), and a warning notes that uncached
+candidates stay at state-centroid coordinates. The pipeline therefore stays
+runnable — and keeps its precise geocodes — without paid API access.
 """
 
 import json
@@ -50,9 +51,8 @@ def main():
 
     api_key = _load_api_key()
     if not api_key:
-        print("  WARNING: GOOGLEMAPSAPI not set (env var or .env). Skipping Google upgrade.")
-        print("           state/default-fallback orgs will remain at state-centroid coords.")
-        return
+        print("  WARNING: GOOGLEMAPSAPI not set (env var or .env) — cache-only mode.")
+        print("           Cached results are applied; uncached candidates stay at state centroids.")
 
     with open(GEOCODED_FILE) as f:
         geocoded = json.load(f)
@@ -68,6 +68,7 @@ def main():
         return
 
     client = GoogleGeocoder(api_key=api_key, cache_path=CACHE_FILE)
+    print(f"  Mode:  {'live' if client.is_live else 'cache-only'}")
     print(f"  Cache: {client.cache_size:,} entries already")
 
     upgraded = 0
@@ -96,7 +97,8 @@ def main():
         org["geocode_method"] = "google"
         upgraded += 1
 
-    client.save_cache()
+    if client.is_live:
+        client.save_cache()
 
     with open(GEOCODED_FILE, "w") as f:
         json.dump(geocoded, f, indent=2)
