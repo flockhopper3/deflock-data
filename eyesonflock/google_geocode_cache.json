@@ -1,0 +1,6207 @@
+{
+  "47th District Attorney's Office TX, TX": {
+    "lat": 31.9685988,
+    "lng": -99.9018131
+  },
+  "ACRATT -CA, CA": {
+    "lat": 36.778261,
+    "lng": -119.4179324
+  },
+  "AL - Troy University - Insight, AL": {
+    "lat": 31.8087678,
+    "lng": -85.969951
+  },
+  "AL - Wallace State Community College, AL": {
+    "lat": 34.07096420000001,
+    "lng": -86.78198119999999
+  },
+  "ASU, AZ": {
+    "lat": 33.4229975,
+    "lng": -111.9278306
+  },
+  "Abington Township, PA": {
+    "lat": 40.1229534,
+    "lng": -75.1174063
+  },
+  "Agawam, MA": {
+    "lat": 42.0894684,
+    "lng": -72.6270607
+  },
+  "Alabama Department of Revenue, AL": {
+    "lat": 33.3607284,
+    "lng": -86.78144379999999
+  },
+  "Alabama Department of Transportation, AL": {
+    "lat": 31.1335479,
+    "lng": -85.09691769999999
+  },
+  "Alabama Drug Enforcement Task Force Region G, AL": {
+    "lat": 32.3182314,
+    "lng": -86.902298
+  },
+  "Alabama Law Enforcement Agency (ALEA), AL": {
+    "lat": 32.3182314,
+    "lng": -86.902298
+  },
+  "Alabama-Coushatta, TX": {
+    "lat": 30.7173011,
+    "lng": -94.71284039999999
+  },
+  "Aldine ISD, TX": {
+    "lat": 29.9341866,
+    "lng": -95.37301760000001
+  },
+  "Alexander City Housing Authority AL, AL": {
+    "lat": 32.937997,
+    "lng": -85.98374749999999
+  },
+  "Alvin ISD, TX": {
+    "lat": 29.4498692,
+    "lng": -95.35208759999999
+  },
+  "Amherst Town, NY": {
+    "lat": 42.9625285,
+    "lng": -78.7467479
+  },
+  "Appalachian Regional Healthcare System, NC": {
+    "lat": 35.7595731,
+    "lng": -79.01929969999999
+  },
+  "Arizona Department of Public Safety, AZ": {
+    "lat": 36.7204094,
+    "lng": -110.265588
+  },
+  "Arizona Department of Public Safety [Inactive], AZ": {
+    "lat": 34.0489281,
+    "lng": -111.0937311
+  },
+  "Arkansas Highway Police, AR": {
+    "lat": 35.20105,
+    "lng": -91.8318334
+  },
+  "Aston, PA": {
+    "lat": 39.868899,
+    "lng": -75.4284148
+  },
+  "Athens-Clarke County, GA": {
+    "lat": 33.9596643,
+    "lng": -83.3764161
+  },
+  "Atlanta Police Foundation Training Facility, GA": {
+    "lat": 33.7501275,
+    "lng": -84.3885209
+  },
+  "Atlanta Public Schools GA PD, GA": {
+    "lat": 33.8033965,
+    "lng": -84.3962535
+  },
+  "Attorney General of Illinois - Medicare Fraud Division, IL": {
+    "lat": 39.8006593,
+    "lng": -89.64493449999999
+  },
+  "Auburn University AL, AL": {
+    "lat": 32.6047841,
+    "lng": -85.4852488
+  },
+  "Augusta University GA PD, GA": {
+    "lat": 33.4687314,
+    "lng": -82.0283188
+  },
+  "Aurelius Township, MI": {
+    "lat": 42.55838019999999,
+    "lng": -84.54318669999999
+  },
+  "Avoca, PA": {
+    "lat": 41.3398022,
+    "lng": -75.7363033
+  },
+  "Avon, CT": {
+    "lat": 41.8096201,
+    "lng": -72.8305154
+  },
+  "Backtrace - NJ State Police, NJ": {
+    "lat": 39.6490521,
+    "lng": -74.2966272
+  },
+  "Bainbridge Township, OH": {
+    "lat": 41.3764714,
+    "lng": -81.36194019999999
+  },
+  "Baldwinsville Central School District Inc NY, NY": {
+    "lat": 43.1799511,
+    "lng": -76.3405733
+  },
+  "Barnett Reservoir, MS": {
+    "lat": 32.4580438,
+    "lng": -90.0279867
+  },
+  "Barron, IL": {
+    "lat": 40.6331249,
+    "lng": -89.3985283
+  },
+  "Barrow County GA School System, GA": {
+    "lat": 34.0142667,
+    "lng": -83.6986568
+  },
+  "Bath Township, OH": {
+    "lat": 41.1568487,
+    "lng": -81.63525779999999
+  },
+  "Bay Harbor Island, FL": {
+    "lat": 25.8875948,
+    "lng": -80.1311564
+  },
+  "Baylor Scott & White, TX": {
+    "lat": 31.9685988,
+    "lng": -99.9018131
+  },
+  "Bazetta Township, OH": {
+    "lat": 41.3010226,
+    "lng": -80.7768613
+  },
+  "Beacon Falls, CT": {
+    "lat": 41.4426452,
+    "lng": -73.06176119999999
+  },
+  "Beaver Boro, PA": {
+    "lat": 40.6953437,
+    "lng": -80.30478459999999
+  },
+  "Bedminster Twp, NJ": {
+    "lat": 40.6791746,
+    "lng": -74.6499451
+  },
+  "Bell CO TX County, CO": {
+    "lat": 39.5500507,
+    "lng": -105.7820674
+  },
+  "Bellevue ID Marshal's Office": {
+    "lat": 43.4635179,
+    "lng": -114.2605998
+  },
+  "Bensalem Township, PA": {
+    "lat": 40.09944249999999,
+    "lng": -74.9325683
+  },
+  "Benton Charter Township Police MI, MI": {
+    "lat": 42.1307043,
+    "lng": -86.4078219
+  },
+  "Berkeley": {
+    "lat": 37.8715226,
+    "lng": -122.273042
+  },
+  "Berkeley Heights, NJ": {
+    "lat": 40.6702217,
+    "lng": -74.4273911
+  },
+  "Berlin, CT": {
+    "lat": 41.621488,
+    "lng": -72.7456519
+  },
+  "Berlin, NJ": {
+    "lat": 39.7913685,
+    "lng": -74.9293769
+  },
+  "Bernardsville, NJ": {
+    "lat": 40.718314,
+    "lng": -74.5693373
+  },
+  "Bethel Park, PA": {
+    "lat": 40.3275697,
+    "lng": -80.0394977
+  },
+  "Beverly Hills Unified School District CA PD, CA": {
+    "lat": 34.0752379,
+    "lng": -118.3987842
+  },
+  "Billerica, MA": {
+    "lat": 42.5584218,
+    "lng": -71.2689461
+  },
+  "Blackman/Leoni Public Safety MI, MI": {
+    "lat": 42.2911222,
+    "lng": -84.413617
+  },
+  "Blackstone, MA": {
+    "lat": 42.0418415,
+    "lng": -71.53678599999999
+  },
+  "Blaine CO OK County, CO": {
+    "lat": 39.5500507,
+    "lng": -105.7820674
+  },
+  "Blakely, PA": {
+    "lat": 41.4809138,
+    "lng": -75.5946319
+  },
+  "Blendon Township, OH": {
+    "lat": 40.11503889999999,
+    "lng": -82.8694464
+  },
+  "Bloom Township High School District 206": {
+    "lat": 41.5162829,
+    "lng": -87.5988876
+  },
+  "Bloomfield, CT": {
+    "lat": 41.826488,
+    "lng": -72.73009449999999
+  },
+  "Bloomfield Twp, MI": {
+    "lat": 42.5813327,
+    "lng": -83.28117689999999
+  },
+  "Blount County Commission (AL), AL": {
+    "lat": 34.0145152,
+    "lng": -86.49965460000001
+  },
+  "Blount County TN E-911, TN": {
+    "lat": 35.6710541,
+    "lng": -83.8473015
+  },
+  "Blue Lake Rancheria Tribal PD": {
+    "lat": 40.8835487,
+    "lng": -123.9986645
+  },
+  "Blue Springs School District MO PD, MO": {
+    "lat": 39.013077,
+    "lng": -94.29488839999999
+  },
+  "Boardman Township, OH": {
+    "lat": 41.0326881,
+    "lng": -80.6659842
+  },
+  "Bordentown TWP, NJ": {
+    "lat": 40.1513912,
+    "lng": -74.69330099999999
+  },
+  "Bowling Green Warren County Drug Task Force KY, KY": {
+    "lat": 36.9924341,
+    "lng": -86.4428501
+  },
+  "Boylston, MA": {
+    "lat": 42.3359094,
+    "lng": -71.745688
+  },
+  "Braintree, MA": {
+    "lat": 42.2079017,
+    "lng": -71.0040013
+  },
+  "Branchburg Twp, NJ": {
+    "lat": 40.5612719,
+    "lng": -74.701364
+  },
+  "Brazoria County Const Pct 3 (TX), TX": {
+    "lat": 29.2131857,
+    "lng": -95.4777811
+  },
+  "Brazoria County Const Pct 4 (TX), TX": {
+    "lat": 29.2131857,
+    "lng": -95.4777811
+  },
+  "Briarwood AL Campus Police": {
+    "lat": 33.2065073,
+    "lng": -87.4888934
+  },
+  "Brick Township, NJ": {
+    "lat": 40.06074479999999,
+    "lng": -74.14058849999999
+  },
+  "Bridgeport Township, MI": {
+    "lat": 43.3583902,
+    "lng": -83.8806577
+  },
+  "Brimfield Township, OH": {
+    "lat": 41.106366,
+    "lng": -81.3509416
+  },
+  "Bristol Community College MA PD, MA": {
+    "lat": 41.720009,
+    "lng": -71.12256839999999
+  },
+  "Brownstown Twp, MI": {
+    "lat": 42.1525397,
+    "lng": -83.26633439999999
+  },
+  "Brunswick Hills, OH": {
+    "lat": 41.2185738,
+    "lng": -81.86068209999999
+  },
+  "Buffalo State University NY PD, NY": {
+    "lat": 42.933632,
+    "lng": -78.88213979999999
+  },
+  "Buford City Schools GA, GA": {
+    "lat": 34.1125861,
+    "lng": -84.00087719999999
+  },
+  "Buford GA Department of Public Safety, GA": {
+    "lat": 34.1206564,
+    "lng": -84.0043513
+  },
+  "Burbank Airport, CA": {
+    "lat": 34.1983122,
+    "lng": -118.3574036
+  },
+  "Bureau Co. County, IL": {
+    "lat": 41.35991560000001,
+    "lng": -89.4742177
+  },
+  "Burlington County NJ Prosecutor's Office, NJ": {
+    "lat": 39.8558488,
+    "lng": -74.6868815
+  },
+  "Burrillville, RI": {
+    "lat": 41.9661165,
+    "lng": -71.6847247
+  },
+  "Butler County PA, PA": {
+    "lat": 40.9115243,
+    "lng": -79.8296743
+  },
+  "Butler Township, OH": {
+    "lat": 39.8586568,
+    "lng": -84.19900720000001
+  },
+  "CA - Napa Valley College Campus, CA": {
+    "lat": 38.4274315,
+    "lng": -122.3943299
+  },
+  "CA Iipay Nation of Santa Ysabel, CA": {
+    "lat": 33.1091684,
+    "lng": -116.673794
+  },
+  "CAC - Erie NY, NY": {
+    "lat": 42.8982646,
+    "lng": -78.86991359999999
+  },
+  "CAC - Hudson Valley NY, NY": {
+    "lat": 41.3952818,
+    "lng": -73.6136037
+  },
+  "CAC - Mohawk Valley NY, NY": {
+    "lat": 42.9224608,
+    "lng": -74.7805192
+  },
+  "CAC - Monroe NY, NY": {
+    "lat": 40.84273270000001,
+    "lng": -73.94336559999999
+  },
+  "CAC - Niagara Intelligence NY, NY": {
+    "lat": 40.7259134,
+    "lng": -73.98346140000001
+  },
+  "CAC - North Country NY, NY": {
+    "lat": 43.9748021,
+    "lng": -75.9107801
+  },
+  "CAC - Southern Tier NY, NY": {
+    "lat": 40.848491,
+    "lng": -73.7874438
+  },
+  "CAC - Suffolk County NY, NY": {
+    "lat": 40.873529,
+    "lng": -73.4142705
+  },
+  "CAC- Central NY, NY": {
+    "lat": 43.0510662,
+    "lng": -76.1436136
+  },
+  "CN Railroad, IL": {
+    "lat": 42.2353599,
+    "lng": -89.3088521
+  },
+  "CSU Long Beach, CA": {
+    "lat": 33.7838235,
+    "lng": -118.1140904
+  },
+  "CSX Railroad PD": {
+    "lat": 38.7945952,
+    "lng": -106.5348379
+  },
+  "CVG Airport, KY": {
+    "lat": 39.051351,
+    "lng": -84.6671453
+  },
+  "Cal Fire": {
+    "lat": 38.7945952,
+    "lng": -106.5348379
+  },
+  "Cal State Fullerton (CA), CA": {
+    "lat": 33.8823476,
+    "lng": -117.8851033
+  },
+  "Cal State San Bernadino, CA": {
+    "lat": 34.179842,
+    "lng": -117.326147
+  },
+  "Caldwell CO TX County, CO": {
+    "lat": 39.5500507,
+    "lng": -105.7820674
+  },
+  "California Department of Corrections, CA": {
+    "lat": 38.5686531,
+    "lng": -121.4900708
+  },
+  "California Department of Fish & Wildlife (CA), CA": {
+    "lat": 39.4255722,
+    "lng": -123.8046596
+  },
+  "California Department of Insurance Fraud, CA": {
+    "lat": 36.778261,
+    "lng": -119.4179324
+  },
+  "California Highway Patrol, CA": {
+    "lat": 36.778261,
+    "lng": -119.4179324
+  },
+  "California State Parks, CA": {
+    "lat": 38.7088951,
+    "lng": -121.1705438
+  },
+  "California State University Long Beach Campus PD, CA": {
+    "lat": 33.7838235,
+    "lng": -118.1140904
+  },
+  "Cameron CO TX County, CO": {
+    "lat": 39.5500507,
+    "lng": -105.7820674
+  },
+  "Camillus Town/Village, NY": {
+    "lat": 43.039233,
+    "lng": -76.3040965
+  },
+  "Canon City, CO": {
+    "lat": 38.4494063,
+    "lng": -105.2253316
+  },
+  "Canton, MA": {
+    "lat": 42.1589844,
+    "lng": -71.14494189999999
+  },
+  "Canton Township, MI": {
+    "lat": 42.307458,
+    "lng": -83.4871494
+  },
+  "Cape Elizabeth, ME": {
+    "lat": 43.5902189,
+    "lng": -70.2261664
+  },
+  "Cape May County Prosecutors Office NJ, NJ": {
+    "lat": 39.105884,
+    "lng": -74.8273184
+  },
+  "Carmel, CA": {
+    "lat": 36.5552386,
+    "lng": -121.9232879
+  },
+  "Carnegie Mellon University PA PD, PA": {
+    "lat": 40.4432027,
+    "lng": -79.9428499
+  },
+  "Case Western Reserve University OH PD, OH": {
+    "lat": 41.5043413,
+    "lng": -81.6083838
+  },
+  "Castle Shannon, PA": {
+    "lat": 40.3647917,
+    "lng": -80.02227529999999
+  },
+  "Catawba Island Township PD (Ottawa County), OH": {
+    "lat": 41.58532779999999,
+    "lng": -82.836855
+  },
+  "Catawba Nation Tribal, SC": {
+    "lat": 33.836081,
+    "lng": -81.1637245
+  },
+  "Causeway, LA": {
+    "lat": 30.5190775,
+    "lng": -91.5208624
+  },
+  "Cave Creek AZ Marshal's Office, AZ": {
+    "lat": 33.8321183,
+    "lng": -111.9474944
+  },
+  "Center Grove School Police (IN), IN": {
+    "lat": 39.5690866,
+    "lng": -86.1955169
+  },
+  "Center Township, PA": {
+    "lat": 40.6603875,
+    "lng": -80.2878794
+  },
+  "Central Alabama Community College PD, AL": {
+    "lat": 32.9244717,
+    "lng": -85.9472511
+  },
+  "Central Arizona College PD Campus AZ PD, AZ": {
+    "lat": 32.9577551,
+    "lng": -111.6521557
+  },
+  "Central Connecticut State University Campus (CCSU) CT PD, CT": {
+    "lat": 41.6931245,
+    "lng": -72.7638508
+  },
+  "Central Marin, CA": {
+    "lat": 37.9385092,
+    "lng": -122.5300431
+  },
+  "Central Ohio Drug Enforcement Task Force OH, OH": {
+    "lat": 40.0587531,
+    "lng": -82.3949196
+  },
+  "Central Pine Barrens Joint Planning & Policy Commission NY, NY": {
+    "lat": 40.8634849,
+    "lng": -72.6455525
+  },
+  "Cerritos College CA PD, CA": {
+    "lat": 33.886564,
+    "lng": -118.0991837
+  },
+  "Chabot College Campus Safety & Security Department CA, CA": {
+    "lat": 37.6424077,
+    "lng": -122.1056342
+  },
+  "Chaffey College PD (CA), CA": {
+    "lat": 34.1467226,
+    "lng": -117.5708601
+  },
+  "Chagrin Valley Dispatch": {
+    "lat": 41.3951375,
+    "lng": -81.5356163
+  },
+  "Chambers County Drug Task Force County, AL": {
+    "lat": 32.9028048,
+    "lng": -85.35496499999999
+  },
+  "Channelview ISD, TX": {
+    "lat": 29.7945258,
+    "lng": -95.11194069999999
+  },
+  "Charleston MO DPS, MO": {
+    "lat": 36.9208854,
+    "lng": -89.35063099999999
+  },
+  "Charlotte Mecklenburg, NC": {
+    "lat": 35.2270768,
+    "lng": -80.84089329999999
+  },
+  "Charlton, MA": {
+    "lat": 42.13565,
+    "lng": -71.970074
+  },
+  "Charter Township of Buena Vista, MI": {
+    "lat": 43.414692,
+    "lng": -83.8962088
+  },
+  "Chatham-Savannah Counter Narcotics Team": {
+    "lat": 32.0808989,
+    "lng": -81.091203
+  },
+  "Chautauqua County NY District Attorney's Office, NY": {
+    "lat": 42.2312829,
+    "lng": -79.560344
+  },
+  "Cheektowaga Town, NY": {
+    "lat": 42.9071477,
+    "lng": -78.7542892
+  },
+  "Chehalis Tribe Law Enforcement WA, WA": {
+    "lat": 46.8122372,
+    "lng": -123.1718436
+  },
+  "Chelmsford, MA": {
+    "lat": 42.59692769999999,
+    "lng": -71.3514509
+  },
+  "Cheltenham Twp, PA": {
+    "lat": 40.0812601,
+    "lng": -75.1370254
+  },
+  "Cherokee County GA DA, GA": {
+    "lat": 34.2514526,
+    "lng": -84.4802606
+  },
+  "Cherry Hill, NJ": {
+    "lat": 39.9139124,
+    "lng": -75.0102047
+  },
+  "Cheshire, CT": {
+    "lat": 41.5083668,
+    "lng": -72.9106202
+  },
+  "Chester Township, OH": {
+    "lat": 41.5354325,
+    "lng": -81.36194019999999
+  },
+  "Chesterfield Twp, MI": {
+    "lat": 42.6960659,
+    "lng": -82.79941939999999
+  },
+  "Chickasaw Nation Lighthorse, OK": {
+    "lat": 34.4698313,
+    "lng": -97.26528580000002
+  },
+  "Chikaming Twp, MI": {
+    "lat": 41.8713018,
+    "lng": -86.63119069999999
+  },
+  "Chippewa, PA": {
+    "lat": 40.7683674,
+    "lng": -80.3769999
+  },
+  "Cicero Town, NY": {
+    "lat": 43.1763158,
+    "lng": -76.1141646
+  },
+  "City of Bellerive Acres (MO), MO": {
+    "lat": 38.71144,
+    "lng": -90.3140032
+  },
+  "City of Clay - AL, AL": {
+    "lat": 33.7026013,
+    "lng": -86.5997096
+  },
+  "City of Cumming - City Center GA, GA": {
+    "lat": 34.2073196,
+    "lng": -84.14019259999999
+  },
+  "City of Delavan, WI": {
+    "lat": 42.6330703,
+    "lng": -88.6437138
+  },
+  "City of Franklin, VA": {
+    "lat": 36.6776507,
+    "lng": -76.9224608
+  },
+  "City of Hueytown AL Alabama Power": {
+    "lat": 33.4519844,
+    "lng": -86.97063899999999
+  },
+  "City of Hurstbourne (KY), KY": {
+    "lat": 38.2378189,
+    "lng": -85.58768119999999
+  },
+  "City of Jennings, MO": {
+    "lat": 38.7192175,
+    "lng": -90.26039030000001
+  },
+  "City of Menifee, CA": {
+    "lat": 33.6971468,
+    "lng": -117.185294
+  },
+  "City of Moreno Valley": {
+    "lat": 33.9424658,
+    "lng": -117.2296717
+  },
+  "City of Nelson (GA), GA": {
+    "lat": 34.3820371,
+    "lng": -84.37103479999999
+  },
+  "City of Newman, CA": {
+    "lat": 37.3137067,
+    "lng": -121.0205526
+  },
+  "City of Oak Ridge North, TX": {
+    "lat": 30.1571758,
+    "lng": -95.44611479999999
+  },
+  "City of Peoria, AZ": {
+    "lat": 33.5805955,
+    "lng": -112.2373779
+  },
+  "City of Riverside, CA": {
+    "lat": 33.9825358,
+    "lng": -117.3757665
+  },
+  "City of Washington, PA": {
+    "lat": 40.17396,
+    "lng": -80.2461714
+  },
+  "City of West Haven (UT), UT": {
+    "lat": 41.2029998,
+    "lng": -112.0510533
+  },
+  "City of West, TX": {
+    "lat": 31.8023057,
+    "lng": -97.0909551
+  },
+  "City of Willard, MO": {
+    "lat": 37.305047,
+    "lng": -93.42852719999999
+  },
+  "Claflin University SC PD, SC": {
+    "lat": 34.20583300000001,
+    "lng": -79.53916699999999
+  },
+  "Clark Atlanta University GA PD, GA": {
+    "lat": 33.7501275,
+    "lng": -84.3885209
+  },
+  "Clark Co. IL Sheriff's Dept., IL": {
+    "lat": 39.3824189,
+    "lng": -87.77633329999999
+  },
+  "Clark County IN Dispatch, IN": {
+    "lat": 38.4492903,
+    "lng": -85.7256372
+  },
+  "Clark County School District NV, NV": {
+    "lat": 36.1445776,
+    "lng": -115.2112244
+  },
+  "Clark, NJ": {
+    "lat": 40.6259727,
+    "lng": -74.31702179999999
+  },
+  "Clark-Pleasant Police Department -, IN": {
+    "lat": 39.550731,
+    "lng": -86.0805614
+  },
+  "Clarkstown, NY": {
+    "lat": 41.1259715,
+    "lng": -73.95949399999999
+  },
+  "Clay Township, OH": {
+    "lat": 39.8673808,
+    "lng": -84.4165057
+  },
+  "Clayton Township, MI": {
+    "lat": 43.0007988,
+    "lng": -83.8312138
+  },
+  "Clemson University SC PD, SC": {
+    "lat": 34.20583300000001,
+    "lng": -79.53916699999999
+  },
+  "Cleveland Clinic, OH": {
+    "lat": 41.5030444,
+    "lng": -81.6206971
+  },
+  "Cleveland Metro Parks, OH": {
+    "lat": 41.4450441,
+    "lng": -81.7163887
+  },
+  "Cleveland OH Division of Police, OH": {
+    "lat": 41.49932,
+    "lng": -81.6943605
+  },
+  "Cleveland OH Metropolitan Schools Dept. of Safety and Security - Law Enforcement, OH": {
+    "lat": 41.49932,
+    "lng": -81.6943605
+  },
+  "Clinton Co IA Communications Center, IA": {
+    "lat": 41.878563,
+    "lng": -90.563609
+  },
+  "Clinton Township, MI": {
+    "lat": 42.600075,
+    "lng": -82.93211680000002
+  },
+  "Clinton Township, NJ": {
+    "lat": 40.64092890000001,
+    "lng": -74.8811431
+  },
+  "Clinton Township, OH": {
+    "lat": 41.5530965,
+    "lng": -84.16461629999999
+  },
+  "Coastal Bend College Campus PD": {
+    "lat": 28.4347636,
+    "lng": -97.75751989999999
+  },
+  "Cobb County GA DA, GA": {
+    "lat": 33.8999297,
+    "lng": -84.56414699999999
+  },
+  "Cohasset, MA": {
+    "lat": 42.24075029999999,
+    "lng": -70.8020552
+  },
+  "Colerain Township, OH": {
+    "lat": 39.2591765,
+    "lng": -84.6269824
+  },
+  "Coles County Airport - IL, IL": {
+    "lat": 39.4825096,
+    "lng": -88.2831726
+  },
+  "College Park GA PD, GA": {
+    "lat": 33.6534427,
+    "lng": -84.4493725
+  },
+  "College Place WA PD, WA": {
+    "lat": 46.0493026,
+    "lng": -118.3883012
+  },
+  "College Station TX PD, TX": {
+    "lat": 30.6210482,
+    "lng": -96.3255016
+  },
+  "College of William & Mary VA PD, VA": {
+    "lat": 37.2709753,
+    "lng": -76.7162467
+  },
+  "Collegedale TN PD, TN": {
+    "lat": 35.0531301,
+    "lng": -85.0502276
+  },
+  "Colorado Springs Airport (COS), CO": {
+    "lat": 38.8036959,
+    "lng": -104.7112051
+  },
+  "Colorado State Parks, CO": {
+    "lat": 38.8943235,
+    "lng": -104.8301033
+  },
+  "Colorado State Patrol, CO": {
+    "lat": 39.5500507,
+    "lng": -105.7820674
+  },
+  "Columbia River Drug Task Force WA, WA": {
+    "lat": 47.43871937211972,
+    "lng": -120.8228860820784
+  },
+  "Columbus Regional Airport Authority, OH": {
+    "lat": 39.8188792,
+    "lng": -82.93780939999999
+  },
+  "Colville WA Tribal Police, WA": {
+    "lat": 48.5449971,
+    "lng": -117.9009544
+  },
+  "Commerce TX ISD, TX": {
+    "lat": 33.2752452,
+    "lng": -95.9198387
+  },
+  "Commonwealth University-Bloomsburg PA, PA": {
+    "lat": 41.0081119,
+    "lng": -76.4472749
+  },
+  "Connecticut State Police, CT": {
+    "lat": 41.6032207,
+    "lng": -73.087749
+  },
+  "Cook County States Attorney's Office, IL": {
+    "lat": 41.883046,
+    "lng": -87.6299212
+  },
+  "Copley Township, OH": {
+    "lat": 41.0875099,
+    "lng": -81.63638689999999
+  },
+  "Corinth City Marshal": {
+    "lat": 38.4967376,
+    "lng": -84.56410989999999
+  },
+  "Cornell University NY PD, NY": {
+    "lat": 40.754455,
+    "lng": -73.9760113
+  },
+  "Cornerstone Community School (CA), CA": {
+    "lat": 33.6360927,
+    "lng": -117.9176572
+  },
+  "Cottage Grove Public Safety Dept (MN), MN": {
+    "lat": 44.8233492,
+    "lng": -92.9005056
+  },
+  "Coulee Dam PD": {
+    "lat": 47.9635865,
+    "lng": -118.9887055
+  },
+  "County Club Hills, IL": {
+    "lat": 41.5680898,
+    "lng": -87.72032569999999
+  },
+  "Covert Township, MI": {
+    "lat": 42.2745346,
+    "lng": -86.2767995
+  },
+  "Cow Creek OR Tribal Police": {
+    "lat": 42.8565039,
+    "lng": -123.597574
+  },
+  "Cranberry Township, PA": {
+    "lat": 40.6989127,
+    "lng": -80.1087742
+  },
+  "Crawford Town, NY": {
+    "lat": 41.6101476,
+    "lng": -74.30199790000002
+  },
+  "Cross Creek Township, OH": {
+    "lat": 40.3321314,
+    "lng": -80.7103532
+  },
+  "Crystal Lake Park District, IL": {
+    "lat": 42.2409691,
+    "lng": -88.3207384
+  },
+  "Cumberland County PA DA, PA": {
+    "lat": 40.1299841,
+    "lng": -77.2405153
+  },
+  "Cumberland Metro, IN": {
+    "lat": 39.7764832,
+    "lng": -85.95716999999999
+  },
+  "Cumberland, RI": {
+    "lat": 41.9721816,
+    "lng": -71.4061876
+  },
+  "Cumberland RI School District, RI": {
+    "lat": 41.9721816,
+    "lng": -71.4061876
+  },
+  "Cumru, PA": {
+    "lat": 40.270762,
+    "lng": -75.9579358
+  },
+  "Cuyahoga Emergency Communications Systems OH (CECOMS), OH": {
+    "lat": 41.3951424,
+    "lng": -81.5356373
+  },
+  "Cuyahoga Metro Housing Authority, OH": {
+    "lat": 41.5143653,
+    "lng": -81.5546091
+  },
+  "Cypress Fairbanks ISD (TX), TX": {
+    "lat": 29.8979465,
+    "lng": -95.68787359999999
+  },
+  "DFW Airport, TX": {
+    "lat": 32.8921983,
+    "lng": -97.03912319999999
+  },
+  "DNU - Auburn University AL (Raven)": {
+    "lat": 32.6047841,
+    "lng": -85.4852488
+  },
+  "DNU - Muncie PD IN (Raven)": {
+    "lat": 40.1936877,
+    "lng": -85.3876714
+  },
+  "Salem TWP, PA": {
+    "lat": 41.4502848,
+    "lng": -80.2990246
+  },
+  "DNU - Santa Clara University Campus Safety (Raven)": {
+    "lat": 37.3486087,
+    "lng": -121.9367173
+  },
+  "DNU Creston, OH": {
+    "lat": 40.9869997,
+    "lng": -81.8937511
+  },
+  "DNU PD": {
+    "lat": 38.7945952,
+    "lng": -106.5348379
+  },
+  "Dallas Area Rapid Transit, TX": {
+    "lat": 32.9051368,
+    "lng": -96.5968947
+  },
+  "Darien, CT": {
+    "lat": 41.0771914,
+    "lng": -73.4686858
+  },
+  "Dartmouth, MA": {
+    "lat": 41.6395372,
+    "lng": -70.98648870000001
+  },
+  "Decatur County IN Prosecutor's Office, IN": {
+    "lat": 39.3176186,
+    "lng": -85.52002399999999
+  },
+  "Decommissioned Org": {
+    "lat": 38.7945952,
+    "lng": -106.5348379
+  },
+  "Delaware State Police, DE": {
+    "lat": 38.9108325,
+    "lng": -75.52766989999999
+  },
+  "Delhi Twp, OH": {
+    "lat": 39.10402879999999,
+    "lng": -84.6172491
+  },
+  "Delran, NJ": {
+    "lat": 40.0145322,
+    "lng": -74.95686309999999
+  },
+  "Denison University Campus OH PD, OH": {
+    "lat": 40.7022844,
+    "lng": -80.6664629
+  },
+  "Department of Natural Resources - GA, GA": {
+    "lat": 33.7498967,
+    "lng": -84.3860529
+  },
+  "Dept. of Natural Resources, OH": {
+    "lat": 40.4172871,
+    "lng": -82.90712300000001
+  },
+  "Depue, IL": {
+    "lat": 41.3242061,
+    "lng": -89.3074244
+  },
+  "Derry Twp, PA": {
+    "lat": 40.27403880000001,
+    "lng": -76.6528225
+  },
+  "Des Peres MO DPS, MO": {
+    "lat": 38.6008862,
+    "lng": -90.4328968
+  },
+  "Desoto County School District MS, MS": {
+    "lat": 34.9065453,
+    "lng": -89.9626799
+  },
+  "Desoto, MO": {
+    "lat": 38.1399896,
+    "lng": -90.5534917
+  },
+  "Dewitt County, IL": {
+    "lat": 40.1810363,
+    "lng": -88.90306
+  },
+  "Dewitt Town, NY": {
+    "lat": 43.0426887,
+    "lng": -76.0677796
+  },
+  "District Attorney's Office TX, TX": {
+    "lat": 30.7099757,
+    "lng": -94.93342299999999
+  },
+  "Dona Ana County, NM": {
+    "lat": 32.485767,
+    "lng": -106.7234639
+  },
+  "Dothan Regional Airport AL, AL": {
+    "lat": 31.3148738,
+    "lng": -85.44872099999999
+  },
+  "Douglas County Open Spaces & Natural Resources CO, CO": {
+    "lat": 39.3719968,
+    "lng": -104.8625035
+  },
+  "Douglas, MA": {
+    "lat": 42.0543449,
+    "lng": -71.739379
+  },
+  "Douglass Twp, PA": {
+    "lat": 40.3400721,
+    "lng": -75.5917092
+  },
+  "Dracut, MA": {
+    "lat": 42.6689477,
+    "lng": -71.3033164
+  },
+  "DuPage Co IL Prosecutor Office, IL": {
+    "lat": 41.8243831,
+    "lng": -88.0900762
+  },
+  "DuPage County Forest Preserve, IL": {
+    "lat": 41.8168633,
+    "lng": -88.111317
+  },
+  "Dubois County Prosecutor's Office IN, IN": {
+    "lat": 38.357918,
+    "lng": -86.8220341
+  },
+  "Duplicate account": {
+    "lat": 38.7945952,
+    "lng": -106.5348379
+  },
+  "Dutchess County NY District Attorney's (DA) Office, NY": {
+    "lat": 41.7784372,
+    "lng": -73.7477857
+  },
+  "Dutchess County Office of Probation & Community Corrections NY, NY": {
+    "lat": 41.7784372,
+    "lng": -73.7477857
+  },
+  "ECU Health, NC": {
+    "lat": 36.4158333,
+    "lng": -77.6464444
+  },
+  "ECom911": {
+    "lat": 38.7945952,
+    "lng": -106.5348379
+  },
+  "East Baton Rouge County, LA": {
+    "lat": 30.5693593,
+    "lng": -91.09693999999999
+  },
+  "East Bay Parks, CA": {
+    "lat": 37.8271784,
+    "lng": -122.2913078
+  },
+  "East Brunswick, NJ": {
+    "lat": 40.438555,
+    "lng": -74.39259799999999
+  },
+  "East Georgia State College Campus PD (GA), GA": {
+    "lat": 32.595367,
+    "lng": -82.307009
+  },
+  "East Hanover Twp PD (Morris County)": {
+    "lat": 40.8033867,
+    "lng": -74.3639719
+  },
+  "East Hempfield Twp, PA": {
+    "lat": 40.0804104,
+    "lng": -76.37530459999999
+  },
+  "East Lyme, CT": {
+    "lat": 41.3531533,
+    "lng": -72.2295237
+  },
+  "East Norriton, PA": {
+    "lat": 40.1453398,
+    "lng": -75.31858199999999
+  },
+  "East Tennessee State University TN Campus PD, TN": {
+    "lat": 36.3023954,
+    "lng": -82.36985299999999
+  },
+  "East Texas Auto Theft Task Force, TX": {
+    "lat": 30.3332468,
+    "lng": -95.45454409999999
+  },
+  "East Windsor, CT": {
+    "lat": 41.9161361,
+    "lng": -72.5578799
+  },
+  "Eastern Adams Regional, PA": {
+    "lat": 41.2033216,
+    "lng": -77.1945247
+  },
+  "Easthampton, MA": {
+    "lat": 42.266757,
+    "lng": -72.66897999999999
+  },
+  "Easton, MA": {
+    "lat": 42.0245442,
+    "lng": -71.1286594
+  },
+  "Ector County Environmental Enforcement (TX), TX": {
+    "lat": 31.8246483,
+    "lng": -102.5298028
+  },
+  "Ector County Hospital District, TX": {
+    "lat": 31.8246483,
+    "lng": -102.5298028
+  },
+  "Edison, NJ": {
+    "lat": 40.5168636,
+    "lng": -74.40628250000002
+  },
+  "Edison State Community College": {
+    "lat": 40.1576555,
+    "lng": -84.2123107
+  },
+  "Elgin Community College Campus IL PD, IL": {
+    "lat": 42.0354084,
+    "lng": -88.2825668
+  },
+  "Elizabeth Township, PA": {
+    "lat": 40.2566482,
+    "lng": -79.8184684
+  },
+  "Elk Grove, IL": {
+    "lat": 42.0039178,
+    "lng": -87.9703461
+  },
+  "Ellwood City, PA": {
+    "lat": 40.8617303,
+    "lng": -80.2864515
+  },
+  "Elm Ridge, TX": {
+    "lat": 30.8476897,
+    "lng": -97.0413772
+  },
+  "Elon University NC PD, NC": {
+    "lat": 36.1018842,
+    "lng": -79.5068178
+  },
+  "Emory University Campus PD GA, GA": {
+    "lat": 33.7973735,
+    "lng": -84.3252791
+  },
+  "Erwin Pd TN, TN": {
+    "lat": 36.1451082,
+    "lng": -82.41680550000001
+  },
+  "Espanola, NM": {
+    "lat": 35.9910383,
+    "lng": -106.0818233
+  },
+  "Evans City Seven Fields PA Regional PD": {
+    "lat": 40.7692321,
+    "lng": -80.062838
+  },
+  "Evans Town, NY": {
+    "lat": 42.6639225,
+    "lng": -78.9966888
+  },
+  "Everett (WA) Police Department, WA": {
+    "lat": 47.9782457,
+    "lng": -122.207417
+  },
+  "Example PD": {
+    "lat": 38.7945952,
+    "lng": -106.5348379
+  },
+  "FL - Department of Corrections, FL": {
+    "lat": 30.4372513,
+    "lng": -84.2791494
+  },
+  "Fairfield (Nelson Co), KY": {
+    "lat": 37.9336983,
+    "lng": -85.3837324
+  },
+  "Fairfield, CT": {
+    "lat": 41.1408363,
+    "lng": -73.2612615
+  },
+  "Fairhaven, MA": {
+    "lat": 41.64087420000001,
+    "lng": -70.8813691
+  },
+  "Fairmont State University WV PD, WV": {
+    "lat": 39.4850848,
+    "lng": -80.1425781
+  },
+  "Falcon Flex Demo": {
+    "lat": 38.7945952,
+    "lng": -106.5348379
+  },
+  "Falls Township, PA": {
+    "lat": 40.1608295,
+    "lng": -74.7922202
+  },
+  "Fallsburg Town, NY": {
+    "lat": 41.7313608,
+    "lng": -74.60218909999999
+  },
+  "Far Hills Boro, NJ": {
+    "lat": 40.6832668,
+    "lng": -74.6369793
+  },
+  "Farmington, CT": {
+    "lat": 41.7360305,
+    "lng": -72.79502699999999
+  },
+  "Farmington Dept of Public Safety MI, MI": {
+    "lat": 42.4644795,
+    "lng": -83.37632180000001
+  },
+  "FedEx Air Carrier PD": {
+    "lat": 38.7945952,
+    "lng": -106.5348379
+  },
+  "Ferguson Township, PA": {
+    "lat": 40.7441654,
+    "lng": -77.9053182
+  },
+  "Findlay Township, PA": {
+    "lat": 40.4911664,
+    "lng": -80.297226
+  },
+  "Fish and Wildlife Commission, FL": {
+    "lat": 27.6648274,
+    "lng": -81.5157535
+  },
+  "Fishkill Town, NY": {
+    "lat": 41.5219445,
+    "lng": -73.9242251
+  },
+  "Five Rivers MetroParks, OH": {
+    "lat": 39.7652231,
+    "lng": -84.1861555
+  },
+  "Flemington, NJ": {
+    "lat": 40.5088639,
+    "lng": -74.8587094
+  },
+  "Flock City PD - Law Enforcement Demo": {
+    "lat": 38.7945952,
+    "lng": -106.5348379
+  },
+  "Flock PD": {
+    "lat": 38.7945952,
+    "lng": -106.5348379
+  },
+  "Flock Safety - Machine Learning Test": {
+    "lat": 38.7945952,
+    "lng": -106.5348379
+  },
+  "Flock Safety LE Training": {
+    "lat": 38.7945952,
+    "lng": -106.5348379
+  },
+  "Flora- IL -, IL": {
+    "lat": 38.6688394,
+    "lng": -88.48597079999999
+  },
+  "Florence Co. County, WI": {
+    "lat": 43.7844397,
+    "lng": -88.7878678
+  },
+  "Florida Atlantic University FL PD, FL": {
+    "lat": 28.0735403,
+    "lng": -82.43735889999999
+  },
+  "Florida Department of Law Enforcement (FDLE), FL": {
+    "lat": 28.5454616,
+    "lng": -81.3855646
+  },
+  "Florida Highway Patrol, FL": {
+    "lat": 27.6648274,
+    "lng": -81.5157535
+  },
+  "Florida LE Flock Training, FL": {
+    "lat": 30.6815801,
+    "lng": -86.8369036
+  },
+  "Florida Office of Agriculture Law Enforcement, FL": {
+    "lat": 28.055865,
+    "lng": -81.73438200000001
+  },
+  "Florida Polytechnic University FL PD, FL": {
+    "lat": 28.1480016,
+    "lng": -81.8483545
+  },
+  "Florida State University Campus PD FL, FL": {
+    "lat": 30.442087,
+    "lng": -84.2979579
+  },
+  "Fon du Lac Park District, IL": {
+    "lat": 40.6648855,
+    "lng": -89.5652028
+  },
+  "Foothill-DeAnza, CA": {
+    "lat": 37.3587614,
+    "lng": -122.1282955
+  },
+  "Forest County Potowatomi, WI": {
+    "lat": 45.5427909,
+    "lng": -88.82807179999999
+  },
+  "Forest Lake (MN), MN": {
+    "lat": 45.2788561,
+    "lng": -92.9852183
+  },
+  "Forest Preserve District Will County, IL": {
+    "lat": 41.511917,
+    "lng": -87.884306
+  },
+  "Fort Bend County TX District Attorney's Office, TX": {
+    "lat": 29.5526687,
+    "lng": -95.7727297
+  },
+  "Fort Bend County TX Environmental Health, TX": {
+    "lat": 29.5692614,
+    "lng": -95.81428849999999
+  },
+  "Fort Collins Police Services (FCPS)": {
+    "lat": 40.5852602,
+    "lng": -105.084423
+  },
+  "Fort Worth TX Code Compliance, TX": {
+    "lat": 32.8060918,
+    "lng": -97.33865499999999
+  },
+  "Foster, RI": {
+    "lat": 41.8537098,
+    "lng": -71.7581249
+  },
+  "Fox Chapel, PA": {
+    "lat": 40.51340160000001,
+    "lng": -79.8797728
+  },
+  "Fox Valley IL Parks District, IL": {
+    "lat": 41.7366773,
+    "lng": -88.2583733
+  },
+  "Franklin, NJ": {
+    "lat": 41.1219713,
+    "lng": -74.5796469
+  },
+  "Franklin Park, PA": {
+    "lat": 40.5834009,
+    "lng": -80.0878352
+  },
+  "Franklin-Bingham Farms, MI": {
+    "lat": 42.5158012,
+    "lng": -83.2736647
+  },
+  "Fraser MI DPS, MI": {
+    "lat": 42.539202,
+    "lng": -82.9493652
+  },
+  "Fraser/Winter Park, CO": {
+    "lat": 39.9476234,
+    "lng": -105.8180962
+  },
+  "Frazer Township, PA": {
+    "lat": 40.5703512,
+    "lng": -79.8005739
+  },
+  "Freetown, MA": {
+    "lat": 41.7619708,
+    "lng": -71.014118
+  },
+  "Fulton County Schools PD (GA), GA": {
+    "lat": 34.0663472,
+    "lng": -84.3121264
+  },
+  "Furman University SC PD, SC": {
+    "lat": 34.20583300000001,
+    "lng": -79.53916699999999
+  },
+  "GA - Atlanta Public Works, GA": {
+    "lat": 33.7501275,
+    "lng": -84.3885209
+  },
+  "GA - Georgia Piedmont Technical College, GA": {
+    "lat": 33.7897855,
+    "lng": -84.2356324
+  },
+  "GA - MCS/OCU/Intelligence, GA": {
+    "lat": 32.1574351,
+    "lng": -82.90712300000001
+  },
+  "GPSDC (Glenview Dispatch)": {
+    "lat": 42.0778065,
+    "lng": -87.8223368
+  },
+  "GPSTC": {
+    "lat": 33.0593385,
+    "lng": -83.96262279999999
+  },
+  "GSOC": {
+    "lat": 38.7945952,
+    "lng": -106.5348379
+  },
+  "Gadsden State Community College Campus AL PD, AL": {
+    "lat": 33.9955117,
+    "lng": -85.9915702
+  },
+  "Galena Park ISD, TX": {
+    "lat": 29.7690048,
+    "lng": -95.1744903
+  },
+  "Gardner, NC": {
+    "lat": 35.7112642,
+    "lng": -78.61417089999999
+  },
+  "Gasconade Co County, MO": {
+    "lat": 38.669489,
+    "lng": -91.5601667
+  },
+  "Geddes Town, NY": {
+    "lat": 43.0787435,
+    "lng": -76.2131474
+  },
+  "Genesee Co. MI 911 Dispatch Authority, MI": {
+    "lat": 43.0777289,
+    "lng": -83.67739279999999
+  },
+  "Genoa Township, OH": {
+    "lat": 40.1829112,
+    "lng": -82.89636039999999
+  },
+  "Georgia Attorney General's Office  - GA, GA": {
+    "lat": 32.1574351,
+    "lng": -82.90712300000001
+  },
+  "Georgia Bureau of Investigation (GBI), GA": {
+    "lat": 32.1574351,
+    "lng": -82.90712300000001
+  },
+  "Georgia Department of Corrections (GA) (Not in Use), GA": {
+    "lat": 33.033526,
+    "lng": -83.923517
+  },
+  "Georgia Department of Natural Resources - NOT IN USE, GA": {
+    "lat": 33.7498967,
+    "lng": -84.3860529
+  },
+  "Georgia Dept. of Corrections Intelligence Unit (GA), GA": {
+    "lat": 33.033526,
+    "lng": -83.923517
+  },
+  "Georgia Gwinnett College PD, GA": {
+    "lat": 33.9802966,
+    "lng": -84.0047709
+  },
+  "Georgia Southern University PD (GA), GA": {
+    "lat": 32.4206845,
+    "lng": -81.7869734
+  },
+  "Georgia Southwestern State University Campus PD, GA": {
+    "lat": 32.0562815,
+    "lng": -84.2173274
+  },
+  "Georgia State Patrol, GA": {
+    "lat": 32.1574351,
+    "lng": -82.90712300000001
+  },
+  "Georgia State University GA PD, GA": {
+    "lat": 33.753068,
+    "lng": -84.38528190000001
+  },
+  "Georgia Tech, GA": {
+    "lat": 33.7783046,
+    "lng": -84.3991657
+  },
+  "German Township, OH": {
+    "lat": 39.621079,
+    "lng": -84.41726659999999
+  },
+  "Gila River, AZ": {
+    "lat": 33.00991910342182,
+    "lng": -111.3810428778058
+  },
+  "Glassboro, NJ": {
+    "lat": 39.701392,
+    "lng": -75.10629240000002
+  },
+  "Glastonbury, CT": {
+    "lat": 41.6861794,
+    "lng": -72.5450779
+  },
+  "Glendora (CA), CA": {
+    "lat": 34.1361187,
+    "lng": -117.865339
+  },
+  "Glocester, RI": {
+    "lat": 41.9043113,
+    "lng": -71.69106599999999
+  },
+  "Goshen TWP, OH": {
+    "lat": 39.2369473,
+    "lng": -84.16461629999999
+  },
+  "Grafton, MA": {
+    "lat": 42.2070391,
+    "lng": -71.6856236
+  },
+  "Grand Beach/Michiana, MI": {
+    "lat": 41.7733739,
+    "lng": -86.79752789999999
+  },
+  "Grand Blanc Twp, MI": {
+    "lat": 42.9445989,
+    "lng": -83.65276539999999
+  },
+  "Grand Chute, WI": {
+    "lat": 44.2815913,
+    "lng": -88.4384087
+  },
+  "Grand Haven MI DPS, MI": {
+    "lat": 43.0630734,
+    "lng": -86.22838639999999
+  },
+  "Grand Valley State University MI, MI": {
+    "lat": 42.9641221,
+    "lng": -85.8890404
+  },
+  "Grant County AR SO1, AR": {
+    "lat": 34.2628015,
+    "lng": -92.4208713
+  },
+  "Great Parks of Hamilton County, OH": {
+    "lat": 39.2568328,
+    "lng": -84.5201299
+  },
+  "Greater Cleveland Regional Transit Authority, OH": {
+    "lat": 41.5005227,
+    "lng": -81.69989439999999
+  },
+  "Green Brook Twp, NJ": {
+    "lat": 40.5958666,
+    "lng": -74.490079
+  },
+  "Green Oak Township, MI": {
+    "lat": 42.4782758,
+    "lng": -83.7411631
+  },
+  "Greene County IN Prosecutors, IN": {
+    "lat": 39.0321796,
+    "lng": -86.9824288
+  },
+  "Greenhills OH Police Department [Inactive], OH": {
+    "lat": 39.2671883,
+    "lng": -84.5233788
+  },
+  "Greenport Town, NY": {
+    "lat": 42.2214856,
+    "lng": -73.8066163
+  },
+  "Greenwood Independent School District TX, TX": {
+    "lat": 32.0458872,
+    "lng": -101.866362
+  },
+  "Griffin Judicial Circuit": {
+    "lat": 33.2481904,
+    "lng": -84.26253059999999
+  },
+  "Grosse Ile, MI": {
+    "lat": 42.1303431,
+    "lng": -83.1488389
+  },
+  "Grundy County, CO": {
+    "lat": 39.5500507,
+    "lng": -105.7820674
+  },
+  "Grundy County IL 911, IL": {
+    "lat": 41.3500531,
+    "lng": -88.4016041
+  },
+  "Guilderland, NY": {
+    "lat": 42.7043568,
+    "lng": -73.9116433
+  },
+  "Guilford Technical Community College NC, NC": {
+    "lat": 35.9981517,
+    "lng": -79.9191627
+  },
+  "Gun Barrel, TX": {
+    "lat": 32.3309699,
+    "lng": -96.1515623
+  },
+  "Gun Lake Tribal, MI": {
+    "lat": 42.608323,
+    "lng": -85.5277488
+  },
+  "Gwinnett County DAs Office": {
+    "lat": 33.9190653,
+    "lng": -84.01674229999999
+  },
+  "Gwinnett County School PD": {
+    "lat": 33.9190653,
+    "lng": -84.01674229999999
+  },
+  "Haddonfield, NJ": {
+    "lat": 39.898163,
+    "lng": -75.0316874
+  },
+  "Hadley, MA": {
+    "lat": 42.3417565,
+    "lng": -72.58842220000001
+  },
+  "Hamburg Town, NY": {
+    "lat": 42.7158927,
+    "lng": -78.8294768
+  },
+  "Hamburg Township, MI": {
+    "lat": 42.4566198,
+    "lng": -83.8218642
+  },
+  "Hamilton GA, GA": {
+    "lat": 32.7579106,
+    "lng": -84.87493110000001
+  },
+  "Hampden-Sydney College Campus VA PD, VA": {
+    "lat": 37.2409769,
+    "lng": -78.45984159999999
+  },
+  "Hampton University VA Campus PD, VA": {
+    "lat": 37.0298687,
+    "lng": -76.34522179999999
+  },
+  "Hanover Twp, PA": {
+    "lat": 40.4917341,
+    "lng": -80.3664524
+  },
+  "Harmony Township, PA": {
+    "lat": 41.9550518,
+    "lng": -75.5393155
+  },
+  "Harper Community College IL PD, IL": {
+    "lat": 42.1415887,
+    "lng": -89.64754680000001
+  },
+  "Harris County Fire Marshal TX, TX": {
+    "lat": 29.7751825,
+    "lng": -95.3102505
+  },
+  "Harris County TX District Attorney's Office, TX": {
+    "lat": 29.9402288,
+    "lng": -95.3670693
+  },
+  "Harrisburg Bureau, PA": {
+    "lat": 40.2731911,
+    "lng": -76.8867008
+  },
+  "Harrison Township, PA": {
+    "lat": 40.63664,
+    "lng": -79.71669
+  },
+  "Hatfield Twp, PA": {
+    "lat": 40.279743,
+    "lng": -75.2770721
+  },
+  "Hays County TX Const Pct 4, TX": {
+    "lat": 30.195533,
+    "lng": -98.1060655
+  },
+  "Heath TX DPS, TX": {
+    "lat": 32.8365147,
+    "lng": -96.474987
+  },
+  "Highland Village TX, TX": {
+    "lat": 33.091788,
+    "lng": -97.0466759
+  },
+  "Hillsborough Twp, NJ": {
+    "lat": 40.5081276,
+    "lng": -74.6374233
+  },
+  "Hillside, NJ": {
+    "lat": 40.6969863,
+    "lng": -74.2194154
+  },
+  "Hilltown Township, PA": {
+    "lat": 40.3394024,
+    "lng": -75.2362381
+  },
+  "Hilton Head Island SC, SC": {
+    "lat": 32.216316,
+    "lng": -80.752608
+  },
+  "Hinckley, OH": {
+    "lat": 41.2383874,
+    "lng": -81.7451298
+  },
+  "Hinds County MS, MS": {
+    "lat": 32.2648353,
+    "lng": -90.37483540000001
+  },
+  "Hobart-Lawrence, WI": {
+    "lat": 44.3939376,
+    "lng": -88.1584129
+  },
+  "Homestead, PA": {
+    "lat": 40.4059025,
+    "lng": -79.9119948
+  },
+  "Hood Co. County, TX": {
+    "lat": 32.4296296,
+    "lng": -97.8286368
+  },
+  "Hopatcong, NJ": {
+    "lat": 40.9336489,
+    "lng": -74.6603429
+  },
+  "Hopewell Township, PA": {
+    "lat": 40.5779972,
+    "lng": -80.2655846
+  },
+  "Horizon, TX": {
+    "lat": 31.69261209999999,
+    "lng": -106.2074793
+  },
+  "Houston Arson Bureau TX, TX": {
+    "lat": 29.7600771,
+    "lng": -95.37011079999999
+  },
+  "Houston Christian University PD (TX), TX": {
+    "lat": 29.6946466,
+    "lng": -95.51621569999999
+  },
+  "Houston County GA District Attorney's Office, GA": {
+    "lat": 32.4219655,
+    "lng": -83.63484299999999
+  },
+  "Houston Metro Transit Authority (TX), TX": {
+    "lat": 29.7502022,
+    "lng": -95.3706931
+  },
+  "Howland Township, OH": {
+    "lat": 41.2576207,
+    "lng": -80.7325287
+  },
+  "Hudson Valley Cmnty College Campus NY PD, NY": {
+    "lat": 41.9209018,
+    "lng": -73.9612887
+  },
+  "Huffman ISD, TX": {
+    "lat": 30.0379935,
+    "lng": -95.0806918
+  },
+  "Hughestown, PA": {
+    "lat": 41.3270244,
+    "lng": -75.77324879999999
+  },
+  "Humble ISD, TX": {
+    "lat": 30.0108839,
+    "lng": -95.18492189999999
+  },
+  "Hunterdon County NJ Prosecutors Office, NJ": {
+    "lat": 40.56695149999999,
+    "lng": -74.92087719999999
+  },
+  "Huntsville Airport, AL": {
+    "lat": 34.6376902,
+    "lng": -86.7768273
+  },
+  "Huron Township, MI": {
+    "lat": 42.1232754,
+    "lng": -83.3237116
+  },
+  "IN - Noble County Prosecutors, IN": {
+    "lat": 41.4277391,
+    "lng": -85.35496499999999
+  },
+  "IN Lakeville PD": {
+    "lat": 44.6496868,
+    "lng": -93.24271999999999
+  },
+  "Idaho State Police ID, ID": {
+    "lat": 44.0682019,
+    "lng": -114.7420408
+  },
+  "Illinois Attorney General, IL": {
+    "lat": 40.6331249,
+    "lng": -89.3985283
+  },
+  "Illinois Department of Natural Resources, IL": {
+    "lat": 39.8403408,
+    "lng": -89.6466063
+  },
+  "Illinois Gaming Board, IL": {
+    "lat": 39.8006593,
+    "lng": -89.64493449999999
+  },
+  "Illinois State Police, IL": {
+    "lat": 40.6331249,
+    "lng": -89.3985283
+  },
+  "Illinois Statewide Auto Theft Taskforce, IL": {
+    "lat": 40.6331249,
+    "lng": -89.3985283
+  },
+  "Inactive": {
+    "lat": 38.7945952,
+    "lng": -106.5348379
+  },
+  "Inc Village of Lake Success NY, NY": {
+    "lat": 40.7698453,
+    "lng": -73.70904279999999
+  },
+  "Indian Hill, OH": {
+    "lat": 39.1806172,
+    "lng": -84.34496399999999
+  },
+  "Indiana Department of Corrections, IN": {
+    "lat": 39.76909,
+    "lng": -86.158018
+  },
+  "Indiana HIDTA, IN": {
+    "lat": 40.5512165,
+    "lng": -85.60236429999999
+  },
+  "Indiana LE Demo, IN": {
+    "lat": 40.5512165,
+    "lng": -85.60236429999999
+  },
+  "Indianapolis International Airport, IN": {
+    "lat": 39.72229919999999,
+    "lng": -86.30195619999999
+  },
+  "Indianapolis Metro, IN": {
+    "lat": 39.83618999999999,
+    "lng": -86.17517590000001
+  },
+  "Iowa Department of Corrections, IA": {
+    "lat": 41.5929571,
+    "lng": -93.6036647
+  },
+  "Iowa Department of Public Safety (IA), IA": {
+    "lat": 41.5883112,
+    "lng": -93.6072291
+  },
+  "Iowa State University IA PD, IA": {
+    "lat": 42.0266573,
+    "lng": -93.64645159999999
+  },
+  "Ithaca College Campus NY PD, NY": {
+    "lat": 40.559171,
+    "lng": -74.1214816
+  },
+  "Jackson County Central Dispatch MI, MI": {
+    "lat": 42.2686314,
+    "lng": -84.41541099999999
+  },
+  "Jackson County DA MS, MS": {
+    "lat": 30.4278212,
+    "lng": -88.55653099999999
+  },
+  "Jackson County GA School System (Not In Use), GA": {
+    "lat": 34.1174511,
+    "lng": -83.54965659999999
+  },
+  "Jackson Township, PA": {
+    "lat": 41.0017408,
+    "lng": -75.36453689999999
+  },
+  "Jaime LE Training": {
+    "lat": 29.8735467,
+    "lng": -90.0976452
+  },
+  "Jasper CO IL County, CO": {
+    "lat": 37.4177832,
+    "lng": -106.4625369
+  },
+  "Jasper County Sheriff IA, IA": {
+    "lat": 41.6414924,
+    "lng": -93.0175712
+  },
+  "Jasper, OH": {
+    "lat": 39.05007,
+    "lng": -83.05656789999999
+  },
+  "Jefferson College Campus MO PD, MO": {
+    "lat": 38.2592746,
+    "lng": -90.5597306
+  },
+  "Jefferson County MO 911, MO": {
+    "lat": 38.2310301,
+    "lng": -90.52578229999999
+  },
+  "Jefferson Hills, PA": {
+    "lat": 40.2911809,
+    "lng": -79.93199419999999
+  },
+  "Jefferson TX ISD, TX": {
+    "lat": 32.7780679,
+    "lng": -94.35651299999999
+  },
+  "Jefferson Township (Montgomery County), OH": {
+    "lat": 39.7090865,
+    "lng": -84.3226488
+  },
+  "Jefferson Township, OH": {
+    "lat": 39.7090865,
+    "lng": -84.3226488
+  },
+  "Jenkins Township PD (Luzerne County), PA": {
+    "lat": 41.29874100000001,
+    "lng": -75.81269259999999
+  },
+  "Jessamine County E-911 (KY), KY": {
+    "lat": 37.895573,
+    "lng": -84.56414699999999
+  },
+  "Johnston, RI": {
+    "lat": 41.8205199,
+    "lng": -71.51261699999999
+  },
+  "Joliet Junior College IL PD, IL": {
+    "lat": 41.5042347,
+    "lng": -88.1796749
+  },
+  "KS - City of St. John, KS": {
+    "lat": 38.00223709999999,
+    "lng": -98.7600887
+  },
+  "KU Medical Center, KS": {
+    "lat": 39.0559981,
+    "lng": -94.6091411
+  },
+  "Kane County Forest Preserve, IL": {
+    "lat": 41.8723734,
+    "lng": -88.2798214
+  },
+  "Kansas Highway Patrol, KS": {
+    "lat": 39.011902,
+    "lng": -98.4842465
+  },
+  "Kansas KBI, KS": {
+    "lat": 39.011902,
+    "lng": -98.4842465
+  },
+  "Katy ISD, TX": {
+    "lat": 29.7798686,
+    "lng": -95.7510475
+  },
+  "Kaufman County Constable PCT 2": {
+    "lat": 32.746773,
+    "lng": -96.47126899999999
+  },
+  "Kean University NJ PD, NJ": {
+    "lat": 40.6801659,
+    "lng": -74.23311
+  },
+  "Kellogg Community College Campus MI PD, MI": {
+    "lat": 42.3349381,
+    "lng": -85.17772409999999
+  },
+  "KenCom Public Safety Dispatch": {
+    "lat": 41.6573222,
+    "lng": -88.46266279999999
+  },
+  "Kenilworth, NJ": {
+    "lat": 40.6772596,
+    "lng": -74.2865467
+  },
+  "Kennesaw State University GA PD, GA": {
+    "lat": 34.0369014,
+    "lng": -84.582481
+  },
+  "Kenosha WI Joint Services, WI": {
+    "lat": 42.58544939999999,
+    "lng": -87.82411019999999
+  },
+  "Kentucky State, KY": {
+    "lat": 37.8393332,
+    "lng": -84.2700179
+  },
+  "Kimberly-Hansen, ID": {
+    "lat": 42.5296532,
+    "lng": -114.301121
+  },
+  "King County Housing Authority (WA) - INACTIVE, WA": {
+    "lat": 47.5480339,
+    "lng": -121.9836029
+  },
+  "King County International Airport (WA), WA": {
+    "lat": 47.5369043,
+    "lng": -122.3038555
+  },
+  "Kings County CA DAs Office, CA": {
+    "lat": 36.0988489,
+    "lng": -119.8815203
+  },
+  "Kings County Sheriff's Office CA, CA": {
+    "lat": 36.3326353,
+    "lng": -119.6690525
+  },
+  "Kingston, PA": {
+    "lat": 41.2617481,
+    "lng": -75.8968635
+  },
+  "Kingston Township, PA": {
+    "lat": 41.317619,
+    "lng": -75.911483
+  },
+  "Kiowa County CO Sheriff, CO": {
+    "lat": 38.3769671,
+    "lng": -102.7135121
+  },
+  "Kleberg TX County Attorney's Task Force, TX": {
+    "lat": 27.4308339,
+    "lng": -97.69822719999999
+  },
+  "Knoxville Airport, TN": {
+    "lat": 35.806504,
+    "lng": -83.9982326
+  },
+  "Knoxville Fire Dept TN, TN": {
+    "lat": 35.965266,
+    "lng": -83.923304
+  },
+  "LASD CA - San Dimas Station, CA": {
+    "lat": 34.1066756,
+    "lng": -117.8067257
+  },
+  "La Salle County, IL": {
+    "lat": 41.4363987,
+    "lng": -88.94138650000001
+  },
+  "LaGrange, KY": {
+    "lat": 38.4075666,
+    "lng": -85.37884679999999
+  },
+  "LaSalle Co. County, IL": {
+    "lat": 41.3878041,
+    "lng": -89.1650214
+  },
+  "Lac Courte Oreilles Tribal Police WI, WI": {
+    "lat": 45.95973420000001,
+    "lng": -91.3567827
+  },
+  "Lake County DA CA, CA": {
+    "lat": 39.08396440000001,
+    "lng": -122.8084496
+  },
+  "Lake County Forest Preserves, IL": {
+    "lat": 42.17911230000001,
+    "lng": -87.9168724
+  },
+  "Lake County Prosecutor's Office (OH) [Inactive], OH": {
+    "lat": 41.981532,
+    "lng": -81.2518833
+  },
+  "Lake MetroParks OH Rangers, OH": {
+    "lat": 41.57,
+    "lng": -81.4391667
+  },
+  "Lake Michigan College Campus PD, MI": {
+    "lat": 42.0957329,
+    "lng": -86.3939919
+  },
+  "Lake Travis ISD, TX": {
+    "lat": 30.304724,
+    "lng": -98.0247005
+  },
+  "LakeComm 911": {
+    "lat": 42.2989668,
+    "lng": -87.9645481
+  },
+  "Lakes Area, MN": {
+    "lat": 46.729553,
+    "lng": -94.6858998
+  },
+  "Lakeshore Park Conservancy (TN), TN": {
+    "lat": 35.5174913,
+    "lng": -86.5804473
+  },
+  "Lakeside City TX, TX": {
+    "lat": 33.8287101,
+    "lng": -98.545333
+  },
+  "Lakeside, AZ": {
+    "lat": 34.1425438,
+    "lng": -109.9603843
+  },
+  "Lakeside Park-Crestview Hills, KY": {
+    "lat": 39.03561620000001,
+    "lng": -84.5691102
+  },
+  "Lakeville, MA": {
+    "lat": 41.8459169,
+    "lng": -70.9495226
+  },
+  "Lakeway & Bee Cave, TX": {
+    "lat": 30.306098,
+    "lng": -97.9523768
+  },
+  "Lamar University TX PD, TX": {
+    "lat": 30.0415251,
+    "lng": -94.0754905
+  },
+  "Lander University SC PD, SC": {
+    "lat": 34.20583300000001,
+    "lng": -79.53916699999999
+  },
+  "Lantana Fresh Water District TX, TX": {
+    "lat": 33.0930198,
+    "lng": -97.132812
+  },
+  "Las Vegas Metro, NV": {
+    "lat": 36.1715735,
+    "lng": -115.139121
+  },
+  "Lawrence District Attorney PA, PA": {
+    "lat": 40.9991283,
+    "lng": -80.3392794
+  },
+  "LeRoy, IL": {
+    "lat": 40.3519795,
+    "lng": -88.764237
+  },
+  "Ledyard, CT": {
+    "lat": 41.4456444,
+    "lng": -72.0181743
+  },
+  "Lehigh County PA (RIIC), PA": {
+    "lat": 40.6519679,
+    "lng": -75.5742467
+  },
+  "Leon County District Attorney - TX, TX": {
+    "lat": 31.2152685,
+    "lng": -95.9832577
+  },
+  "Lewis University IL PD, IL": {
+    "lat": 37.93643700000001,
+    "lng": -88.6094993
+  },
+  "Lewisboro Town, NY": {
+    "lat": 41.2381511,
+    "lng": -73.52262449999999
+  },
+  "Lexington, KY": {
+    "lat": 38.0389091,
+    "lng": -84.5152662
+  },
+  "Lexington Medical Center, SC": {
+    "lat": 33.9664882,
+    "lng": -81.38987759999999
+  },
+  "Liberty Township, OH": {
+    "lat": 39.401514,
+    "lng": -84.40943589999999
+  },
+  "Limerick Township, PA": {
+    "lat": 40.2383606,
+    "lng": -75.5393155
+  },
+  "Lincoln County SO PD": {
+    "lat": 35.4637028,
+    "lng": -81.20781640000001
+  },
+  "Lincoln Land Community College IL PD, IL": {
+    "lat": 39.72035109999999,
+    "lng": -89.6120151
+  },
+  "Lincoln Township, MI": {
+    "lat": 42.0144517,
+    "lng": -86.5196749
+  },
+  "Lincoln University PD MO, MO": {
+    "lat": 37.9642529,
+    "lng": -91.8318334
+  },
+  "Lindsay Public Safety Department CA, CA": {
+    "lat": 36.778261,
+    "lng": -119.4179324
+  },
+  "Little Silver, NJ": {
+    "lat": 40.337504,
+    "lng": -74.048925
+  },
+  "Little Traverse Bay Band of Odawa Indians, MI": {
+    "lat": 45.4377784,
+    "lng": -84.9194107
+  },
+  "Littleton, MA": {
+    "lat": 42.5372893,
+    "lng": -71.5128022
+  },
+  "Livingston Parish County, LA": {
+    "lat": 30.4340146,
+    "lng": -90.6773046
+  },
+  "Logan Township, PA": {
+    "lat": 40.5203157,
+    "lng": -78.4524591
+  },
+  "Lone Peak, UT": {
+    "lat": 40.526616,
+    "lng": -111.7560417
+  },
+  "Long Island University Campus NY PD, NY": {
+    "lat": 40.6902728,
+    "lng": -73.9809532
+  },
+  "Longport, NJ": {
+    "lat": 39.3136123,
+    "lng": -74.5243107
+  },
+  "Los Alto Hills, CA": {
+    "lat": 37.3796627,
+    "lng": -122.1374637
+  },
+  "Los Angeles County CA SD, CA": {
+    "lat": 34.3871821,
+    "lng": -118.1122679
+  },
+  "Los Angeles Port Police CA, CA": {
+    "lat": 33.7404813,
+    "lng": -118.2833339
+  },
+  "Louisiana DOTD, LA": {
+    "lat": 30.5190775,
+    "lng": -91.5208624
+  },
+  "Louisiana State Police (LA), LA": {
+    "lat": 30.5190775,
+    "lng": -91.5208624
+  },
+  "Louisiana State University, LA": {
+    "lat": 34.0549076,
+    "lng": -118.242643
+  },
+  "Louisville Airport PD": {
+    "lat": 38.1706549,
+    "lng": -85.7307673
+  },
+  "Louisville Metro KY Alcoholic Beverage Control, KY": {
+    "lat": 38.2468618,
+    "lng": -85.7663724
+  },
+  "Louisville Metro KY Arson Bureau, KY": {
+    "lat": 38.2468618,
+    "lng": -85.7663724
+  },
+  "Louisville Metro, KY": {
+    "lat": 38.2468618,
+    "lng": -85.7663724
+  },
+  "Lower Merion, PA": {
+    "lat": 39.9981618,
+    "lng": -75.25074099999999
+  },
+  "Lower Saucon Township, PA": {
+    "lat": 40.5877279,
+    "lng": -75.30623260000002
+  },
+  "Lower Twp, NJ": {
+    "lat": 38.9665666,
+    "lng": -74.9145692
+  },
+  "Ludlow, MA": {
+    "lat": 42.1600936,
+    "lng": -72.47591899999999
+  },
+  "Luzerne County PA DA's Office, PA": {
+    "lat": 41.1404353,
+    "lng": -75.9927652
+  },
+  "MAGLOCLEN RISS": {
+    "lat": 40.22192099999999,
+    "lng": -74.91876049999999
+  },
+  "MI - Bloomfield Public Safety, MI": {
+    "lat": 42.5813327,
+    "lng": -83.28117689999999
+  },
+  "MI - Village of Middleville, MI": {
+    "lat": 42.7130889,
+    "lng": -85.4619599
+  },
+  "Isanti CO County, MN": {
+    "lat": 45.6301379,
+    "lng": -93.2537327
+  },
+  "MN - Minnetrista Public Safety Dept, MN": {
+    "lat": 44.938296,
+    "lng": -93.7177406
+  },
+  "MO Baptist Medical Center MO Public Safety, MO": {
+    "lat": 39.5080979,
+    "lng": -91.52876599999999
+  },
+  "MOCIC": {
+    "lat": 38.7945952,
+    "lng": -106.5348379
+  },
+  "MS - Itawamba Community College Campus PD, MS": {
+    "lat": 34.2748608,
+    "lng": -88.4117772
+  },
+  "MS Office of Homeland Security, MS": {
+    "lat": 32.3546679,
+    "lng": -89.3985283
+  },
+  "MSD Wayne Township, IN": {
+    "lat": 39.767184,
+    "lng": -86.26664629999999
+  },
+  "Mabank ISD, TX": {
+    "lat": 32.4130329,
+    "lng": -96.0891032
+  },
+  "Made in Error": {
+    "lat": 38.7945952,
+    "lng": -106.5348379
+  },
+  "Madison Township, MI": {
+    "lat": 41.8603403,
+    "lng": -84.042642
+  },
+  "Mahanoy City, PA": {
+    "lat": 40.8125881,
+    "lng": -76.1416033
+  },
+  "Mahanoy Township, PA": {
+    "lat": 40.8322136,
+    "lng": -76.1435915
+  },
+  "Mahoning Twp, PA": {
+    "lat": 40.9694576,
+    "lng": -79.3571527
+  },
+  "Mahoning Valley Law Enforcement TF (OH), OH": {
+    "lat": 41.050641,
+    "lng": -80.93768999999999
+  },
+  "Manheim Township, PA": {
+    "lat": 40.0922165,
+    "lng": -76.30583279999999
+  },
+  "Manor TWP, PA": {
+    "lat": 40.7720254,
+    "lng": -79.5041322
+  },
+  "Mantua Township, NJ": {
+    "lat": 39.7823805,
+    "lng": -75.1823333
+  },
+  "Maple Shade, NJ": {
+    "lat": 39.9489512,
+    "lng": -74.9862978
+  },
+  "Marin County CA DA, CA": {
+    "lat": 38.083403,
+    "lng": -122.7633036
+  },
+  "Marion Health, IN": {
+    "lat": 40.5583739,
+    "lng": -85.6591442
+  },
+  "Marlborough Town, NY": {
+    "lat": 41.60564919999999,
+    "lng": -73.9715276
+  },
+  "Marshall County Drug Task Force WV, WV": {
+    "lat": 39.8926818,
+    "lng": -80.6770787
+  },
+  "Marta, GA": {
+    "lat": 32.1574351,
+    "lng": -82.90712300000001
+  },
+  "Massachusetts Department of Correction, MA": {
+    "lat": 42.1290359,
+    "lng": -71.48427579999999
+  },
+  "Mattapoisett, MA": {
+    "lat": 41.6620072,
+    "lng": -70.81916319999999
+  },
+  "McHenry County Conservation District, IL": {
+    "lat": 42.219301,
+    "lng": -88.578254
+  },
+  "Mechanicsburg/Buffalo, IL": {
+    "lat": 39.852547,
+    "lng": -89.40870319999999
+  },
+  "Medway, MA": {
+    "lat": 42.1417641,
+    "lng": -71.3967256
+  },
+  "Memorial Villages, TX": {
+    "lat": 29.7697445,
+    "lng": -95.5175989
+  },
+  "Memphis Intl Airport": {
+    "lat": 35.0447109,
+    "lng": -89.9815215
+  },
+  "Menominee Co. County, WI": {
+    "lat": 45.0304745,
+    "lng": -88.74777019999999
+  },
+  "Mentor on the Lake, OH": {
+    "lat": 41.7128807,
+    "lng": -81.3612097
+  },
+  "Meredith College Campus PD (NC), NC": {
+    "lat": 35.798208,
+    "lng": -78.6886419
+  },
+  "Meridian Community College MS PD, MS": {
+    "lat": 32.3676949,
+    "lng": -88.7319036
+  },
+  "Merrimack College MA PD, MA": {
+    "lat": 42.6673814,
+    "lng": -71.1234527
+  },
+  "Metamora Township, MI": {
+    "lat": 42.919071,
+    "lng": -83.2720082
+  },
+  "Metcom Disptach Center IL, IL": {
+    "lat": 40.3084762,
+    "lng": -89.70042149999999
+  },
+  "Methodist Health System, TX": {
+    "lat": 32.9746404,
+    "lng": -96.726996
+  },
+  "Methodist Midlothian Medical Center, TX": {
+    "lat": 32.4689398,
+    "lng": -96.98199729999999
+  },
+  "Methodist Southlake Medical Center, TX": {
+    "lat": 32.9569733,
+    "lng": -97.14588119999999
+  },
+  "Metra, IL": {
+    "lat": 40.6331249,
+    "lng": -89.3985283
+  },
+  "Metro East Auto Theft (IL), IL": {
+    "lat": 40.6331249,
+    "lng": -89.3985283
+  },
+  "Metro North RECC (MA), MA": {
+    "lat": 42.4072107,
+    "lng": -71.3824374
+  },
+  "Metro Police Authority of Genesee County MI, MI": {
+    "lat": 42.9465904,
+    "lng": -83.72631059999999
+  },
+  "Metro Washington Airport Auth VA, VA": {
+    "lat": 38.8536245,
+    "lng": -77.0440674
+  },
+  "Metropolitan Washington, DC": {
+    "lat": 38.9672713,
+    "lng": -77.0130672
+  },
+  "Metuchen, NJ": {
+    "lat": 40.5436208,
+    "lng": -74.36272799999999
+  },
+  "Miami County Park District OH Rangers, OH": {
+    "lat": 40.0211314,
+    "lng": -84.15861799999999
+  },
+  "Miami Dade (Duplicate": {
+    "lat": 25.5516034,
+    "lng": -80.6326916
+  },
+  "Miami Township, OH": {
+    "lat": 39.1941014,
+    "lng": -84.23746150000001
+  },
+  "Michigan Department of Corrections (MDOC), MI": {
+    "lat": 42.7332362,
+    "lng": -84.5502995
+  },
+  "Michigan Department of Corrections - Facilities, MI": {
+    "lat": 42.7332362,
+    "lng": -84.5502995
+  },
+  "Michigan Department of Natural Resources, MI": {
+    "lat": 44.3148443,
+    "lng": -85.60236429999999
+  },
+  "Michigan Senate, MI": {
+    "lat": 44.3148443,
+    "lng": -85.60236429999999
+  },
+  "Michigan State Police, MI": {
+    "lat": 44.3148443,
+    "lng": -85.60236429999999
+  },
+  "Mid Missouri Drug Task Force MO, MO": {
+    "lat": 38.9680352,
+    "lng": -92.14502449999999
+  },
+  "Middle Georgia State University Campus PD, GA": {
+    "lat": 32.8109077,
+    "lng": -83.7326161
+  },
+  "Middle River VA Jail, VA": {
+    "lat": 38.20582350077306,
+    "lng": -79.02514449282991
+  },
+  "Middle Tennessee State, TN": {
+    "lat": 35.5174913,
+    "lng": -86.5804473
+  },
+  "Middleboro, MA": {
+    "lat": 41.8924447,
+    "lng": -70.9090921
+  },
+  "Middlesex Township, PA": {
+    "lat": 40.7009057,
+    "lng": -79.9416549
+  },
+  "Middletown, RI": {
+    "lat": 41.5218243,
+    "lng": -71.2834538
+  },
+  "Middletown Township, PA": {
+    "lat": 40.1733277,
+    "lng": -74.88579890000001
+  },
+  "Midland County Hospital District, TX": {
+    "lat": 31.9972471,
+    "lng": -102.099146
+  },
+  "Midland TX ISD, TX": {
+    "lat": 31.8606058,
+    "lng": -102.1632718
+  },
+  "Midwest HIDTA": {
+    "lat": 39.2789162,
+    "lng": -94.6722436
+  },
+  "Midwestern State University TX PD, TX": {
+    "lat": 33.8713843,
+    "lng": -98.5224401
+  },
+  "Milford, CT": {
+    "lat": 41.2306979,
+    "lng": -73.064036
+  },
+  "Millcreek Twp, PA": {
+    "lat": 41.2677236,
+    "lng": -79.2563916
+  },
+  "Millen GA Public Safety Dept, GA": {
+    "lat": 32.8040512,
+    "lng": -81.9492812
+  },
+  "Millis, MA": {
+    "lat": 42.1669661,
+    "lng": -71.351738
+  },
+  "Millvale, PA": {
+    "lat": 40.480069,
+    "lng": -79.9783862
+  },
+  "Miner Co County, SD": {
+    "lat": 44.0643951,
+    "lng": -97.69822719999999
+  },
+  "Mineral Area Drug Task Force MO, MO": {
+    "lat": 37.8450208,
+    "lng": -90.48249059999999
+  },
+  "Mississippi Department of Public Safety, MS": {
+    "lat": 30.4103415,
+    "lng": -89.4352839
+  },
+  "Missouri Capitol, MO": {
+    "lat": 38.5790295,
+    "lng": -92.1732042
+  },
+  "Missouri Department of Conservation, MO": {
+    "lat": 39.7218895,
+    "lng": -92.46535639999999
+  },
+  "Missouri Department of Public Safety, MO": {
+    "lat": 37.9642529,
+    "lng": -91.8318334
+  },
+  "Missouri Information Analysis Center, MO": {
+    "lat": 39.5080979,
+    "lng": -91.52876599999999
+  },
+  "Missouri Information Analysis Center (Deactivate), MO": {
+    "lat": 37.9642529,
+    "lng": -91.8318334
+  },
+  "Missouri State Highway Patrol, MO": {
+    "lat": 37.9642529,
+    "lng": -91.8318334
+  },
+  "Monmouth Beach, NJ": {
+    "lat": 40.3320013,
+    "lng": -73.9748419
+  },
+  "Monmouth County Prosecutor's Office NJ, NJ": {
+    "lat": 40.2501584,
+    "lng": -74.2652184
+  },
+  "Monongalia WV County, WV": {
+    "lat": 39.6695849,
+    "lng": -79.96403389999999
+  },
+  "Monroe, CT": {
+    "lat": 41.3325962,
+    "lng": -73.2073358
+  },
+  "Monroe, NJ": {
+    "lat": 40.3209253,
+    "lng": -74.4521504
+  },
+  "Monson, MA": {
+    "lat": 42.1042451,
+    "lng": -72.3189519
+  },
+  "Monterey County District Attorney's Office": {
+    "lat": 36.6002236,
+    "lng": -121.8947489
+  },
+  "Montgomery County Constable": {
+    "lat": 30.1991094,
+    "lng": -95.75398430000001
+  },
+  "Montgomery County IN Communications Center, IN": {
+    "lat": 40.019879,
+    "lng": -86.8220341
+  },
+  "Montgomery County Parks TN, TN": {
+    "lat": 36.4960406,
+    "lng": -87.460397
+  },
+  "Montgomery District 6 AL, AL": {
+    "lat": 32.5437448,
+    "lng": -86.2119127
+  },
+  "Montgomery, MA": {
+    "lat": 42.2067573,
+    "lng": -72.8050954
+  },
+  "Montgomery TWP, NJ": {
+    "lat": 40.416838,
+    "lng": -74.65254010000001
+  },
+  "Montville, CT": {
+    "lat": 41.4639922,
+    "lng": -72.1556189
+  },
+  "Montville Township, OH": {
+    "lat": 41.0924536,
+    "lng": -81.84429340000001
+  },
+  "Moorland Hills, OH": {
+    "lat": 41.4478312,
+    "lng": -81.4276153
+  },
+  "Morehouse College GA PD, GA": {
+    "lat": 33.6534427,
+    "lng": -84.4493725
+  },
+  "Morgan Co County, MO": {
+    "lat": 38.3661344,
+    "lng": -92.8577105
+  },
+  "Morgan County AL 911, AL": {
+    "lat": 34.4240875,
+    "lng": -86.86218269999999
+  },
+  "Morgan County Board of Commissioners (GA), GA": {
+    "lat": 33.5794186,
+    "lng": -83.46435509999999
+  },
+  "Mount Hope, NY": {
+    "lat": 41.4513121,
+    "lng": -74.5346103
+  },
+  "Mount Olive Township, NJ": {
+    "lat": 40.8715555,
+    "lng": -74.7341253
+  },
+  "Mount Pleasant Township, PA": {
+    "lat": 40.1767505,
+    "lng": -79.4928857
+  },
+  "Mount Vernon TX ISD, TX": {
+    "lat": 33.1959954,
+    "lng": -95.18492189999999
+  },
+  "Mountain Bay Metro, WI": {
+    "lat": 44.888147,
+    "lng": -89.6246637
+  },
+  "Mt. Juliet, TN": {
+    "lat": 36.200055,
+    "lng": -86.5186054
+  },
+  "Mt. Lebanon, PA": {
+    "lat": 40.3869544,
+    "lng": -80.0438199
+  },
+  "Mt. Washington, KY": {
+    "lat": 38.0481573,
+    "lng": -85.5416656
+  },
+  "Mt. Zion, IL": {
+    "lat": 39.7714252,
+    "lng": -88.8742405
+  },
+  "Muhlenberg Township, PA": {
+    "lat": 40.402297,
+    "lng": -75.9289046
+  },
+  "Munhall, PA": {
+    "lat": 40.3922914,
+    "lng": -79.9000499
+  },
+  "Murrysville, PA": {
+    "lat": 40.4250514,
+    "lng": -79.6665277
+  },
+  "Muskingum County OH Prosecutor's Office, OH": {
+    "lat": 39.9478393,
+    "lng": -81.9534815
+  },
+  "NC - North Carolina State Highway Patrol, NC": {
+    "lat": 35.7595731,
+    "lng": -79.01929969999999
+  },
+  "NCRIC": {
+    "lat": 37.7819473,
+    "lng": -122.4181453
+  },
+  "Colfax Co County, NE": {
+    "lat": 41.6268435,
+    "lng": -97.0068393
+  },
+  "NESPIN - New England State Police Information Network": {
+    "lat": 42.0748515,
+    "lng": -71.4187944
+  },
+  "Village of Walden, NY": {
+    "lat": 41.5612048,
+    "lng": -74.18848059999999
+  },
+  "NYS Crime Analysis Center NY, NY": {
+    "lat": 40.7163859,
+    "lng": -74.0012192
+  },
+  "NYS Crime Analysis Center Network": {
+    "lat": 43.2994285,
+    "lng": -74.21793260000001
+  },
+  "Napa County (CA) Probation Department, CA": {
+    "lat": 38.5024689,
+    "lng": -122.2653887
+  },
+  "Naperville Park District, IL": {
+    "lat": 41.7509859,
+    "lng": -88.1535746
+  },
+  "Napoleon Twp, MI": {
+    "lat": 42.1836806,
+    "lng": -84.3016021
+  },
+  "Narragansett, RI": {
+    "lat": 41.4500844,
+    "lng": -71.44950299999999
+  },
+  "Nashville Intl Airport, TN": {
+    "lat": 36.1248851,
+    "lng": -86.6762176
+  },
+  "National Center for Missing & Exploited Children [NCMEC]": {
+    "lat": 38.803867,
+    "lng": -77.0621328
+  },
+  "Navajo State Park, CO": {
+    "lat": 37.0083129,
+    "lng": -107.4078104
+  },
+  "Nebraska State Patrol, NE": {
+    "lat": 41.4925374,
+    "lng": -99.9018131
+  },
+  "Neekoosa, WI": {
+    "lat": 44.3124644,
+    "lng": -89.9042937
+  },
+  "Neptune Twp, NJ": {
+    "lat": 40.2094787,
+    "lng": -74.02702450000001
+  },
+  "Neshoba County School District MS PD, MS": {
+    "lat": 32.7608167,
+    "lng": -89.20867729999999
+  },
+  "Nevada Department of Motor Vehicles, NV": {
+    "lat": 36.0404905,
+    "lng": -115.0460894
+  },
+  "New Berlin TX Marshal's Office [Inactive], TX": {
+    "lat": 29.4680587,
+    "lng": -98.0973802
+  },
+  "New Brighton Dept of Pub Safety (MN), MN": {
+    "lat": 45.0655212,
+    "lng": -93.2018908
+  },
+  "New Brighton, PA": {
+    "lat": 40.7303434,
+    "lng": -80.3100627
+  },
+  "New Britain Township, PA": {
+    "lat": 40.3106297,
+    "lng": -75.2070644
+  },
+  "New Hampshire State Police, NH": {
+    "lat": 43.1938516,
+    "lng": -71.5723953
+  },
+  "New Hartford Town, NY": {
+    "lat": 43.073403,
+    "lng": -75.2876661
+  },
+  "New Jersey State Police, NJ": {
+    "lat": 39.6490521,
+    "lng": -74.2966272
+  },
+  "New Mexico State University Campus PD, NM": {
+    "lat": 32.2792887,
+    "lng": -106.7491391
+  },
+  "New Sewickley TWP, PA": {
+    "lat": 40.7241033,
+    "lng": -80.2098219
+  },
+  "New Windsor Town, NY": {
+    "lat": 41.4706446,
+    "lng": -74.1122506
+  },
+  "New York City Department of Environmental Protection, NY": {
+    "lat": 40.7348134,
+    "lng": -73.8644927
+  },
+  "New York Institute of Technology Campus, NY": {
+    "lat": 40.7695555,
+    "lng": -73.9824179
+  },
+  "New York State Park Police, NY": {
+    "lat": 40.8260018,
+    "lng": -73.95675290000001
+  },
+  "New York State Police NY, NY": {
+    "lat": 40.7897433,
+    "lng": -73.927593
+  },
+  "Newton County Schools GA, GA": {
+    "lat": 33.5544296,
+    "lng": -83.8473015
+  },
+  "Newtown, CT": {
+    "lat": 41.4141172,
+    "lng": -73.3035651
+  },
+  "Newtown Township (Delaware County), PA": {
+    "lat": 39.9868904,
+    "lng": -75.4007058
+  },
+  "Niagara Frontier Transit Authority (NFTA) PD": {
+    "lat": 43.3119496,
+    "lng": -78.74762079999999
+  },
+  "Norfolk Southern RR, IL": {
+    "lat": 39.8528304,
+    "lng": -89.3715127
+  },
+  "Norfolk State University VA PD, VA": {
+    "lat": 36.8479292,
+    "lng": -76.2620987
+  },
+  "Norfolk VA Housing Authority, VA": {
+    "lat": 36.8507689,
+    "lng": -76.28587259999999
+  },
+  "North Brunswick, NJ": {
+    "lat": 40.4637881,
+    "lng": -74.4557172
+  },
+  "North Carolina A&T University NC PD, NC": {
+    "lat": 36.0770034,
+    "lng": -79.7718199
+  },
+  "North Carolina State Bureau of Investigation (NCSBI), NC": {
+    "lat": 35.7330714,
+    "lng": -78.63033949999999
+  },
+  "North College Hill OH PD, OH": {
+    "lat": 39.2183911,
+    "lng": -84.55077779999999
+  },
+  "North County Cooperative, MO": {
+    "lat": 38.6838099,
+    "lng": -90.33001610000001
+  },
+  "North Coventry Township, PA": {
+    "lat": 40.2159602,
+    "lng": -75.6789905
+  },
+  "North Fayette Township, PA": {
+    "lat": 40.4128738,
+    "lng": -80.2209773
+  },
+  "North Huntingdon TWP, PA": {
+    "lat": 40.3301883,
+    "lng": -79.7307014
+  },
+  "North Kern Cemetery District, CA": {
+    "lat": 35.7630757,
+    "lng": -119.2567784
+  },
+  "North Kingstown, RI": {
+    "lat": 41.5662005,
+    "lng": -71.46378469999999
+  },
+  "North Londonderry Township, PA": {
+    "lat": 40.3317984,
+    "lng": -76.5892774
+  },
+  "North MO DTF Brookfield, MO": {
+    "lat": 39.7844687,
+    "lng": -93.07353479999999
+  },
+  "North Missouri Drug Task Force MO, MO": {
+    "lat": 39.6944201,
+    "lng": -92.0417273
+  },
+  "North Providence, RI": {
+    "lat": 41.8535518,
+    "lng": -71.46766389999999
+  },
+  "North Sewickley, PA": {
+    "lat": 40.8009992,
+    "lng": -80.2878794
+  },
+  "North Strabane Township, PA": {
+    "lat": 40.2251341,
+    "lng": -80.15402259999999
+  },
+  "North TX Anti-Gang Center (TAG), TX": {
+    "lat": 34.3048046,
+    "lng": -99.2978614
+  },
+  "North Tonawanda City PD": {
+    "lat": 43.038668,
+    "lng": -78.8642033
+  },
+  "North Versailles, PA": {
+    "lat": 40.3756555,
+    "lng": -79.8164209
+  },
+  "Northampton County PA DA, PA": {
+    "lat": 40.7749283,
+    "lng": -75.294569
+  },
+  "Northeast LE Training - Demo": {
+    "lat": 43.2994285,
+    "lng": -74.21793260000001
+  },
+  "Northeast Ohio Regional Fusion Center, OH": {
+    "lat": 41.3084133,
+    "lng": -80.8550568
+  },
+  "Northern Arizona University Campus AZ PD, AZ": {
+    "lat": 35.1802684,
+    "lng": -111.6540336
+  },
+  "Northern Berks Regional, PA": {
+    "lat": 40.3451566,
+    "lng": -75.9927652
+  },
+  "Northern Colorado Intelligence Unit CO, CO": {
+    "lat": 40.4027669,
+    "lng": -104.700274
+  },
+  "Northern Virginia Cmnty College Campus VA PD, VA": {
+    "lat": 37.4315734,
+    "lng": -78.6568942
+  },
+  "Northville Twp, MI": {
+    "lat": 42.4102617,
+    "lng": -83.4822785
+  },
+  "Northwest Arkansas Regional Airport, AR": {
+    "lat": 36.2805838,
+    "lng": -94.30458159999999
+  },
+  "Norwell, MA": {
+    "lat": 42.1573988,
+    "lng": -70.81784999999999
+  },
+  "Nottawaseppi Huron Band of the Potawatomi Tribal Police MI, MI": {
+    "lat": 42.1058524,
+    "lng": -85.26067119999999
+  },
+  "O'Hara Township, PA": {
+    "lat": 40.4973937,
+    "lng": -79.8700088
+  },
+  "OH - City of Canal Winchester, OH": {
+    "lat": 39.8428193,
+    "lng": -82.8056388
+  },
+  "OH - College of Mount St. Joseph, OH": {
+    "lat": 39.09830609999999,
+    "lng": -84.6456236
+  },
+  "OH - Jefferson County Drug Task Force, OH": {
+    "lat": 40.38717219999999,
+    "lng": -80.7657804
+  },
+  "Johnny Appleseed Metropolitan Park District, OH": {
+    "lat": 40.7623279,
+    "lng": -84.0504204
+  },
+  "Madison Township, OH": {
+    "lat": 41.9858412,
+    "lng": -81.0533854
+  },
+  "OH - Metroparks Toledo, OH": {
+    "lat": 41.67947640000001,
+    "lng": -83.6704182
+  },
+  "Mt. Healthy, OH": {
+    "lat": 39.2336687,
+    "lng": -84.5457778
+  },
+  "OH - Prairie Township (Franklin County), OH": {
+    "lat": 39.935655,
+    "lng": -83.1970511
+  },
+  "OH - Preservation Parks of Delaware County, OH": {
+    "lat": 40.2427243,
+    "lng": -82.8523105
+  },
+  "OH - Stark Parks Public Safety, OH": {
+    "lat": 40.8684676,
+    "lng": -81.2518833
+  },
+  "OH - Township of Perry (Franklin County), OH": {
+    "lat": 40.11207150000001,
+    "lng": -83.09129480000001
+  },
+  "OH - U.S.23 Major Crimes Task Force, OH": {
+    "lat": 40.2675424,
+    "lng": -83.070379
+  },
+  "OK - 477, OK": {
+    "lat": 35.4688692,
+    "lng": -97.519539
+  },
+  "The City of The Village, OK": {
+    "lat": 35.5608899,
+    "lng": -97.55142939999999
+  },
+  "OK - University of Oklahoma Health Science Center PD, OK": {
+    "lat": 35.0077519,
+    "lng": -97.092877
+  },
+  "OLREC IL Dispatch, IL": {
+    "lat": 40.6331249,
+    "lng": -89.3985283
+  },
+  "Oak Park MI Dept of Public Safety, MI": {
+    "lat": 42.4594803,
+    "lng": -83.18270509999999
+  },
+  "Ocean County Prosecutors Office NJ, NJ": {
+    "lat": 39.95346050000001,
+    "lng": -74.19297569999999
+  },
+  "Office of Commissioner of Insurance and Safety Fire (GA), GA": {
+    "lat": 33.74988,
+    "lng": -84.3860052
+  },
+  "Ohio Attorney General's Office - OOCIC, OH": {
+    "lat": 39.34719,
+    "lng": -82.096132
+  },
+  "Ohio Bureau of Criminal Investigation, OH": {
+    "lat": 39.9119355,
+    "lng": -83.4775892
+  },
+  "Ohio Bureau of Motor Vehicles (Ohio DPS), OH": {
+    "lat": 40.4172871,
+    "lng": -82.90712300000001
+  },
+  "Ohio Bureau of Workers' Compensation (LE), OH": {
+    "lat": 39.9664767,
+    "lng": -83.0024803
+  },
+  "Ohio DPS, OH": {
+    "lat": 40.4172871,
+    "lng": -82.90712300000001
+  },
+  "Ohio Department of Rehabilitation and Correction - Office of the Chief Inspector, OH": {
+    "lat": 39.9684166,
+    "lng": -83.1233373
+  },
+  "Ohio Department of Youth Services - Office of the Chief Inspector, OH": {
+    "lat": 40.4172871,
+    "lng": -82.90712300000001
+  },
+  "Ohio Drug TF (HIDTA / Moreland Hills, OH": {
+    "lat": 41.4478312,
+    "lng": -81.4276153
+  },
+  "Ohio State Fire Marshal, OH": {
+    "lat": 39.1520107,
+    "lng": -83.4849165
+  },
+  "Ohio State Highway Patrol, OH": {
+    "lat": 40.4172871,
+    "lng": -82.90712300000001
+  },
+  "Ohio State University OH PD, OH": {
+    "lat": 40.0060889,
+    "lng": -83.0282624
+  },
+  "Ohio Township, PA": {
+    "lat": 40.538026,
+    "lng": -80.09260139999999
+  },
+  "Oklahoma City Community College PD, OK": {
+    "lat": 35.3880406,
+    "lng": -97.56991839999999
+  },
+  "Oklahoma Department of Public Safety (OK), OK": {
+    "lat": 35.506232,
+    "lng": -97.47521719999999
+  },
+  "Oklahoma State Bureau of Investigations, OK": {
+    "lat": 35.5388435,
+    "lng": -97.5168135
+  },
+  "Old Dominion Univ, VA": {
+    "lat": 36.8853217,
+    "lng": -76.3058786
+  },
+  "Old Saybrook, CT": {
+    "lat": 41.2960159,
+    "lng": -72.38453009999999
+  },
+  "Olmsted Township, OH": {
+    "lat": 41.3727861,
+    "lng": -81.9261999
+  },
+  "Olympia Fields IL Park District, IL": {
+    "lat": 41.5131999,
+    "lng": -87.6926257
+  },
+  "Onondaga County DA Office": {
+    "lat": 43.0472009,
+    "lng": -76.1473318
+  },
+  "Orange Coast College Campus CA PD, CA": {
+    "lat": 33.6713743,
+    "lng": -117.9115459
+  },
+  "Orange County (CA) DA Office, CA": {
+    "lat": 33.7174708,
+    "lng": -117.8311428
+  },
+  "Orange County (NY) District Attorney's Office, NY": {
+    "lat": 41.4062556,
+    "lng": -74.3185075
+  },
+  "Orange County Fire Authority (CA), CA": {
+    "lat": 33.7174708,
+    "lng": -117.8311428
+  },
+  "Orangeburg Department of Public Safety SC, SC": {
+    "lat": 33.4925137,
+    "lng": -80.8661946
+  },
+  "Orleans Levee District PD": {
+    "lat": 30.1127297,
+    "lng": -89.9626799
+  },
+  "Osage County MO 911 Center, MO": {
+    "lat": 38.3853377,
+    "lng": -91.9099238
+  },
+  "Otoe Missouria Tribe, OK": {
+    "lat": 35.0077519,
+    "lng": -97.092877
+  },
+  "Outagamie County DA's Office WI, WI": {
+    "lat": 44.4636545,
+    "lng": -88.4016041
+  },
+  "Oxford Township Parks and Recreation Commission MI (Oakland County), MI": {
+    "lat": 42.5866934,
+    "lng": -83.5881122
+  },
+  "Ozarks Drug Enforcement Team MO, MO": {
+    "lat": 36.5692952,
+    "lng": -93.097702
+  },
+  "Salisbury Twp, PA": {
+    "lat": 40.5786414,
+    "lng": -75.428646
+  },
+  "Panama City Airport, FL": {
+    "lat": 30.3548543,
+    "lng": -85.7995134
+  },
+  "Parakeet (PA), PA": {
+    "lat": 41.2033216,
+    "lng": -77.1945247
+  },
+  "Parkland College IL PD, IL": {
+    "lat": 40.1319415,
+    "lng": -88.2885819
+  },
+  "Patton TWP, PA": {
+    "lat": 40.8352182,
+    "lng": -77.91674569999999
+  },
+  "Paul Bunyan Task Force MN, MN": {
+    "lat": 44.976538,
+    "lng": -93.2245728
+  },
+  "Paulding County Parks GA, GA": {
+    "lat": 33.9132321,
+    "lng": -84.8299408
+  },
+  "Peachtree Corners GA Marshal's Office, GA": {
+    "lat": 33.9560768,
+    "lng": -84.23216169999999
+  },
+  "Peapack Gladstone, NJ": {
+    "lat": 40.7212891,
+    "lng": -74.66713229999999
+  },
+  "Pelham, NH": {
+    "lat": 42.7318803,
+    "lng": -71.3244106
+  },
+  "Pemberton Township, NJ": {
+    "lat": 39.9729596,
+    "lng": -74.5834364
+  },
+  "Pembroke, MA": {
+    "lat": 42.0714925,
+    "lng": -70.80919999999999
+  },
+  "Penn Hills, PA": {
+    "lat": 40.4661428,
+    "lng": -79.8260578
+  },
+  "Penn State University Police and Public Safety PA, PA": {
+    "lat": 40.8021101,
+    "lng": -77.8606538
+  },
+  "Penn Township, PA": {
+    "lat": 40.3840734,
+    "lng": -79.6614376
+  },
+  "Pennsylvania State, PA": {
+    "lat": 41.2033216,
+    "lng": -77.1945247
+  },
+  "Perkins Township, OH": {
+    "lat": 41.3905536,
+    "lng": -82.713132
+  },
+  "Perry Township, OH": {
+    "lat": 40.7736624,
+    "lng": -81.46085599999999
+  },
+  "Perrysburg Twp, OH": {
+    "lat": 41.5120772,
+    "lng": -83.581615
+  },
+  "Pflugerville ISD, TX": {
+    "lat": 30.4681943,
+    "lng": -97.5897372
+  },
+  "Piatt County IL Sheriff, IL": {
+    "lat": 40.0543526,
+    "lng": -88.55653099999999
+  },
+  "Pierce Township, OH": {
+    "lat": 39.0237933,
+    "lng": -84.25948609999999
+  },
+  "Pinal County AZ Attorney's Office, AZ": {
+    "lat": 32.8162061,
+    "lng": -111.2845025
+  },
+  "Pittsfield Twp, MI": {
+    "lat": 42.2103174,
+    "lng": -83.7241068
+  },
+  "Placer County CA DA Office, CA": {
+    "lat": 39.0915751,
+    "lng": -120.8039474
+  },
+  "Plainfield Twp MI, MI": {
+    "lat": 43.0644997,
+    "lng": -85.6092311
+  },
+  "Plainville, MA": {
+    "lat": 42.0042655,
+    "lng": -71.3328331
+  },
+  "Plattekill Town, NY": {
+    "lat": 41.6239741,
+    "lng": -74.0593872
+  },
+  "Pleasant Hills, PA": {
+    "lat": 40.3356252,
+    "lng": -79.96060659999999
+  },
+  "Plymouth Township, PA": {
+    "lat": 40.1082672,
+    "lng": -75.30623260000002
+  },
+  "Pocono Township (Monroe County), PA": {
+    "lat": 41.06329590000001,
+    "lng": -75.30623260000002
+  },
+  "Point Township, PA": {
+    "lat": 40.9265389,
+    "lng": -76.76827750000001
+  },
+  "Pokagon Tribal, MI": {
+    "lat": 41.9127054,
+    "lng": -86.17668049999999
+  },
+  "Poland Township, OH": {
+    "lat": 41.0235963,
+    "lng": -80.5549561
+  },
+  "Polk County Conservation IA, IA": {
+    "lat": 41.6278423,
+    "lng": -93.5003454
+  },
+  "Port Fourchon Harbor, LA": {
+    "lat": 29.10556,
+    "lng": -90.19444
+  },
+  "Port Saint Joe, FL": {
+    "lat": 29.8118757,
+    "lng": -85.30297399999999
+  },
+  "Port of Seattle, WA": {
+    "lat": 47.8023781,
+    "lng": -122.1130413
+  },
+  "Port of Stockton, CA": {
+    "lat": 37.9510351,
+    "lng": -121.3266136
+  },
+  "Portsmouth, RI": {
+    "lat": 41.590927,
+    "lng": -71.25364069999999
+  },
+  "Precinct 4 (TX), TX": {
+    "lat": 31.9685988,
+    "lng": -99.9018131
+  },
+  "Precinct 5 (TX), TX": {
+    "lat": 31.9685988,
+    "lng": -99.9018131
+  },
+  "Prentiss  County, MS": {
+    "lat": 34.6324369,
+    "lng": -88.5178518
+  },
+  "Presbyterian College SC PD, SC": {
+    "lat": 34.20583300000001,
+    "lng": -79.53916699999999
+  },
+  "Prince George's Community College MD PD, MD": {
+    "lat": 38.78492110000001,
+    "lng": -76.8720961
+  },
+  "Promedica, OH": {
+    "lat": 40.4172871,
+    "lng": -82.90712300000001
+  },
+  "Prospect, CT": {
+    "lat": 41.5023192,
+    "lng": -72.9787163
+  },
+  "Public Service Authority": {
+    "lat": 38.7945952,
+    "lng": -106.5348379
+  },
+  "Purdue University IN PD, IN": {
+    "lat": 40.4237054,
+    "lng": -86.92119459999999
+  },
+  "QComm911 Dispatch IL, IL": {
+    "lat": 39.8006593,
+    "lng": -89.64493449999999
+  },
+  "Quapaw Nation OK Marshals Service": {
+    "lat": 36.93578979999999,
+    "lng": -94.7525368
+  },
+  "RIG WI DTF, WI": {
+    "lat": 43.7844397,
+    "lng": -88.7878678
+  },
+  "Racine County WI Communications Center, WI": {
+    "lat": 42.713801,
+    "lng": -87.7892616
+  },
+  "Randolph, MA": {
+    "lat": 42.1626042,
+    "lng": -71.0413284
+  },
+  "Raritan Twp, NJ": {
+    "lat": 40.5042107,
+    "lng": -74.8948936
+  },
+  "Raynham, MA": {
+    "lat": 41.9487077,
+    "lng": -71.0731162
+  },
+  "Reading, IL": {
+    "lat": 41.0666997,
+    "lng": -88.85424060000001
+  },
+  "Readington Township, NJ": {
+    "lat": 40.6079437,
+    "lng": -74.7756727
+  },
+  "Redding, CT": {
+    "lat": 41.30453989999999,
+    "lng": -73.392898
+  },
+  "Redford Twp, MI": {
+    "lat": 42.3995939,
+    "lng": -83.2958857
+  },
+  "Reeves CO TX County, CO": {
+    "lat": 39.5500507,
+    "lng": -105.7820674
+  },
+  "Regional Vehicle Burglary Suppression Taskforce TX, TX": {
+    "lat": 31.9685988,
+    "lng": -99.9018131
+  },
+  "Reinhardt University GA PD, GA": {
+    "lat": 34.3205083,
+    "lng": -84.5509513
+  },
+  "Rhode Island State, RI": {
+    "lat": 41.8307662,
+    "lng": -71.4153037
+  },
+  "Rice & Steele County MN 911 Center, MN": {
+    "lat": 44.0817774,
+    "lng": -93.2234796
+  },
+  "Rice University TX PD, TX": {
+    "lat": 29.7168363,
+    "lng": -95.4035531
+  },
+  "Richland Community College Campus IL PD, IL": {
+    "lat": 41.0233656,
+    "lng": -88.3061652
+  },
+  "Richland Township (Cambria County), PA": {
+    "lat": 40.2856786,
+    "lng": -78.8269385
+  },
+  "Richland Twp, OH": {
+    "lat": 40.0546742,
+    "lng": -80.92077370000001
+  },
+  "Richmond Housing Authority, CA": {
+    "lat": 37.9363026,
+    "lng": -122.3459938
+  },
+  "Rio Hondo College PD CA, CA": {
+    "lat": 34.0190058,
+    "lng": -118.0347181
+  },
+  "Riverside County CA District Attorney, CA": {
+    "lat": 33.6825587,
+    "lng": -115.4733554
+  },
+  "Robinson Township, PA": {
+    "lat": 40.46579240000001,
+    "lng": -80.1316927
+  },
+  "Rochester, MA": {
+    "lat": 41.7549658,
+    "lng": -70.8452677
+  },
+  "Rochester Township, PA": {
+    "lat": 40.7133068,
+    "lng": -80.26001
+  },
+  "Rockford Dept of Public Safety MI, MI": {
+    "lat": 43.1200272,
+    "lng": -85.5600316
+  },
+  "Rockford MI DPS, MI": {
+    "lat": 43.1200272,
+    "lng": -85.5600316
+  },
+  "Rockford Park District, IL": {
+    "lat": 42.268422,
+    "lng": -89.0972335
+  },
+  "Rockhurst University Campus PD (MO), MO": {
+    "lat": 39.0303478,
+    "lng": -94.57106739999999
+  },
+  "Rocky Hill, CT": {
+    "lat": 41.6572525,
+    "lng": -72.66557569999999
+  },
+  "Rohnert Park Department of Public Safety (CA), CA": {
+    "lat": 38.3494042,
+    "lng": -122.7032878
+  },
+  "Roselle Park, NJ": {
+    "lat": 40.6617462,
+    "lng": -74.26401469999999
+  },
+  "Ross Township, OH": {
+    "lat": 39.3439085,
+    "lng": -84.6688348
+  },
+  "Ross Township, PA": {
+    "lat": 40.5168699,
+    "lng": -80.0046423
+  },
+  "Rostraver Township, PA": {
+    "lat": 40.16454299999999,
+    "lng": -79.80726109999999
+  },
+  "Rowan University NJ PD, NJ": {
+    "lat": 39.7099689,
+    "lng": -75.1191932
+  },
+  "Roxbury Twp, NJ": {
+    "lat": 40.8731104,
+    "lng": -74.6466504
+  },
+  "Columbia Metropolitan Airport, SC": {
+    "lat": 33.941917,
+    "lng": -81.1220015
+  },
+  "SC- Commission of Public Works for City of Spartanburg, SC": {
+    "lat": 34.9515959,
+    "lng": -81.9327167
+  },
+  "SD - Lake Traverse Reservation, SD": {
+    "lat": 45.611639,
+    "lng": -97.0335771
+  },
+  "SE Missouri State University (MO), MO": {
+    "lat": 37.3148783,
+    "lng": -89.52804379999999
+  },
+  "SEECOM Dispatch Center IL, IL": {
+    "lat": 40.3084762,
+    "lng": -89.70042149999999
+  },
+  "SEMO Drug Task Force MO, MO": {
+    "lat": 37.9642529,
+    "lng": -91.8318334
+  },
+  "SEMRECC MA, MA": {
+    "lat": 42.0609254,
+    "lng": -71.28751369999999
+  },
+  "SUNY - Herkimer County Community College NY PD, NY": {
+    "lat": 43.1630587,
+    "lng": -74.8741045
+  },
+  "SUNY Binghamton Campus, NY": {
+    "lat": 42.0894288,
+    "lng": -75.9694885
+  },
+  "SUNY Old Westbury, NY": {
+    "lat": 40.797082,
+    "lng": -73.5717581
+  },
+  "SUNY-Onondaga Community College Campus NY PD, NY": {
+    "lat": 40.7127753,
+    "lng": -74.0059728
+  },
+  "Sacramento CA DA, CA": {
+    "lat": 38.5781342,
+    "lng": -121.4944209
+  },
+  "Sacramento County Parks Department CA, CA": {
+    "lat": 38.5749126,
+    "lng": -121.3062041
+  },
+  "Sagamore Hills Township, OH": {
+    "lat": 41.3223093,
+    "lng": -81.57061089999999
+  },
+  "Saginaw Valley State University PD (MI), MI": {
+    "lat": 43.5142733,
+    "lng": -83.9623559
+  },
+  "Saint Clair Shores, MI": {
+    "lat": 42.4974085,
+    "lng": -82.89636039999999
+  },
+  "Saint Croix Falls, MN": {
+    "lat": 45.4099615,
+    "lng": -92.63965089999999
+  },
+  "Saint Croix Falls, WI": {
+    "lat": 45.4099615,
+    "lng": -92.63965089999999
+  },
+  "Saint Francis, WI": {
+    "lat": 42.9716437,
+    "lng": -87.8758939
+  },
+  "Saint Johns, AZ": {
+    "lat": 34.5058698,
+    "lng": -109.3609327
+  },
+  "Saint Joseph MI DPS, MI": {
+    "lat": 42.0938577,
+    "lng": -86.4895463
+  },
+  "Saint Marys, WV": {
+    "lat": 39.3962109,
+    "lng": -81.2013363
+  },
+  "Salem County NJ Prosecutors Office, NJ": {
+    "lat": 39.5848777,
+    "lng": -75.3878525
+  },
+  "Salem Township, PA": {
+    "lat": 40.4233103,
+    "lng": -79.53786339999999
+  },
+  "Samford University AL PD, AL": {
+    "lat": 33.4649218,
+    "lng": -86.7913423
+  },
+  "San Bernardino Community College CA PD, CA": {
+    "lat": 34.1045589,
+    "lng": -117.291869
+  },
+  "San Diego County CA SD, CA": {
+    "lat": 32.715738,
+    "lng": -117.1610838
+  },
+  "San Diego Harbor, CA": {
+    "lat": 32.6716639,
+    "lng": -117.1441227
+  },
+  "San Francisco District Attorney CA, CA": {
+    "lat": 37.7749295,
+    "lng": -122.4194155
+  },
+  "San Joaquin CA DA, CA": {
+    "lat": 36.6066162,
+    "lng": -120.1890447
+  },
+  "San Joaquin Delta College PD (CA), CA": {
+    "lat": 37.99778209999999,
+    "lng": -121.3206391
+  },
+  "San Jose - Evergreen Community College Campus PD CA, CA": {
+    "lat": 37.3011274,
+    "lng": -121.7650792
+  },
+  "San Jose State University CA, CA": {
+    "lat": 37.3351874,
+    "lng": -121.8810715
+  },
+  "San Juan Bautista CA, CA": {
+    "lat": 36.8455108,
+    "lng": -121.5379974
+  },
+  "San Luis Obispo County (CA) Sheriff, CA": {
+    "lat": 35.3102296,
+    "lng": -120.4357631
+  },
+  "Santa Clara DA CA, CA": {
+    "lat": 37.3541079,
+    "lng": -121.9552356
+  },
+  "Santa Rosa Band of Cahuilla Indians CA, CA": {
+    "lat": 33.5575038,
+    "lng": -116.5318321
+  },
+  "Santee Cooper Law Enforcement Division (SC), SC": {
+    "lat": 33.836081,
+    "lng": -81.1637245
+  },
+  "Sauk Prairie, WI": {
+    "lat": 43.290671,
+    "lng": -89.81303559999999
+  },
+  "Savannah GA Code Compliance, GA": {
+    "lat": 32.0808989,
+    "lng": -81.091203
+  },
+  "Savannah International Airport, GA": {
+    "lat": 32.1294229,
+    "lng": -81.201871
+  },
+  "Savannah State University PD": {
+    "lat": 32.0241968,
+    "lng": -81.0625787
+  },
+  "Sayreville, NJ": {
+    "lat": 40.4648065,
+    "lng": -74.3138334
+  },
+  "Scarborough, ME": {
+    "lat": 43.5901396,
+    "lng": -70.33448899999999
+  },
+  "Schoolcraft College MI PD, MI": {
+    "lat": 42.4203969,
+    "lng": -83.42922800000001
+  },
+  "Schuyler Co. County, IL": {
+    "lat": 40.1844543,
+    "lng": -90.6393702
+  },
+  "Scotch Plains, NJ": {
+    "lat": 40.6495254,
+    "lng": -74.3966193
+  },
+  "Scott Township, PA": {
+    "lat": 40.3907339,
+    "lng": -80.0742163
+  },
+  "Scottsbluff Co Consolidated Comm Ctr NE, NE": {
+    "lat": 41.8140936,
+    "lng": -103.6362715
+  },
+  "Security Consulting Solutions (PA), PA": {
+    "lat": 41.2033216,
+    "lng": -77.1945247
+  },
+  "Seekonk, MA": {
+    "lat": 41.808434,
+    "lng": -71.3369972
+  },
+  "Sequoias Community College District CA PD, CA": {
+    "lat": 36.325102,
+    "lng": -119.3149754
+  },
+  "Shakopee MN Police Department, MN": {
+    "lat": 44.7973962,
+    "lng": -93.5272861
+  },
+  "Shasta Arson Task Force CA, CA": {
+    "lat": 40.598119,
+    "lng": -122.4907566
+  },
+  "Shasta County SO": {
+    "lat": 40.7908864,
+    "lng": -121.8474493
+  },
+  "Shelby Township, MI": {
+    "lat": 42.6841189,
+    "lng": -83.03443659999999
+  },
+  "Shenango, PA": {
+    "lat": 40.9322045,
+    "lng": -80.2990246
+  },
+  "Sikeston MO DPS, MO": {
+    "lat": 36.876719,
+    "lng": -89.5878579
+  },
+  "Silver Spring Township, PA": {
+    "lat": 40.2475923,
+    "lng": -77.03341790000002
+  },
+  "Simsbury, CT": {
+    "lat": 41.8702338,
+    "lng": -72.8046648
+  },
+  "Smithfield, RI": {
+    "lat": 41.9220496,
+    "lng": -71.54951009999999
+  },
+  "Snohomish County WA 911, WA": {
+    "lat": 48.0329979,
+    "lng": -121.8339472
+  },
+  "Snowflake-Taylor, AZ": {
+    "lat": 34.5133698,
+    "lng": -110.0784491
+  },
+  "Society, SC": {
+    "lat": 34.5126567,
+    "lng": -79.8508976
+  },
+  "Solano County DA CA, CA": {
+    "lat": 38.3104969,
+    "lng": -121.9017954
+  },
+  "Solano County Special Investigations Bureau": {
+    "lat": 38.3104969,
+    "lng": -121.9017954
+  },
+  "Somerset County NJ Prosecutors Office, NJ": {
+    "lat": 40.58681139999999,
+    "lng": -74.69858909999999
+  },
+  "Somerset, NY": {
+    "lat": 43.3475566,
+    "lng": -78.5558625
+  },
+  "South Bend IN Airport Transit PD": {
+    "lat": 41.6763545,
+    "lng": -86.25198979999999
+  },
+  "South Carolina Department of Public Safety, SC": {
+    "lat": 34.1787796,
+    "lng": -80.9731903
+  },
+  "South Carolina Law Enforcement Division - SLED, SC": {
+    "lat": 34.0662938,
+    "lng": -81.1157837
+  },
+  "South Central MO Drug Task Force, MO": {
+    "lat": 37.4650531,
+    "lng": -90.3467838
+  },
+  "South Central OH Major Crimes Unit, OH": {
+    "lat": 40.0154745,
+    "lng": -82.99316069999999
+  },
+  "South College TN PD, TN": {
+    "lat": 35.5512604,
+    "lng": -89.6507564
+  },
+  "South Dakota Division of Criminal Investigation SD, SD": {
+    "lat": 43.9695148,
+    "lng": -99.9018131
+  },
+  "South Fayette Township, PA": {
+    "lat": 40.3576073,
+    "lng": -80.1651854
+  },
+  "South Hadley, MA": {
+    "lat": 42.2591729,
+    "lng": -72.57479339999999
+  },
+  "South Heidelberg Township, PA": {
+    "lat": 40.3078926,
+    "lng": -76.097201
+  },
+  "South Kingstown, RI": {
+    "lat": 41.4409399,
+    "lng": -71.5022778
+  },
+  "South Lake Minnetonka, MN": {
+    "lat": 44.9022182,
+    "lng": -93.4503029
+  },
+  "South Lebanon OH (Warren Co), OH": {
+    "lat": 39.3708927,
+    "lng": -84.21326979999999
+  },
+  "South Plainfield, NJ": {
+    "lat": 40.5825621,
+    "lng": -74.4116253
+  },
+  "South Saint Paul, MN": {
+    "lat": 44.8759802,
+    "lng": -93.0275802
+  },
+  "South Strabane Township, PA": {
+    "lat": 40.1681457,
+    "lng": -80.1986649
+  },
+  "South Whitehall, PA": {
+    "lat": 40.6117393,
+    "lng": -75.5658687
+  },
+  "South Windsor, CT": {
+    "lat": 41.8489872,
+    "lng": -72.57175509999999
+  },
+  "Southern Baptist Theological Seminary, KY": {
+    "lat": 38.2482681,
+    "lng": -85.6860198
+  },
+  "Southern College of Optometry TN, TN": {
+    "lat": 35.5174913,
+    "lng": -86.5804473
+  },
+  "Southern Illinois University IL PD, IL": {
+    "lat": 40.6331249,
+    "lng": -89.3985283
+  },
+  "Southern Regl, PA": {
+    "lat": 41.2033216,
+    "lng": -77.1945247
+  },
+  "Southington, CT": {
+    "lat": 41.5964869,
+    "lng": -72.8776013
+  },
+  "Southold Town, NY": {
+    "lat": 41.0650008,
+    "lng": -72.42636259999999
+  },
+  "Southwest Emergency Dispatch Center (OH), OH": {
+    "lat": 40.4172871,
+    "lng": -82.90712300000001
+  },
+  "Southwest Mississippi Community College - MS PD, MS": {
+    "lat": 32.3546679,
+    "lng": -89.3985283
+  },
+  "Southwest Tennessee Community College TN PD, TN": {
+    "lat": 35.1462232,
+    "lng": -90.0536432
+  },
+  "Southwestern Illinois College Campus PD, IL": {
+    "lat": 38.516694,
+    "lng": -89.923345
+  },
+  "Sparks Police Department - NV, NV": {
+    "lat": 39.5415123,
+    "lng": -119.7103675
+  },
+  "Sparta Twp, NJ": {
+    "lat": 41.03611000000001,
+    "lng": -74.63662289999999
+  },
+  "Spokane Tribal, WA": {
+    "lat": 47.9254759,
+    "lng": -118.1194168
+  },
+  "Spring Branch TX ISD, TX": {
+    "lat": 29.7888324,
+    "lng": -95.5407299
+  },
+  "Spring Township, PA": {
+    "lat": 40.2993702,
+    "lng": -76.02758589999999
+  },
+  "Springettsbury Twp, PA": {
+    "lat": 39.99498639999999,
+    "lng": -76.675922
+  },
+  "Springfield College Campus PD MA, MA": {
+    "lat": 42.1034769,
+    "lng": -72.5557675
+  },
+  "Springfield Park District, IL": {
+    "lat": 39.76902219999999,
+    "lng": -89.6405341
+  },
+  "Springport Twp, MI": {
+    "lat": 42.36840309999999,
+    "lng": -84.6688348
+  },
+  "Sringfield IL (PD), IL": {
+    "lat": 39.799004,
+    "lng": -89.644607
+  },
+  "St Elmo, IL": {
+    "lat": 39.02623510000001,
+    "lng": -88.8537254
+  },
+  "St Mary Parish County, LA": {
+    "lat": 29.502976,
+    "lng": -91.44346900000001
+  },
+  "St Paul, MN": {
+    "lat": 44.9537029,
+    "lng": -93.0899578
+  },
+  "St Paul, VA": {
+    "lat": 36.9062487,
+    "lng": -82.3108554
+  },
+  "St Pauls, NC": {
+    "lat": 34.8065528,
+    "lng": -78.9711406
+  },
+  "St. Charles Community College Campus Police MO [Inactive], MO": {
+    "lat": 38.7604297,
+    "lng": -90.640706
+  },
+  "St. Charles County MO Ambulance District, MO": {
+    "lat": 38.7338885,
+    "lng": -90.8294002
+  },
+  "St. Clair County AL Dispatch, AL": {
+    "lat": 33.6530112,
+    "lng": -86.3376761
+  },
+  "St. Croix Tribal, WI": {
+    "lat": 45.0497844,
+    "lng": -92.3875695
+  },
+  "St. Edward's University (TX), TX": {
+    "lat": 30.2267859,
+    "lng": -97.75412569999999
+  },
+  "St. George LA Fire Protection District, LA": {
+    "lat": 30.3570566,
+    "lng": -91.07163299999999
+  },
+  "St. John Parish County, LA": {
+    "lat": 30.1118331,
+    "lng": -90.4879916
+  },
+  "St. Joseph Department of Public Safety MI, MI": {
+    "lat": 42.1071031,
+    "lng": -86.478003
+  },
+  "St. Louis Fusion Center MO, MO": {
+    "lat": 38.62742799999999,
+    "lng": -90.1982439
+  },
+  "St. Louis Metro, MO": {
+    "lat": 38.62742799999999,
+    "lng": -90.1982439
+  },
+  "St. Peters MO Parks and Rec, MO": {
+    "lat": 38.7874699,
+    "lng": -90.6298922
+  },
+  "Stanford University CA PD, CA": {
+    "lat": 37.42766,
+    "lng": -122.17006
+  },
+  "Stark County SO": {
+    "lat": 40.8684676,
+    "lng": -81.2518833
+  },
+  "State Capitol, CT": {
+    "lat": 41.7642631,
+    "lng": -72.68228030000002
+  },
+  "Staunton State Park, CO": {
+    "lat": 39.5101214,
+    "lng": -105.3920809
+  },
+  "Stephen Johnston - Flock Demo Network": {
+    "lat": 38.7945952,
+    "lng": -106.5348379
+  },
+  "Stockbridge-Munsee, WI": {
+    "lat": 44.07165579999999,
+    "lng": -88.2989947
+  },
+  "Stonington, CT": {
+    "lat": 41.3359571,
+    "lng": -71.9059104
+  },
+  "Stoughton, MA": {
+    "lat": 42.1229099,
+    "lng": -71.10920120000002
+  },
+  "Stow, MA": {
+    "lat": 42.4370374,
+    "lng": -71.5056199
+  },
+  "Stowe Township, PA": {
+    "lat": 40.4729248,
+    "lng": -80.0746094
+  },
+  "Sturthers, OH": {
+    "lat": 41.0525588,
+    "lng": -80.6078509
+  },
+  "Suffolk County District Attorney's Office NY, NY": {
+    "lat": 40.9848784,
+    "lng": -72.61511689999999
+  },
+  "Sugarcreek Township, OH": {
+    "lat": 39.6141572,
+    "lng": -84.0695961
+  },
+  "Sugarloaf Twp, PA": {
+    "lat": 41.0138953,
+    "lng": -76.1265896
+  },
+  "Sullivans Island, SC": {
+    "lat": 32.7629024,
+    "lng": -79.8362471
+  },
+  "Summa Health (OH), OH": {
+    "lat": 40.4172871,
+    "lng": -82.90712300000001
+  },
+  "Summit Metro Parks, OH": {
+    "lat": 41.1285457,
+    "lng": -81.5425554
+  },
+  "Sumpter Twp, MI": {
+    "lat": 42.1606345,
+    "lng": -83.4823169
+  },
+  "Susquehanna Township, PA": {
+    "lat": 40.3182313,
+    "lng": -76.860565
+  },
+  "Sycamore Township OH, OH": {
+    "lat": 39.2067255,
+    "lng": -84.37967069999999
+  },
+  "Syracuse University NY PD, NY": {
+    "lat": 40.7127753,
+    "lng": -74.0059728
+  },
+  "Syracuse-Hancock Intl Airport NY, NY": {
+    "lat": 43.1112166,
+    "lng": -76.114268
+  },
+  "TN - Loeb Properties Inc - Security, TN": {
+    "lat": 35.5174913,
+    "lng": -86.5804473
+  },
+  "TN ROCIC, TN": {
+    "lat": 36.1490485,
+    "lng": -86.688988
+  },
+  "TX - Alvin College Campus PD, TX": {
+    "lat": 29.4238472,
+    "lng": -95.24410089999999
+  },
+  "TX - City of Agua Dulce, TX": {
+    "lat": 27.781692,
+    "lng": -97.9086105
+  },
+  "TX - City of Bandera, TX": {
+    "lat": 29.7266131,
+    "lng": -99.0736462
+  },
+  "TX - City of Town of Pecos, TX": {
+    "lat": 31.4229124,
+    "lng": -103.4932293
+  },
+  "TX - Harris County Pct. 3 Commissioner, TX": {
+    "lat": 29.9619898,
+    "lng": -95.2344127
+  },
+  "TX - Lee College Campus PD, TX": {
+    "lat": 30.2967161,
+    "lng": -96.9638624
+  },
+  "TX - Prairie View A & M University Campus PD, TX": {
+    "lat": 30.0954974,
+    "lng": -95.9907076
+  },
+  "TX - Wichita Falls Independent School District PD, TX": {
+    "lat": 33.9043959,
+    "lng": -98.4977692
+  },
+  "TX Alcoholic Beverage Commission (TABC), TX": {
+    "lat": 31.9685988,
+    "lng": -99.9018131
+  },
+  "TYS Airport, TN": {
+    "lat": 35.806504,
+    "lng": -83.9982326
+  },
+  "Tarleton State University TX PD, TX": {
+    "lat": 32.2160433,
+    "lng": -98.215953
+  },
+  "Tarrant Regional Water District, TX": {
+    "lat": 32.4415953,
+    "lng": -96.83531219999999
+  },
+  "Temple University Campus PA PD, PA": {
+    "lat": 39.9811911,
+    "lng": -75.1553563
+  },
+  "Tennessee Bureau of Investigation, TN": {
+    "lat": 36.2134592,
+    "lng": -86.74631819999999
+  },
+  "Tennessee Highway Patrol, TN": {
+    "lat": 35.5174913,
+    "lng": -86.5804473
+  },
+  "Tennessee Valley Authority Police, TN": {
+    "lat": 35.5174913,
+    "lng": -86.5804473
+  },
+  "Test Demo 1234": {
+    "lat": 38.7945952,
+    "lng": -106.5348379
+  },
+  "Tewksbury, MA": {
+    "lat": 42.6106478,
+    "lng": -71.23422479999999
+  },
+  "Texas A&M International University PD, TX": {
+    "lat": 27.5718315,
+    "lng": -99.4350371
+  },
+  "Texas Christian University PD TX, TX": {
+    "lat": 32.7078531,
+    "lng": -97.36280409999999
+  },
+  "Texas Department of Criminal Justice, TX": {
+    "lat": 31.9685988,
+    "lng": -99.9018131
+  },
+  "Texas Department of Public Safety, TX": {
+    "lat": 31.9685988,
+    "lng": -99.9018131
+  },
+  "Texas Financial Crimes Intelligence Center, TX": {
+    "lat": 31.7952962,
+    "lng": -94.1802599
+  },
+  "Texas Medical Center, TX": {
+    "lat": 29.7062932,
+    "lng": -95.3946781
+  },
+  "Texas Parks & Wildlife Department, TX": {
+    "lat": 31.9685988,
+    "lng": -99.9018131
+  },
+  "The Tribal Police of the Grand Traverse Band of Ottawa & Chippewa Indians MI, MI": {
+    "lat": 45.0207858,
+    "lng": -85.6047935
+  },
+  "The West Central Dispatch Center (WCDC)": {
+    "lat": 38.6322062,
+    "lng": -90.45178609999999
+  },
+  "Thomson Housing Authority (GA), GA": {
+    "lat": 33.4763603,
+    "lng": -82.4806976
+  },
+  "Tilden Township, PA": {
+    "lat": 40.539306,
+    "lng": -76.02758589999999
+  },
+  "Tinton Falls, NJ": {
+    "lat": 40.2987771,
+    "lng": -74.0955271
+  },
+  "Tipton County TN ECC, TN": {
+    "lat": 35.5217179,
+    "lng": -89.7379958
+  },
+  "Tombstone Marshals Office (AZ), AZ": {
+    "lat": 31.7137261,
+    "lng": -110.0671592
+  },
+  "Tompkins County NY Sheriff's Office, NY": {
+    "lat": 42.4575747,
+    "lng": -76.5488232
+  },
+  "Tonto Apache, AZ": {
+    "lat": 34.2205607,
+    "lng": -111.327726
+  },
+  "Town & Country, MO": {
+    "lat": 38.6122751,
+    "lng": -90.46345319999999
+  },
+  "Town Of Delavan, WI": {
+    "lat": 42.6301938,
+    "lng": -88.56619529999999
+  },
+  "Town Of Middletown, VA": {
+    "lat": 39.0276078,
+    "lng": -78.280558
+  },
+  "Town of Arlington (TN), TN": {
+    "lat": 35.2961973,
+    "lng": -89.661469
+  },
+  "Town of Bean Station, TN": {
+    "lat": 36.3437016,
+    "lng": -83.28406199999999
+  },
+  "Town of Campbell, WI": {
+    "lat": 43.8579837,
+    "lng": -91.2599048
+  },
+  "Town of Connelly Springs NC, NC": {
+    "lat": 35.7429092,
+    "lng": -81.5134255
+  },
+  "Town of East Fishkill, NY": {
+    "lat": 41.5534267,
+    "lng": -73.7956884
+  },
+  "Town of Eva, AL": {
+    "lat": 34.3323582,
+    "lng": -86.75906309999999
+  },
+  "Town of Greenville NY, NY": {
+    "lat": 42.4153596,
+    "lng": -74.0220769
+  },
+  "Town of Groton, CT": {
+    "lat": 41.3481528,
+    "lng": -72.07866299999999
+  },
+  "Town of Harrah WA, WA": {
+    "lat": 46.4042936,
+    "lng": -120.5442304
+  },
+  "Town of Hildebran (NC), NC": {
+    "lat": 35.7140208,
+    "lng": -81.42203339999999
+  },
+  "Town of Hochatown OK, OK": {
+    "lat": 34.1523291,
+    "lng": -94.7527181
+  },
+  "Town of Hunts Point WA, WA": {
+    "lat": 47.6434321,
+    "lng": -122.230124
+  },
+  "Town of Jonesboro, LA": {
+    "lat": 32.2412672,
+    "lng": -92.7159853
+  },
+  "Town of Killingworth, CT": {
+    "lat": 41.3581869,
+    "lng": -72.5645602
+  },
+  "Town of Lisbon Troopers CT, CT": {
+    "lat": 41.60458930000001,
+    "lng": -72.0175757
+  },
+  "Town of Los Gatos CA, CA": {
+    "lat": 37.2358078,
+    "lng": -121.9623751
+  },
+  "Town of Lyons CO, CO": {
+    "lat": 40.2247075,
+    "lng": -105.271378
+  },
+  "Town of Milton WI, WI": {
+    "lat": 42.8102452,
+    "lng": -88.9509626
+  },
+  "Town of Montgomery, NY": {
+    "lat": 41.5275938,
+    "lng": -74.23681599999999
+  },
+  "Town of Moreland GA, GA": {
+    "lat": 33.2867851,
+    "lng": -84.7677111
+  },
+  "Town of Newburgh, NY": {
+    "lat": 41.5762452,
+    "lng": -74.10050439999999
+  },
+  "Town of Poughkeepsie, NY": {
+    "lat": 41.6548474,
+    "lng": -73.90070899999999
+  },
+  "Town of Preston CT Resident State Troopers Office, CT": {
+    "lat": 41.4899746,
+    "lng": -71.9933774
+  },
+  "Town of Rutherford College (NC), NC": {
+    "lat": 35.7500716,
+    "lng": -81.5294716
+  },
+  "Town of Superior, CO": {
+    "lat": 39.95276339999999,
+    "lng": -105.1685977
+  },
+  "Town of West Blocton, AL": {
+    "lat": 33.1181748,
+    "lng": -87.1249954
+  },
+  "Town of Whitebluff, TN": {
+    "lat": 36.1075593,
+    "lng": -87.2208409
+  },
+  "Town of Williams Creek, IN": {
+    "lat": 39.8997622,
+    "lng": -86.1502658
+  },
+  "Town of Woodbury, NY": {
+    "lat": 41.3645382,
+    "lng": -74.1059775
+  },
+  "Town of Woodside CA (SMCSO), CA": {
+    "lat": 37.4299388,
+    "lng": -122.2538557
+  },
+  "Tribal Police at Foxwoods, CT": {
+    "lat": 41.4733358,
+    "lng": -71.96000339999999
+  },
+  "Truett McConnell University GA Campus PD, GA": {
+    "lat": 34.5962007,
+    "lng": -83.7478021
+  },
+  "Trumbull County OH 911 Center, OH": {
+    "lat": 41.3064984,
+    "lng": -80.7214417
+  },
+  "Tulalip Tribal Police Dept. (WA), WA": {
+    "lat": 48.05355609999999,
+    "lng": -122.1919804
+  },
+  "Tupelo Regional Airport": {
+    "lat": 34.2662432,
+    "lng": -88.76633400000001
+  },
+  "Tuscaloosa Academy (AL), AL": {
+    "lat": 33.245229,
+    "lng": -87.54010319999999
+  },
+  "Tyler TX ISD, TX": {
+    "lat": 32.288266,
+    "lng": -95.35208759999999
+  },
+  "Tyron, NC": {
+    "lat": 35.2086603,
+    "lng": -82.2382126
+  },
+  "UC Irvine Campus, CA": {
+    "lat": 33.6429785,
+    "lng": -117.8411678
+  },
+  "UC Riverside, CA": {
+    "lat": 33.9793537,
+    "lng": -117.3310945
+  },
+  "UCPAO AR, AR": {
+    "lat": 35.20105,
+    "lng": -91.8318334
+  },
+  "UMMC (University of Mississippi Medical Center) MS PD, MS": {
+    "lat": 32.3546679,
+    "lng": -89.3985283
+  },
+  "UNC Asheville, NC": {
+    "lat": 35.6170787,
+    "lng": -82.5665332
+  },
+  "UPMC, PA": {
+    "lat": 41.2033216,
+    "lng": -77.1945247
+  },
+  "UT Health - Tyler (TX), TX": {
+    "lat": 32.3380751,
+    "lng": -95.29420569999999
+  },
+  "Ukiah Fire CA FD, CA": {
+    "lat": 39.1501709,
+    "lng": -123.2077831
+  },
+  "Ulster Town, NY": {
+    "lat": 41.97987,
+    "lng": -73.98911749999999
+  },
+  "Unified PD of Greater Salt Lake (INACTIVE)": {
+    "lat": 40.6987345,
+    "lng": -111.9164143
+  },
+  "Union County NJ Prosecutor's Office, NJ": {
+    "lat": 40.6595001,
+    "lng": -74.2883536
+  },
+  "Union Pacific Railroad PD": {
+    "lat": 42.9628105,
+    "lng": -94.1365282
+  },
+  "Union Township, NJ": {
+    "lat": 40.6963917,
+    "lng": -74.2699775
+  },
+  "Univ. of Texas - Tyler, TX": {
+    "lat": 32.266129,
+    "lng": -95.310199
+  },
+  "University Circle OH PD, OH": {
+    "lat": 41.5091257,
+    "lng": -81.6089873
+  },
+  "University City MO PD, MO": {
+    "lat": 38.6682407,
+    "lng": -90.3324856
+  },
+  "University Heights OH PD, OH": {
+    "lat": 41.4978306,
+    "lng": -81.53734560000001
+  },
+  "University Hospitals (OH) PD, OH": {
+    "lat": 40.4172871,
+    "lng": -82.90712300000001
+  },
+  "University Park IL PD, IL": {
+    "lat": 41.44003439999999,
+    "lng": -87.6833769
+  },
+  "University Park TX PD, TX": {
+    "lat": 32.8550377,
+    "lng": -96.797592
+  },
+  "University of Akron OH PD, OH": {
+    "lat": 41.0716551,
+    "lng": -81.50975439999999
+  },
+  "University of Alabama - Birmingham Campus AL PD, AL": {
+    "lat": 33.502086,
+    "lng": -86.8051588
+  },
+  "University of Alabama AL PD, AL": {
+    "lat": 33.2114385,
+    "lng": -87.5401002
+  },
+  "University of Arizona Campus AZ PD, AZ": {
+    "lat": 32.2338693,
+    "lng": -110.9481326
+  },
+  "University of California, CA": {
+    "lat": 36.778261,
+    "lng": -119.4179324
+  },
+  "University of Central Arkansas Campus PD, AR": {
+    "lat": 35.0780939,
+    "lng": -92.4578916
+  },
+  "University of Central Missouri PD, MO": {
+    "lat": 38.7565603,
+    "lng": -93.7405067
+  },
+  "University of Colorado Anschutz Medical Campus CO PD, CO": {
+    "lat": 39.7423236,
+    "lng": -104.8413468
+  },
+  "University of Colorado Boulder PD (CO), CO": {
+    "lat": 40.0073499,
+    "lng": -105.2659871
+  },
+  "University of Delaware PD, DE": {
+    "lat": 39.6809151,
+    "lng": -75.7523313
+  },
+  "University of Georgia GA PD, GA": {
+    "lat": 33.9423394,
+    "lng": -83.37242420000001
+  },
+  "University of Houston Clear Lake TX Campus PD, TX": {
+    "lat": 29.5824608,
+    "lng": -95.0989342
+  },
+  "University of Houston Downtown TX PD, TX": {
+    "lat": 30.27206,
+    "lng": -97.740949
+  },
+  "University of Houston TX PD, TX": {
+    "lat": 29.7187725,
+    "lng": -95.3380066
+  },
+  "University of Illinois - Chicago IL PD, IL": {
+    "lat": 41.8686034,
+    "lng": -87.6484377
+  },
+  "University of Illinois at Urbana-Champaign IL PD, IL": {
+    "lat": 40.0985023,
+    "lng": -88.2290783
+  },
+  "University of Illinois- Springfield, IL": {
+    "lat": 39.7305338,
+    "lng": -89.6176711
+  },
+  "University of Indianapolis IN PD, IN": {
+    "lat": 39.70957689999999,
+    "lng": -86.13466919999999
+  },
+  "University of Iowa PD (IA), IA": {
+    "lat": 41.8780025,
+    "lng": -93.097702
+  },
+  "University of Kentucky, KY": {
+    "lat": 38.0306511,
+    "lng": -84.5039697
+  },
+  "University of Louisiana at Lafayette PD, LA": {
+    "lat": 30.211991,
+    "lng": -92.019914
+  },
+  "University of Louisville KY PD, KY": {
+    "lat": 38.2468618,
+    "lng": -85.7663724
+  },
+  "University of Memphis TN PD, TN": {
+    "lat": 35.1199859,
+    "lng": -89.93816869999999
+  },
+  "University of Michigan Ann Arbor Campus MI PD, MI": {
+    "lat": 42.277145,
+    "lng": -83.7382071
+  },
+  "University of Michigan Dearborn Campus MI PD, MI": {
+    "lat": 42.31763429999999,
+    "lng": -83.2320299
+  },
+  "University of Minnesota MN PD (Twin Cities), MN": {
+    "lat": 44.97399,
+    "lng": -93.2277285
+  },
+  "University of Nevada Reno Campus PD, NV": {
+    "lat": 39.5485651,
+    "lng": -119.8156924
+  },
+  "University of New Haven CT PD, CT": {
+    "lat": 41.291297,
+    "lng": -72.96178739999999
+  },
+  "University of North Carolina Chapel Hill NC, NC": {
+    "lat": 35.9049122,
+    "lng": -79.0469134
+  },
+  "University of North Carolina Charlotte (NC), NC": {
+    "lat": 35.2171341,
+    "lng": -80.8526742
+  },
+  "University of North Carolina at Pembroke NC PD, NC": {
+    "lat": 34.6801626,
+    "lng": -79.1950373
+  },
+  "University of North Georgia PD (GA), GA": {
+    "lat": 34.5277912,
+    "lng": -83.9842645
+  },
+  "University of North Texas at Denton PD (TX), TX": {
+    "lat": 33.2090389,
+    "lng": -97.15343899999999
+  },
+  "University of Saint Joseph CT Public Safety, CT": {
+    "lat": 41.7819528,
+    "lng": -72.7305002
+  },
+  "University of South Florida FL PD, FL": {
+    "lat": 28.0622334,
+    "lng": -82.4135057
+  },
+  "University of South Florida at St. Petersburg FL PD, FL": {
+    "lat": 27.7624407,
+    "lng": -82.6354867
+  },
+  "University of TN Knoxville, TN": {
+    "lat": 35.9491068,
+    "lng": -83.9353841
+  },
+  "University of TX (UTA)- Arlington PD, TX": {
+    "lat": 32.7297978,
+    "lng": -97.1138579
+  },
+  "University of Tennessee Health Science Center Memphis TN PD, TN": {
+    "lat": 35.1408087,
+    "lng": -90.03061609999999
+  },
+  "University of Tennessee TN PD, TN": {
+    "lat": 35.9489531,
+    "lng": -83.93742259999999
+  },
+  "University of Texas Permian Basin PD, TX": {
+    "lat": 31.8876067,
+    "lng": -102.3230046
+  },
+  "University of Texas at Dallas TX PD, TX": {
+    "lat": 32.8158575,
+    "lng": -96.84666039999999
+  },
+  "University of Texas at Houston PD, TX": {
+    "lat": 29.5454994,
+    "lng": -95.103256
+  },
+  "University of Texas at Tyler PD, TX": {
+    "lat": 32.266129,
+    "lng": -95.310199
+  },
+  "University of Toledo OH PD, OH": {
+    "lat": 41.6578804,
+    "lng": -83.6142374
+  },
+  "University of West Georgia GA PD, GA": {
+    "lat": 33.575346,
+    "lng": -85.1041219
+  },
+  "University of Wisconsin - Green Bay WI PD, WI": {
+    "lat": 44.5133188,
+    "lng": -88.0132958
+  },
+  "University of Wisconsin - Madison WI PD, WI": {
+    "lat": 43.07551429999999,
+    "lng": -89.4154526
+  },
+  "University of Wisconsin - Milwaukee WI PD, WI": {
+    "lat": 43.078263,
+    "lng": -87.8819686
+  },
+  "University of Wisconsin - Oshkosh PD, WI": {
+    "lat": 44.0251642,
+    "lng": -88.5491303
+  },
+  "University of Wisconsin - Whitewater WI PD, WI": {
+    "lat": 42.83362049999999,
+    "lng": -88.7323272
+  },
+  "University of the Pacific (CA), CA": {
+    "lat": 38.7614031,
+    "lng": -120.5072407
+  },
+  "University of the South Sewanee TN PD, TN": {
+    "lat": 35.203563,
+    "lng": -85.9177922
+  },
+  "Upper Burrell Township, PA": {
+    "lat": 40.5473288,
+    "lng": -79.6838874
+  },
+  "Upper Darby Township, PA": {
+    "lat": 39.9593175,
+    "lng": -75.2878235
+  },
+  "Upper Dublin Twp, PA": {
+    "lat": 40.15326839999999,
+    "lng": -75.1895576
+  },
+  "Upper Pottsgrove, PA": {
+    "lat": 40.2859406,
+    "lng": -75.63826569999999
+  },
+  "Upper St. Clair, PA": {
+    "lat": 40.3448998,
+    "lng": -80.082078
+  },
+  "VA - George Mason University Campus PD, VA": {
+    "lat": 38.8314578,
+    "lng": -77.31174709999999
+  },
+  "VA - Virginia Institute of Marine Science, VA": {
+    "lat": 37.24822229999999,
+    "lng": -76.50113670000002
+  },
+  "Valdosta State University GA PD, GA": {
+    "lat": 30.8491088,
+    "lng": -83.2892073
+  },
+  "Valley Center KS DPS, KS": {
+    "lat": 37.8323292,
+    "lng": -97.3720207
+  },
+  "Vanderburgh County Prosecutors Office IN, IN": {
+    "lat": 37.9736513,
+    "lng": -87.5672831
+  },
+  "Ventura County District Attorney's Office CA, CA": {
+    "lat": 34.2600731,
+    "lng": -119.2133429
+  },
+  "Vernon, CT": {
+    "lat": 41.8186802,
+    "lng": -72.47903699999999
+  },
+  "Vestal Town, NY": {
+    "lat": 42.0855898,
+    "lng": -76.053575
+  },
+  "Victory Christian Academy (NC), NC": {
+    "lat": 35.2415247,
+    "lng": -81.1912497
+  },
+  "Village of Bloomingdale, IL": {
+    "lat": 41.9575285,
+    "lng": -88.0809036
+  },
+  "Village of Clearview, WV": {
+    "lat": 40.1411828,
+    "lng": -80.6881348
+  },
+  "Village of Deer Park (IL), IL": {
+    "lat": 42.1608585,
+    "lng": -88.0814651
+  },
+  "Village of Diamond IL, IL": {
+    "lat": 41.2886428,
+    "lng": -88.2517287
+  },
+  "Village of Dundee, MI": {
+    "lat": 41.9572676,
+    "lng": -83.6596596
+  },
+  "Village of Fox Crossing, WI": {
+    "lat": 44.2290594,
+    "lng": -88.4695236
+  },
+  "Village of Fox Point, WI": {
+    "lat": 43.1575097,
+    "lng": -87.90175289999999
+  },
+  "Village of Harrisburg, OH": {
+    "lat": 39.8095063,
+    "lng": -83.1710229
+  },
+  "Village of Homer Glen, IL": {
+    "lat": 41.6000317,
+    "lng": -87.9381112
+  },
+  "Village of Jefferson, OH": {
+    "lat": 41.7386662,
+    "lng": -80.7698066
+  },
+  "Village of Kingdom City (MO), MO": {
+    "lat": 38.952819,
+    "lng": -91.9390674
+  },
+  "Village of LaGrange Park, IL": {
+    "lat": 41.8347535,
+    "lng": -87.86172599999999
+  },
+  "Village of Lynwood, IL": {
+    "lat": 41.5234885,
+    "lng": -87.558379
+  },
+  "Village of Manhattan, IL": {
+    "lat": 41.42243209999999,
+    "lng": -87.9859257
+  },
+  "Village of Marlborough, MO": {
+    "lat": 38.5703304,
+    "lng": -90.3370606
+  },
+  "Village of Medina, NY": {
+    "lat": 43.2200583,
+    "lng": -78.3869685
+  },
+  "Village of Palm Springs, FL": {
+    "lat": 26.6359009,
+    "lng": -80.0961538
+  },
+  "Village of Pewaukee, WI": {
+    "lat": 43.0823873,
+    "lng": -88.2628115
+  },
+  "Village of Pingree Grove, IL": {
+    "lat": 42.06863670000001,
+    "lng": -88.41341589999999
+  },
+  "Village of South Elgin IL, IL": {
+    "lat": 41.9941938,
+    "lng": -88.29229959999999
+  },
+  "Village of Turtle Lake, WI": {
+    "lat": 42.726903,
+    "lng": -88.6795865
+  },
+  "Village of Wesley Chapel (NC), NC": {
+    "lat": 35.0070935,
+    "lng": -80.6745131
+  },
+  "Village of West Hampton Dunes, NY": {
+    "lat": 40.7759325,
+    "lng": -72.7153763
+  },
+  "Vincennes University Campus IN PD, IN": {
+    "lat": 38.677269,
+    "lng": -87.5286325
+  },
+  "Virginia Commonwealth University VA PD, VA": {
+    "lat": 37.5469205,
+    "lng": -77.45416449999999
+  },
+  "Virginia Department of Corrections, VA": {
+    "lat": 37.5044484,
+    "lng": -77.52509859999999
+  },
+  "Virginia Department of Wildlife Resources (DWR), VA": {
+    "lat": 37.4315734,
+    "lng": -78.6568942
+  },
+  "Virginia Port Authority, VA": {
+    "lat": 37.4315734,
+    "lng": -78.6568942
+  },
+  "Virginia State Police, VA": {
+    "lat": 37.4315734,
+    "lng": -78.6568942
+  },
+  "Virginia Tech University VA PD, VA": {
+    "lat": 37.22838429999999,
+    "lng": -80.42341669999999
+  },
+  "WEB Drug Taskforce -, OH": {
+    "lat": 40.4172871,
+    "lng": -82.90712300000001
+  },
+  "WI Department of Justice, WI": {
+    "lat": 43.7844397,
+    "lng": -88.7878678
+  },
+  "Wagoner CO OK County, CO": {
+    "lat": 39.5500507,
+    "lng": -105.7820674
+  },
+  "Wagoner County, CO": {
+    "lat": 39.5500507,
+    "lng": -105.7820674
+  },
+  "WakeMed Campus, NC": {
+    "lat": 35.78387,
+    "lng": -78.5881198
+  },
+  "Wallingford, CT": {
+    "lat": 41.4566578,
+    "lng": -72.82411259999999
+  },
+  "Walters State Community College TN Campus PD, TN": {
+    "lat": 36.2091305,
+    "lng": -83.2592398
+  },
+  "Wareham, MA": {
+    "lat": 41.7606622,
+    "lng": -70.7211336
+  },
+  "Warminster Township, PA": {
+    "lat": 40.2060731,
+    "lng": -75.10768000000002
+  },
+  "Warwick Town, NY": {
+    "lat": 41.2638494,
+    "lng": -74.3822058
+  },
+  "Washington Co Parks and Recreation (GA), GA": {
+    "lat": 32.1574351,
+    "lng": -82.90712300000001
+  },
+  "Washington County District Attorney PA, PA": {
+    "lat": 40.1367719,
+    "lng": -80.1875065
+  },
+  "Washington County OR - County, OR": {
+    "lat": 45.5469616,
+    "lng": -123.1386021
+  },
+  "Washington Township (Gloucester), NJ": {
+    "lat": 39.7599326,
+    "lng": -75.04749629999999
+  },
+  "Washtenaw Community College Campus Safety (MI), MI": {
+    "lat": 42.2635478,
+    "lng": -83.6655359
+  },
+  "Watchung, NJ": {
+    "lat": 40.6384911,
+    "lng": -74.45082339999999
+  },
+  "Waterford Township, MI": {
+    "lat": 42.66010259999999,
+    "lng": -83.386239
+  },
+  "Watertown, MA": {
+    "lat": 42.3709299,
+    "lng": -71.1828321
+  },
+  "Waukesha County WI Communications Center, WI": {
+    "lat": 43.0072599,
+    "lng": -88.32393090000001
+  },
+  "Wayne County Airport Authority MI, MI": {
+    "lat": 42.226989,
+    "lng": -83.3471869
+  },
+  "Wayne TWP, NJ": {
+    "lat": 40.948903,
+    "lng": -74.273578
+  },
+  "Weatherford College Campus PD TX, TX": {
+    "lat": 32.7412919,
+    "lng": -97.79257559999999
+  },
+  "Weatherly, PA": {
+    "lat": 40.9417535,
+    "lng": -75.82964
+  },
+  "Wells, ME": {
+    "lat": 43.3222329,
+    "lng": -70.5805209
+  },
+  "Wescom IL Dispatch Center, IL": {
+    "lat": 40.6331249,
+    "lng": -89.3985283
+  },
+  "West Bloomfield Twp, MI": {
+    "lat": 42.5575353,
+    "lng": -83.36136619999999
+  },
+  "West Central Consolidated Communications, IL": {
+    "lat": 40.6331249,
+    "lng": -89.3985283
+  },
+  "West Chester, OH": {
+    "lat": 39.3321262,
+    "lng": -84.41726659999999
+  },
+  "West Deptford, NJ": {
+    "lat": 39.8438119,
+    "lng": -75.1920384
+  },
+  "West Georgia Technical College (GA), GA": {
+    "lat": 32.9998855,
+    "lng": -85.04525749999999
+  },
+  "West Goshen, PA": {
+    "lat": 39.9790406,
+    "lng": -75.5917092
+  },
+  "West Greenwich, RI": {
+    "lat": 41.62854979999999,
+    "lng": -71.66381319999999
+  },
+  "West Hazleton, PA": {
+    "lat": 40.9586956,
+    "lng": -75.9960371
+  },
+  "West Hennepin MN Public Safety Department, MN": {
+    "lat": 45.0061189,
+    "lng": -93.4644599
+  },
+  "West Homestead, PA": {
+    "lat": 40.3939581,
+    "lng": -79.9119946
+  },
+  "West Lampeter Township, PA": {
+    "lat": 39.9901389,
+    "lng": -76.23986769999999
+  },
+  "West Manchester Twp, PA": {
+    "lat": 39.9478354,
+    "lng": -76.79135579999999
+  },
+  "West Mifflin, PA": {
+    "lat": 40.3634026,
+    "lng": -79.86643749999999
+  },
+  "West Norriton Twp PA, PA": {
+    "lat": 40.132609,
+    "lng": -75.37831849999999
+  },
+  "West Saint Paul, MN": {
+    "lat": 44.9160768,
+    "lng": -93.10160739999999
+  },
+  "West Springfield, MA": {
+    "lat": 42.1070579,
+    "lng": -72.62303709999999
+  },
+  "West Valley Mission College Dist Campus (CA), CA": {
+    "lat": 37.3028238,
+    "lng": -121.9800547
+  },
+  "West Virginia Fusion Center (WV), WV": {
+    "lat": 38.5976262,
+    "lng": -80.4549026
+  },
+  "Western Michigan University MI PD, MI": {
+    "lat": 42.2831778,
+    "lng": -85.61521859999999
+  },
+  "Western States Information Network (CA), CA": {
+    "lat": 36.778261,
+    "lng": -119.4179324
+  },
+  "Westlake TX - DNU, TX": {
+    "lat": 32.991235,
+    "lng": -97.19501380000001
+  },
+  "Westmoreland District Attorney's Office PA, PA": {
+    "lat": 40.3028744,
+    "lng": -79.5451689
+  },
+  "Weston, MA": {
+    "lat": 42.3667625,
+    "lng": -71.3031132
+  },
+  "Westport, CT": {
+    "lat": 41.14143809999999,
+    "lng": -73.3580987
+  },
+  "Westport, MA": {
+    "lat": 41.6755383,
+    "lng": -71.108758
+  },
+  "Westport Regional Business League (MO), MO": {
+    "lat": 39.0569468,
+    "lng": -94.5954715
+  },
+  "Westwood, MA": {
+    "lat": 42.21398730000001,
+    "lng": -71.2244987
+  },
+  "Weymouth, MA": {
+    "lat": 42.2175665,
+    "lng": -70.9369005
+  },
+  "White Lake Twp, MI": {
+    "lat": 42.6561459,
+    "lng": -83.4749162
+  },
+  "White Oak, PA": {
+    "lat": 40.3375695,
+    "lng": -79.8092133
+  },
+  "White Settlement ISD, TX": {
+    "lat": 32.7747949,
+    "lng": -97.5138947
+  },
+  "Whitehall Township, PA": {
+    "lat": 40.6572331,
+    "lng": -75.4985521
+  },
+  "Whitemarsh Township, PA": {
+    "lat": 40.1192546,
+    "lng": -75.2362381
+  },
+  "Whiteside County Dispatch Center IL, IL": {
+    "lat": 41.7605503,
+    "lng": -89.8505012
+  },
+  "Whitley County IN Prosector, IN": {
+    "lat": 41.1136133,
+    "lng": -85.52002399999999
+  },
+  "Wichita State University KS PD, KS": {
+    "lat": 37.7190782,
+    "lng": -97.29152599999999
+  },
+  "Will County State Attorney's Office (IL), IL": {
+    "lat": 41.5054724,
+    "lng": -88.0900762
+  },
+  "Williamson Co. County, IL": {
+    "lat": 37.7512993,
+    "lng": -88.9767915
+  },
+  "Williamson County TN DoEC, TN": {
+    "lat": 35.9179271,
+    "lng": -86.86218269999999
+  },
+  "Willingboro TWP, NJ": {
+    "lat": 40.0289026,
+    "lng": -74.8807662
+  },
+  "Wilton, CT": {
+    "lat": 41.1953739,
+    "lng": -73.4378988
+  },
+  "Winchester Trails (CA), CA": {
+    "lat": 33.706966,
+    "lng": -117.0844733
+  },
+  "Windsor, CT": {
+    "lat": 41.8525984,
+    "lng": -72.64370219999999
+  },
+  "Windsor- IL- PD": {
+    "lat": 39.4408693,
+    "lng": -88.5947802
+  },
+  "Winfield, NJ": {
+    "lat": 40.6353619,
+    "lng": -74.2881523
+  },
+  "Winston Count MS CO, MS": {
+    "lat": 33.1650338,
+    "lng": -89.0179332
+  },
+  "Winston Salem State University NC PD, NC": {
+    "lat": 36.0898268,
+    "lng": -80.22504359999999
+  },
+  "Winthrop, MA": {
+    "lat": 42.374776,
+    "lng": -70.9862693
+  },
+  "Winthrop University SC PD, SC": {
+    "lat": 34.20583300000001,
+    "lng": -79.53916699999999
+  },
+  "Wisconsin State Capitol Police (WI), WI": {
+    "lat": 43.0747008,
+    "lng": -89.3841491
+  },
+  "Woodbury MN DPS, MN": {
+    "lat": 44.9238552,
+    "lng": -92.9593797
+  },
+  "Woonsocket Housing Authority (RI), RI": {
+    "lat": 42.0100501,
+    "lng": -71.50163309999999
+  },
+  "Wright Township PD (Luzerne County), PA": {
+    "lat": 41.1247,
+    "lng": -75.9056753
+  },
+  "Wyandotte Nation, OK": {
+    "lat": 36.7934028,
+    "lng": -94.72522839999999
+  },
+  "Wynne School District 9 AR PD, AR": {
+    "lat": 35.2335921,
+    "lng": -90.8865834
+  },
+  "Yuba County Sheriffs Office": {
+    "lat": 39.4567693,
+    "lng": -121.2828446
+  },
+  "Zelienople, PA": {
+    "lat": 40.7945096,
+    "lng": -80.1367271
+  },
+  "[Federal] ATF Louisville KY [inactive], KY": {
+    "lat": 38.2468618,
+    "lng": -85.7663724
+  },
+  "[Federal] FBI [Inactive], DC": {
+    "lat": 38.9072873,
+    "lng": -77.0369274
+  },
+  "[Federal] Fort Eustis VA US Army, VA": {
+    "lat": 37.1525136,
+    "lng": -76.5775744
+  },
+  "[Federal] Indiana Dunes National Park IN PD, IN": {
+    "lat": 41.6532678,
+    "lng": -87.0524338
+  },
+  "[Federal] Lake Mead NV NRA, NV": {
+    "lat": 36.1435231,
+    "lng": -114.4144415
+  },
+  "[Federal] Langley VA Air Force Base, VA": {
+    "lat": 37.08350739999999,
+    "lng": -76.35922409999999
+  },
+  "[Federal] National Park Service TN [Inactive], TN": {
+    "lat": 35.5174913,
+    "lng": -86.5804473
+  },
+  "[Federal] US GSA Office of Inspector General, DC": {
+    "lat": 38.87588849999999,
+    "lng": -77.0028263
+  },
+  "[Federal] US Park Police - Chattahoochee River NRA, DC": {
+    "lat": 38.9072873,
+    "lng": -77.0369274
+  },
+  "[Federal] US Park Police - Washington Metro Area, DC": {
+    "lat": 38.8763103,
+    "lng": -77.0343785
+  },
+  "[Federal] US Postal Inspection Service, DC": {
+    "lat": 38.9072873,
+    "lng": -77.0369274
+  },
+  "[Federal] USMS (Inactive), DC": {
+    "lat": 38.9072873,
+    "lng": -77.0369274
+  },
+  "[Federal] Wright Patterson OH Air Force Base, OH": {
+    "lat": 39.8103678,
+    "lng": -84.03205469999999
+  },
+  "dupe": {
+    "lat": 38.7945952,
+    "lng": -106.5348379
+  },
+  "fxgsoc": {
+    "lat": 38.7945952,
+    "lng": -106.5348379
+  },
+  "Cal Maritime Academy, CA": {
+    "lat": 38.0689567,
+    "lng": -122.2303405
+  },
+  "Las Vegas Dept. Public Safety, NV": {
+    "lat": 36.171563,
+    "lng": -115.1391009
+  },
+  "Coastal Bend College TX PD, TX": {
+    "lat": 28.4347636,
+    "lng": -97.75751989999999
+  },
+  "Colerain, OH": {
+    "lat": 39.2591765,
+    "lng": -84.6269824
+  },
+  "Flock Safety Sales, GA": {
+    "lat": 33.7858698,
+    "lng": -84.4121564
+  },
+  "Foster, CA": {
+    "lat": 41.2537526,
+    "lng": -122.9589237
+  },
+  "Great Parks of Hamilton, OH": {
+    "lat": 39.2568328,
+    "lng": -84.5201299
+  },
+  "Green Brook, NJ": {
+    "lat": 40.5958666,
+    "lng": -74.490079
+  },
+  "Hamlet, NC, NC": {
+    "lat": 34.8848775,
+    "lng": -79.6942222
+  },
+  "King County, VA": {
+    "lat": 37.7298568,
+    "lng": -76.8951551
+  },
+  "Lakeshore Homes Assoc., CA": {
+    "lat": 37.8077316,
+    "lng": -122.230268
+  },
+  "Mahoning, PA": {
+    "lat": 40.9694576,
+    "lng": -79.3571527
+  },
+  "Miami Township (Clermont), OH": {
+    "lat": 39.1941014,
+    "lng": -84.23746150000001
+  },
+  "Montgomery, NJ": {
+    "lat": 40.416838,
+    "lng": -74.65254010000001
+  },
+  "Napoleon Township, MI": {
+    "lat": 42.1836806,
+    "lng": -84.3016021
+  },
+  "NCRIC, CA": {
+    "lat": 37.7819473,
+    "lng": -122.4181453
+  },
+  "Polk County Conservation County, IA": {
+    "lat": 41.6278423,
+    "lng": -93.5003454
+  },
+  "Rhode Island College RI PD, RI": {
+    "lat": 41.8417288,
+    "lng": -71.4627575
+  },
+  "Rohnert, CA": {
+    "lat": 38.3396367,
+    "lng": -122.7010984
+  },
+  "College of Charleston DPS SC PD, SC": {
+    "lat": 32.7833163,
+    "lng": -79.9319664
+  },
+  "Sequoias Community College CA PD, CA": {
+    "lat": 36.325102,
+    "lng": -119.3149754
+  },
+  "Sumpter Township, MI": {
+    "lat": 42.1606345,
+    "lng": -83.4823169
+  },
+  "Temple University PA PD, PA": {
+    "lat": 39.9811911,
+    "lng": -75.1553563
+  },
+  "Connelley Springs, NC": {
+    "lat": 35.7429092,
+    "lng": -81.5134255
+  },
+  "Woodside County, CA": {
+    "lat": 37.4299388,
+    "lng": -122.2538557
+  },
+  "Union, CA": {
+    "lat": 38.31714890000001,
+    "lng": -122.3130987
+  },
+  "University of Colorado Boulder CO PD, CO": {
+    "lat": 40.0073499,
+    "lng": -105.2659871
+  },
+  "University of Iowa IA PD, IA": {
+    "lat": 41.66270780000001,
+    "lng": -91.5549771
+  },
+  "University of Louisiana LA PD, LA": {
+    "lat": 30.5190775,
+    "lng": -91.5208624
+  },
+  "University of Minnesota MN PD, MN": {
+    "lat": 44.97399,
+    "lng": -93.2277285
+  },
+  "George Mason University VA PD, VA": {
+    "lat": 38.8314578,
+    "lng": -77.31174709999999
+  },
+  "(revoked MOU) - former AZ - AZDCS, AZ": {
+    "lat": 34.0489281,
+    "lng": -111.0937311
+  },
+  "18th Judicial District Drug Task Force -, TN": {
+    "lat": 35.5174913,
+    "lng": -86.5804473
+  },
+  "1st Judicial District": {
+    "lat": 39.96067619999999,
+    "lng": -75.1518881
+  },
+  "1st Judicial District Drug Task Force TN (Inactive), TN": {
+    "lat": 35.5174913,
+    "lng": -86.5804473
+  },
+  "AL - Jacksonville State University Campus PD, AL": {
+    "lat": 33.8230953,
+    "lng": -85.7681921
+  },
+  "ALDOI/ AL State Fire Marshal's Office": {
+    "lat": 32.3182314,
+    "lng": -86.902298
+  },
+  "Acushnet, MA": {
+    "lat": 41.7223696,
+    "lng": -70.89523369999999
+  },
+  "Al-Huda School MD, MD": {
+    "lat": 39.014832,
+    "lng": -76.911458
+  },
+  "Alabama Department of Corrections, AL": {
+    "lat": 32.3747701,
+    "lng": -86.2976997
+  },
+  "Albion MI DPS, MI": {
+    "lat": 42.243097,
+    "lng": -84.7530304
+  },
+  "Allen County KS Communications Center, KS": {
+    "lat": 37.9435853,
+    "lng": -95.3102505
+  },
+  "Amador County CA Sheriff's Office, CA": {
+    "lat": 38.4092417,
+    "lng": -120.6660044
+  },
+  "Angels Camp, CA": {
+    "lat": 38.0683329,
+    "lng": -120.5391513
+  },
+  "App State University NC PD, NC": {
+    "lat": 36.037769,
+    "lng": -79.034256
+  },
+  "Argo Community High School District": {
+    "lat": 41.77650070000001,
+    "lng": -87.80542659999999
+  },
+  "Augusta KS DPS, KS": {
+    "lat": 37.6866844,
+    "lng": -96.9767023
+  },
+  "Austintown Township, OH": {
+    "lat": 41.08894979999999,
+    "lng": -80.7436141
+  },
+  "Bernards Twp, NJ": {
+    "lat": 40.6709362,
+    "lng": -74.57474119999999
+  },
+  "CO - Colorado Bureau of Investigation, CO": {
+    "lat": 39.5500507,
+    "lng": -105.7820674
+  },
+  "Fayette County IN Prosecutors Office, IN": {
+    "lat": 39.5920377,
+    "lng": -85.14793639999999
+  },
+  "Marshall County Prosecutor\u0019s Office IN, IN": null,
+  "California State University Long Beach Campus PD": {
+    "lat": 33.7838235,
+    "lng": -118.1140904
+  },
+  "Central Alabama Community College PD": {
+    "lat": 32.9244717,
+    "lng": -85.9472511
+  },
+  "Georgia Gwinnett College PD": {
+    "lat": 33.9802966,
+    "lng": -84.0047709
+  },
+  "Georgia Southwestern State University Campus PD": {
+    "lat": 32.0562815,
+    "lng": -84.2173274
+  },
+  "Lake Michigan College Campus PD": {
+    "lat": 42.0957329,
+    "lng": -86.3939919
+  },
+  "Louisiana State University": {
+    "lat": 30.4102406,
+    "lng": -91.18570590000002
+  },
+  "Middle Georgia State University Campus PD": {
+    "lat": 32.8109077,
+    "lng": -83.7326161
+  },
+  "New Mexico State University Campus PD": {
+    "lat": 32.2792887,
+    "lng": -106.7491391
+  },
+  "New York City Department of Environmental Protection PD": {
+    "lat": 40.7127753,
+    "lng": -74.0059728
+  },
+  "New York Institute of Technology Campus PD": {
+    "lat": 40.8080876,
+    "lng": -73.6032926
+  },
+  "Oklahoma City Community College PD": {
+    "lat": 35.3880406,
+    "lng": -97.56991839999999
+  },
+  "Pennsylvania State PD": {
+    "lat": 41.2033216,
+    "lng": -77.1945247
+  },
+  "Rhode Island State PD": {
+    "lat": 41.5800945,
+    "lng": -71.4774291
+  },
+  "Southwestern Illinois College Campus PD": {
+    "lat": 38.516694,
+    "lng": -89.923345
+  },
+  "Texas A&M International University PD": {
+    "lat": 27.5718315,
+    "lng": -99.4350371
+  },
+  "Texas Medical Center PD": {
+    "lat": 29.7062932,
+    "lng": -95.3946781
+  },
+  "Univ. of Texas - Tyler PD": {
+    "lat": 32.266129,
+    "lng": -95.310199
+  },
+  "University of California": {
+    "lat": 36.778261,
+    "lng": -119.4179324
+  },
+  "University of Central Arkansas Campus PD": {
+    "lat": 35.0780939,
+    "lng": -92.4578916
+  },
+  "University of Central Missouri PD": {
+    "lat": 37.9642529,
+    "lng": -91.8318334
+  },
+  "University of Delaware PD": {
+    "lat": 39.6809151,
+    "lng": -75.7523313
+  },
+  "University of Illinois- Springfield": {
+    "lat": 39.7305338,
+    "lng": -89.6176711
+  },
+  "University of Kentucky": {
+    "lat": 38.0306511,
+    "lng": -84.5039697
+  },
+  "University of Louisiana at Lafayette PD": {
+    "lat": 30.211991,
+    "lng": -92.019914
+  },
+  "University of Nevada Reno Campus PD": {
+    "lat": 39.5485651,
+    "lng": -119.8156924
+  },
+  "University of Texas Permian Basin PD": {
+    "lat": 31.8876067,
+    "lng": -102.3230046
+  },
+  "University of Texas at Houston PD": {
+    "lat": 29.7600771,
+    "lng": -95.37011079999999
+  },
+  "University of Texas at Tyler PD": {
+    "lat": 32.3150044,
+    "lng": -95.2519974
+  },
+  "University of Wisconsin - Oshkosh PD": {
+    "lat": 44.0262958,
+    "lng": -88.55067149999999
+  },
+  "Jacksonville State University Campus, AL": {
+    "lat": 33.8230953,
+    "lng": -85.7681921
+  },
+  "Atlanta Public Schools, GA": {
+    "lat": 33.8033965,
+    "lng": -84.3962535
+  },
+  "Central Arizona College PD Campus, AZ": {
+    "lat": 32.9617512,
+    "lng": -111.651563
+  },
+  "Central Connecticut State University Campus (CCSU), CT": {
+    "lat": 41.6931245,
+    "lng": -72.7638508
+  },
+  "Chaffey College, CA": {
+    "lat": 34.1467226,
+    "lng": -117.5708601
+  },
+  "Denison University Campus, OH": {
+    "lat": 40.0735236,
+    "lng": -82.52272730000001
+  },
+  "East Georgia State College Campus, GA": {
+    "lat": 32.595367,
+    "lng": -82.307009
+  },
+  "East Tennessee State University TN Campus, TN": {
+    "lat": 36.3023954,
+    "lng": -82.36985299999999
+  },
+  "Emory University Campus, GA": {
+    "lat": 33.7973735,
+    "lng": -84.3252791
+  },
+  "Florida State University Campus, FL": {
+    "lat": 30.1895048,
+    "lng": -85.7231935
+  },
+  "Fulton County Schools, GA": {
+    "lat": 34.0663472,
+    "lng": -84.3121264
+  },
+  "Georgia Southern University, GA": {
+    "lat": 32.4206845,
+    "lng": -81.7869734
+  },
+  "Hampden-Sydney College Campus, VA": {
+    "lat": 37.2409769,
+    "lng": -78.45984159999999
+  },
+  "Hampton University VA Campus, VA": {
+    "lat": 37.021278,
+    "lng": -76.33668999999999
+  },
+  "Houston Christian University, TX": {
+    "lat": 29.6946466,
+    "lng": -95.51621569999999
+  },
+  "Hudson Valley Cmnty College Campus, NY": {
+    "lat": 41.9209018,
+    "lng": -73.9612887
+  },
+  "Ithaca College Campus, NY": {
+    "lat": 42.4199229,
+    "lng": -76.4969344
+  },
+  "Jefferson College Campus, MO": {
+    "lat": 38.2592746,
+    "lng": -90.5597306
+  },
+  "Lincoln University, MO": {
+    "lat": 38.5638414,
+    "lng": -92.16952119999999
+  },
+  "Long Island University Campus, NY": {
+    "lat": 43.2994285,
+    "lng": -74.21793260000001
+  },
+  "Meredith College Campus, NC": {
+    "lat": 35.798208,
+    "lng": -78.6886419
+  },
+  "Northern Arizona University Campus, AZ": {
+    "lat": 35.1802684,
+    "lng": -111.6540336
+  },
+  "Northern Virginia Cmnty College Campus, VA": {
+    "lat": 38.8050552,
+    "lng": -77.04698619999999
+  },
+  "Orange Coast College Campus, CA": {
+    "lat": 33.6713743,
+    "lng": -117.9115459
+  },
+  "Rio Hondo College, CA": {
+    "lat": 34.0190058,
+    "lng": -118.0347181
+  },
+  "Rockhurst University Campus, MO": {
+    "lat": 39.0303478,
+    "lng": -94.57106739999999
+  },
+  "Saginaw Valley State University, MI": {
+    "lat": 43.5142733,
+    "lng": -83.9623559
+  },
+  "San Joaquin Delta College, CA": {
+    "lat": 37.9953671,
+    "lng": -121.3195528
+  },
+  "Springfield College Campus, MA": {
+    "lat": 42.1034769,
+    "lng": -72.5557675
+  },
+  "Alvin College Campus, TX": {
+    "lat": 29.396337,
+    "lng": -95.240639
+  },
+  "Lee College Campus, TX": {
+    "lat": 29.7345406,
+    "lng": -94.9764522
+  },
+  "Prairie View A & M University Campus, TX": {
+    "lat": 30.0954974,
+    "lng": -95.9907076
+  },
+  "Temple University Campus, PA": {
+    "lat": 39.9811911,
+    "lng": -75.1553563
+  },
+  "Texas Christian University, TX": {
+    "lat": 32.7078531,
+    "lng": -97.36280409999999
+  },
+  "Truett McConnell University GA Campus, GA": {
+    "lat": 34.5962007,
+    "lng": -83.7478021
+  },
+  "University Circle, OH": {
+    "lat": 41.5091257,
+    "lng": -81.6089873
+  },
+  "University Hospitals (OH), OH": {
+    "lat": 41.5052754,
+    "lng": -81.6067046
+  },
+  "George Mason University Campus, VA": {
+    "lat": 38.8314578,
+    "lng": -77.31174709999999
+  },
+  "Vincennes University Campus, IN": {
+    "lat": 38.677269,
+    "lng": -87.5286325
+  },
+  "Weatherford College Campus, TX": {
+    "lat": 32.7412919,
+    "lng": -97.79257559999999
+  },
+  "Athens Township, PA": {
+    "lat": 41.9365533,
+    "lng": -76.5719414
+  },
+  "Bow Mar CO, CO": {
+    "lat": 39.628321,
+    "lng": -105.0499841
+  },
+  "Bradford County Detectives PA, PA": {
+    "lat": 41.83625019999999,
+    "lng": -76.5488232
+  },
+  "Bridgewater, MA": {
+    "lat": 41.99024199999999,
+    "lng": -70.9754708
+  },
+  "CO - Fort Lewis College PD, CO": {
+    "lat": 37.27368999999999,
+    "lng": -107.8711817
+  },
+  "Cal Maritime (CA), CA": {
+    "lat": 36.778261,
+    "lng": -119.4179324
+  },
+  "Cal Poly, CA": {
+    "lat": 35.302696,
+    "lng": -120.666565
+  },
+  "City of Half Moon Bay (SMCSO)": {
+    "lat": 37.4635519,
+    "lng": -122.4285862
+  },
+  "Crawford County MO, MO": {
+    "lat": 38.0561057,
+    "lng": -91.28910359999999
+  },
+  "Dekalb County GA DOT, GA": {
+    "lat": 33.7956441,
+    "lng": -84.2278796
+  },
+  "East Arkansas Community College Campus PD AR, AR": {
+    "lat": 35.041778,
+    "lng": -90.76758749999999
+  },
+  "Elgin Community College Campus IL PD [Inactive], IL": {
+    "lat": 41.0233656,
+    "lng": -88.3061652
+  },
+  "Farmington MI DPS, MI": {
+    "lat": 42.4644795,
+    "lng": -83.37632180000001
+  },
+  "Flock Safety PD Test Org": {
+    "lat": 38.7945952,
+    "lng": -106.5348379
+  },
+  "Forks Township (Northampton County), PA": {
+    "lat": 40.7517641,
+    "lng": -75.2329554
+  },
+  "Franklin Township, NJ": {
+    "lat": 40.4958955,
+    "lng": -74.52579580000001
+  },
+  "Fruitport Township, MI": {
+    "lat": 43.1795784,
+    "lng": -86.1854293
+  },
+  "Jefferson County Attorney's Office (CO), CO": {
+    "lat": 39.5800298,
+    "lng": -105.2662931
+  },
+  "Jefferson Township (Montgomery County) County, OH": {
+    "lat": 39.7090865,
+    "lng": -84.3226488
+  },
+  "Las Vegas Metro Police Department - NV, NV": {
+    "lat": 36.1715735,
+    "lng": -115.139121
+  },
+  "Lockport Park District": {
+    "lat": 41.5894752,
+    "lng": -88.05783699999999
+  },
+  "Marple Twp, PA": {
+    "lat": 39.9737098,
+    "lng": -75.35287790000001
+  },
+  "Massachusetts State, MA": {
+    "lat": 42.4072107,
+    "lng": -71.3824374
+  },
+  "Menominee Tribal, WI": {
+    "lat": 45.00247969999999,
+    "lng": -88.66677240000001
+  },
+  "Methuen, MA": {
+    "lat": 42.7262016,
+    "lng": -71.1908924
+  },
+  "Metropolitan Washington Airports Authority VA, VA": {
+    "lat": 38.8494796,
+    "lng": -77.0504156
+  },
+  "Montgomery Township, PA": {
+    "lat": 40.2394356,
+    "lng": -75.2362381
+  },
+  "North Attleboro, MA": {
+    "lat": 41.9828721,
+    "lng": -71.3288956
+  },
+  "North Carolina Department of Public Safety NC, NC": {
+    "lat": 36.3543808,
+    "lng": -79.6915144
+  },
+  "North Carolina Department of Transportation, NC": {
+    "lat": 36.2423661,
+    "lng": -81.6564937
+  },
+  "Northeast State Community College TN, TN": {
+    "lat": 36.4849288,
+    "lng": -82.4079699
+  },
+  "Precinct 3 (TX), TX": {
+    "lat": 31.9685988,
+    "lng": -99.9018131
+  },
+  "Regional Old Colony Communications Center MA, MA": {
+    "lat": 42.0282337,
+    "lng": -70.69584309999999
+  },
+  "Rio Blanco Co County, CO": {
+    "lat": 39.9814297,
+    "lng": -108.2377519
+  },
+  "Saginaw Valley State University MI PD, MI": {
+    "lat": 43.5142733,
+    "lng": -83.9623559
+  },
+  "Salt River, AZ": {
+    "lat": 33.60175964155174,
+    "lng": -111.2727571007847
+  },
+  "San Bernardino County CA FD, CA": {
+    "lat": 34.9592083,
+    "lng": -116.419389
+  },
+  "San Bernardino County CA Human Services [Law Enforcement], CA": {
+    "lat": 34.9592083,
+    "lng": -116.419389
+  },
+  "South Plains Auto Theft Task Force TX, TX": {
+    "lat": 31.9685988,
+    "lng": -99.9018131
+  },
+  "St Anthony, ID": {
+    "lat": 43.96630080000001,
+    "lng": -111.6821847
+  },
+  "St John, IN": {
+    "lat": 41.4500356,
+    "lng": -87.4700381
+  },
+  "Summit County Sheriff's Office (CO), CO": {
+    "lat": 39.5911871,
+    "lng": -106.0640179
+  },
+  "TX - City of Orange, TX": {
+    "lat": 30.0929879,
+    "lng": -93.7365549
+  },
+  "Town of Pine Plains, NY": {
+    "lat": 41.9810502,
+    "lng": -73.6771662
+  },
+  "Union Sheriffs County, AR": {
+    "lat": 33.1431092,
+    "lng": -92.539603
+  },
+  "University of CA - Santa Barbara CA PD, CA": {
+    "lat": 34.4139629,
+    "lng": -119.848947
+  },
+  "University of Nebraska Kearney NE PD, NE": {
+    "lat": 40.69933030000001,
+    "lng": -99.0816784
+  },
+  "University of San Francisco CA PD, CA": {
+    "lat": 37.7749295,
+    "lng": -122.4194155
+  },
+  "Upper Allen Township, PA": {
+    "lat": 40.1732512,
+    "lng": -76.9988669
+  },
+  "Utah County UT SO - Vineyard, UT": {
+    "lat": 40.3056601,
+    "lng": -111.7495419
+  },
+  "Village of Corfu, NY": {
+    "lat": 42.9600595,
+    "lng": -78.4055767
+  },
+  "Village of Mukwonago, WI": {
+    "lat": 42.8631124,
+    "lng": -88.332347
+  },
+  "West Amwell Township, NJ": {
+    "lat": 40.402715,
+    "lng": -74.9049563
+  },
+  "Western Illinois University IL PD, IL": {
+    "lat": 40.6331249,
+    "lng": -89.3985283
+  },
+  "[Federal] Federal Bureau of Investigation (FBI), DC": {
+    "lat": 38.8955927,
+    "lng": -77.02518069999999
+  },
+  "[Federal] Natchez Trace Parkway MS - National Park Service, MS": {
+    "lat": 33.0219861,
+    "lng": -89.5951376
+  },
+  "[Federal] Tennessee Valley Authority Police, DC": {
+    "lat": 38.9072873,
+    "lng": -77.0369274
+  },
+  "Amherst, NY": {
+    "lat": 42.9625285,
+    "lng": -78.7467479
+  },
+  "Fort Lewis College CO PD, CO": {
+    "lat": 37.27368999999999,
+    "lng": -107.8711817
+  },
+  "Flock Safety Admins, GA": {
+    "lat": 32.1574351,
+    "lng": -82.90712300000001
+  },
+  "University Of Arizona AZ PD, AZ": {
+    "lat": 32.2338693,
+    "lng": -110.9481326
+  },
+  "West Hennepin, MN": {
+    "lat": 46.1519043,
+    "lng": -96.18311650000001
+  },
+  "Clark Co. County, IL": {
+    "lat": 40.6331249,
+    "lng": -89.3985283
+  },
+  "Clark-Pleasant PD -, IN": {
+    "lat": 39.550731,
+    "lng": -86.0805614
+  },
+  "Cypress Fairbanks ISD, TX": {
+    "lat": 29.8979465,
+    "lng": -95.68787359999999
+  },
+  "Union SO County, AR": {
+    "lat": 36.189576,
+    "lng": -93.0873757
+  },
+  "University Hospitals, OH": {
+    "lat": 41.5052754,
+    "lng": -81.6067046
+  },
+  "Bell CO County, TX": {
+    "lat": 31.134411,
+    "lng": -97.5247243
+  },
+  "Blaine CO County, OK": {
+    "lat": 35.8825489,
+    "lng": -98.3964938
+  },
+  "Caldwell CO County, TX": {
+    "lat": 29.7986218,
+    "lng": -97.654811
+  },
+  "Cameron CO County, TX": {
+    "lat": 29.5378648,
+    "lng": -96.49297969999999
+  },
+  "Jasper CO County, IL": {
+    "lat": 40.6331249,
+    "lng": -89.3985283
+  },
+  "Madison TWP (Franklin CO), OH": {
+    "lat": 39.8248372,
+    "lng": -82.8855961
+  },
+  "RIV CO ARSON TF, CA": {
+    "lat": 33.6825587,
+    "lng": -115.4733554
+  },
+  "Reeves CO County, TX": {
+    "lat": 31.4307975,
+    "lng": -103.7289167
+  },
+  "Richland Township (Bucks CO), PA": {
+    "lat": 40.4742555,
+    "lng": -75.35287790000001
+  },
+  "Rusk CO County, TX": {
+    "lat": 29.5378648,
+    "lng": -96.49297969999999
+  },
+  "Wagoner CO County, OK": {
+    "lat": 35.9595442,
+    "lng": -95.36941159999999
+  },
+  "Housing Authority of the City of Covington GA (Deactivated), GA": {
+    "lat": 33.5967815,
+    "lng": -83.8601827
+  },
+  "Rocky Mountain Information Network (RMIN/RISS) AZ [DEACTIVATED], AZ": {
+    "lat": 32.8923254,
+    "lng": -111.6989321
+  },
+  "Shelby Twp, MI": {
+    "lat": 42.6841189,
+    "lng": -83.03443659999999
+  },
+  "UT Health - Tyler (TX), UT": {
+    "lat": 40.7606608,
+    "lng": -111.8939487
+  }
+}
