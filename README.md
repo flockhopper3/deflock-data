@@ -6,6 +6,7 @@ Data & tiles hub for ALPR (automated license plate reader) camera locations — 
 |-----|----------|
 | [`data/`](data/) | Code that pulls raw camera data (US + Canada) from Overpass and publishes it to R2 hourly |
 | [`tiles/`](tiles/) | Tile pipelines — currently the cameras tileset, more to come |
+| [`eyesonflock/`](eyesonflock/) | Sharing-network pipeline — EyesOnFlock transparency-portal snapshot → agency nodes GeoJSON + adjacency JSON, weekly on GitHub Actions |
 | [`analysis/`](analysis/) | Analysis & research on the dataset |
 
 The active piece today is the **camera tile pipeline**: every hour, a GitHub Action turns the latest camera GeoJSON (~117K points, sourced from OpenStreetMap surveillance tagging) into one [PMTiles](https://docs.protomaps.com/pmtiles/) archive **per country** served from Cloudflare R2 — no tile server required.
@@ -121,9 +122,13 @@ tiles/
   cameras/build.sh                 # fetch → validate → tippecanoe → upload
   cameras/layers.json              # reference MapLibre layers (heatmap + dots)
   local-dev/                       # local tile server + preview/benchmark harness
+eyesonflock/
+  scripts/run_pipeline.py          # EyesOnFlock snapshot → nodes GeoJSON + adjacency JSON (+ verify)
+  gazetteer/                       # committed Census gazetteers (offline geocoder)
 analysis/                          # analysis & research on the dataset
 .github/workflows/fetch-data.yml   # hourly data ingestion (:05) + manual dispatch
 .github/workflows/build-tiles.yml  # tile build, chained after each successful fetch + manual dispatch
+.github/workflows/eyesonflock-pipeline.yml  # weekly sharing-network rebuild (artifacts only, no R2 yet)
 docs/setup-guide.md                # deploy-from-scratch walkthrough
 docs/map-architecture.md           # client-side rendering architecture notes
 docs/map-styling.md                # layer styling reference

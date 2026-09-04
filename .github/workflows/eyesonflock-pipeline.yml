@@ -1,0 +1,120 @@
+name: EyesOnFlock Sharing Network
+
+# Rebuilds the sharing-network dataset (agency nodes GeoJSON + adjacency JSON)
+# from a fresh EyesOnFlock transparency-portal snapshot.
+#
+# Phase 1: outputs are published as workflow artifacts only. Nothing is
+# uploaded to R2 — see eyesonflock/README.md for the phase 2 plan.
+on:
+  schedule:
+    - cron: "0 6 * * 1" # Mondays 06:00 UTC — weekly is gentle on the public API and keeps the Actions cache below its 7-day idle eviction
+  workflow_dispatch: # manual trigger
+
+concurrency:
+  group: eyesonflock-pipeline
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+env:
+  # Generated data lives here; committed inputs (gazetteers, geocode cache seed)
+  # stay in the checkout. paths.py reads this variable.
+  EYESONFLOCK_WORK_DIR: /tmp/eyesonflock-work
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20 # a full run takes a couple of minutes; the fetch has its own 60s timeout
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install test dependencies
+        run: pip install -r eyesonflock/requirements-dev.txt
+
+      # A red suite never reaches the fetch.
+      - name: Run unit tests
+        run: python -m pytest eyesonflock/tests -q
+
+      # Best-effort prior snapshot for step 00's >=50%-of-prior guard and its
+      # diff summary. A miss is the first-run case, not an error — the
+      # absolute portal floor still applies. The post-job save only runs when
+      # the job succeeds, so a failed run never advances the "prior".
+      # Phase 2 moves this to an R2 object, like pipeline/counts-history.jsonl.
+      - name: Restore prior snapshot
+        uses: actions/cache@v4
+        with:
+          path: /tmp/eyesonflock-work/raw/eyesonflock_full_data.json
+          key: eyesonflock-snapshot-${{ github.run_id }}
+          restore-keys: |
+            eyesonflock-snapshot-
+
+      - name: Run pipeline
+        env:
+          # Optional. Absent → step 02a runs in cache-only mode using the
+          # committed google_geocode_cache.json (no paid calls, no network).
+          GOOGLEMAPSAPI: ${{ secrets.GOOGLEMAPSAPI }}
+        run: python eyesonflock/scripts/run_pipeline.py
+
+      - name: Job summary
+        if: always()
+        run: |
+          set -euo pipefail
+          W="${EYESONFLOCK_WORK_DIR}"
+          {
+            echo "## EyesOnFlock sharing network"
+            echo
+            if [ -f "${W}/output/meta.json" ]; then
+              echo '```json'
+              cat "${W}/output/meta.json"
+              echo '```'
+            else
+              echo "**Pipeline did not produce meta.json — see the run log.**"
+            fi
+            if [ -f "${W}/intermediate/geocode_audit.txt" ]; then
+              echo
+              echo "<details><summary>Geocode audit</summary>"
+              echo
+              echo '```'
+              cat "${W}/intermediate/geocode_audit.txt"
+              echo '```'
+              echo "</details>"
+            fi
+          } >> "${GITHUB_STEP_SUMMARY}"
+
+      # The deliverable. Only exists when step 06 passed.
+      - name: Upload outputs
+        uses: actions/upload-artifact@v4
+        with:
+          name: sharing-network-outputs
+          path: |
+            /tmp/eyesonflock-work/output/sharing-network-nodes.geojson
+            /tmp/eyesonflock-work/output/sharing-network-adjacency.json
+            /tmp/eyesonflock-work/output/meta.json
+            /tmp/eyesonflock-work/intermediate/geocode_audit.txt
+          retention-days: 30
+          if-no-files-found: error
+
+      # Kept even on failure so a rejected snapshot can be inspected.
+      - name: Upload raw snapshot
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: eyesonflock-snapshot
+          path: /tmp/eyesonflock-work/raw/eyesonflock_full_data.json
+          retention-days: 30
+          if-no-files-found: ignore
+
+      # In live (keyed) mode step 02a may add entries; commit them back to the
+      # repo by hand when convenient so future runs don't re-pay for them.
+      - name: Upload Google geocode cache
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: google-geocode-cache
+          path: eyesonflock/google_geocode_cache.json
+          retention-days: 30
