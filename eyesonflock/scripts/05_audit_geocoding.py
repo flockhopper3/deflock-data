@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """Geocoding quality audit — generates a report on geocode method breakdown.
 
-Reads:  data/intermediate/geocoded_orgs.json
-Writes: data/intermediate/geocode_audit.txt
+Reads:  <work>/intermediate/geocoded_orgs.json
+Writes: <work>/intermediate/geocode_audit.txt   (see paths.py)
 
 Reports:
   - Method breakdown (counts and percentages)
@@ -11,14 +11,12 @@ Reports:
 """
 
 import json
-from pathlib import Path
 
+from paths import AUDIT_FILE, GEOCODED_ORGS_FILE
 from state_bbox import STATE_BBOX
 
-BASE_DIR = Path(__file__).resolve().parent.parent.parent
-INT_DIR = BASE_DIR / "data" / "intermediate"
-INPUT_FILE = INT_DIR / "geocoded_orgs.json"
-OUTPUT_FILE = INT_DIR / "geocode_audit.txt"
+INPUT_FILE = GEOCODED_ORGS_FILE
+OUTPUT_FILE = AUDIT_FILE
 
 
 def main():
@@ -119,7 +117,7 @@ def main():
     print(report)
 
     # Save to file
-    INT_DIR.mkdir(parents=True, exist_ok=True)
+    OUTPUT_FILE.parent.mkdir(parents=True, exist_ok=True)
     with open(OUTPUT_FILE, "w") as f:
         f.write(report + "\n")
     print(f"\n  Report saved: {OUTPUT_FILE.name}")

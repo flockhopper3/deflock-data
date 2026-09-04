@@ -9,7 +9,7 @@ Usage:
     client = GoogleGeocoder(api_key="...")
     lat, lng = client.geocode_org(org)
 
-Cache is stored at data/intermediate/google_geocode_cache.json.
+Cache lives at eyesonflock/google_geocode_cache.json (see paths.GOOGLE_CACHE_FILE).
 """
 
 import json

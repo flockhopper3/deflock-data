@@ -2,7 +2,7 @@
 """Fetch the latest EyesOnFlock transparency-portal snapshot.
 
 Reads:  https://eyesonflock.com/api/v1/data   (live, no auth)
-Writes: data/raw/eyesonflock_full_data.json   (atomic overwrite)
+Writes: <work>/raw/eyesonflock_full_data.json (atomic overwrite; see paths.py)
 
 This is the first step of the pipeline — all downstream steps read from the
 file written here. The snapshot is the "as of" of every resulting analysis.
@@ -29,7 +29,7 @@ file written here. The snapshot is the "as of" of every resulting analysis.
 ## Not handled
 
 - History / versioning. We overwrite in place. If you want durable snapshots,
-  tee to `data/raw/history/eyesonflock_YYYY-MM-DD.json` before calling this,
+  tee to `<work>/raw/history/eyesonflock_YYYY-MM-DD.json` before calling this,
   or extend this script.
 - Auth. The endpoint is currently public; if EyesOnFlock later requires an
   API key, add it via a new env var (e.g., `EYESONFLOCK_API_KEY`) following
@@ -44,9 +44,9 @@ import urllib.error
 import urllib.request
 from pathlib import Path
 
-BASE_DIR = Path(__file__).resolve().parent.parent.parent
-RAW_DIR = BASE_DIR / "data" / "raw"
-OUTPUT_FILE = RAW_DIR / "eyesonflock_full_data.json"
+from paths import SNAPSHOT_FILE
+
+OUTPUT_FILE = SNAPSHOT_FILE
 
 API_URL = "https://eyesonflock.com/api/v1/data"
 REQUEST_TIMEOUT_S = 60
@@ -201,7 +201,7 @@ def main() -> int:
         print(f"  Summary: {summary.get('total_cameras', 0):,} cameras across {summary.get('total_portals_found', 0):,} portals")
 
     write_atomic(OUTPUT_FILE, data)
-    print(f"  Wrote {OUTPUT_FILE.relative_to(BASE_DIR)}")
+    print(f"  Wrote {OUTPUT_FILE}")
     print("Done.")
     return 0
 

@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
 """Build directional adjacency list JSON for sharing network arcs.
 
-Reads:  data/raw/eyesonflock_full_data.json
-Writes: output/sharing-network-adjacency.json
+Reads:  <work>/raw/eyesonflock_full_data.json
+        <work>/intermediate/parsed_orgs.json
+Writes: <work>/output/sharing-network-adjacency.json   (see paths.py)
 
 Emits OUTBOUND-ONLY edges: adj[A] = [B, C] means "A shares outbound data to
 B and C" and only that. The reverse edge (B shares to A) appears in B's own
@@ -20,19 +21,13 @@ produces (IDs match properties.id in sharing-network-nodes.geojson).
 """
 
 import json
-from pathlib import Path
 
 from parse_orgs_lib import canonical_slug, parse_org_name, portal_canonical_slug
+from paths import ADJACENCY_FILE, PARSED_ORGS_FILE, SNAPSHOT_FILE
 
-BASE_DIR = Path(__file__).resolve().parent.parent.parent
-RAW_DIR = BASE_DIR / "data" / "raw"
-INT_DIR = BASE_DIR / "data" / "intermediate"
-OUTPUT_DIR = BASE_DIR / "output"
-OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
-
-EYESONFLOCK = RAW_DIR / "eyesonflock_full_data.json"
-PARSED_ORGS = INT_DIR / "parsed_orgs.json"
-OUTPUT_FILE = OUTPUT_DIR / "sharing-network-adjacency.json"
+EYESONFLOCK = SNAPSHOT_FILE
+PARSED_ORGS = PARSED_ORGS_FILE
+OUTPUT_FILE = ADJACENCY_FILE
 
 
 def _load_alias_map() -> dict[str, str]:
@@ -114,6 +109,7 @@ def main():
             else:
                 asymmetric += 1
 
+    OUTPUT_FILE.parent.mkdir(parents=True, exist_ok=True)
     with open(OUTPUT_FILE, "w") as f:
         json.dump(adj_json, f)
 

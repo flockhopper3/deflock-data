@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """Parse all unique organization names from EyesOnFlock ALPR transparency data.
 
-Reads:  data/raw/eyesonflock_full_data.json
-Writes: data/intermediate/parsed_orgs.json
+Reads:  <work>/raw/eyesonflock_full_data.json
+Writes: <work>/intermediate/parsed_orgs.json     (see paths.py)
 
 For each unique org name found in portal sharing lists, this script parses
 structured fields (city, state, type) and assigns a canonical slug. Names
@@ -21,7 +21,6 @@ Output: dict keyed by canonical slug, with each entry containing:
 """
 
 import json
-from pathlib import Path
 
 from parse_orgs_lib import (
     canonical_slug,
@@ -30,14 +29,10 @@ from parse_orgs_lib import (
     portal_canonical_slug,
 )
 from junk_filter import is_junk
+from paths import PARSED_ORGS_FILE, SNAPSHOT_FILE
 
-BASE_DIR = Path(__file__).resolve().parent.parent.parent
-RAW_DIR = BASE_DIR / "data" / "raw"
-INT_DIR = BASE_DIR / "data" / "intermediate"
-INT_DIR.mkdir(parents=True, exist_ok=True)
-
-INPUT_FILE = RAW_DIR / "eyesonflock_full_data.json"
-OUTPUT_FILE = INT_DIR / "parsed_orgs.json"
+INPUT_FILE = SNAPSHOT_FILE
+OUTPUT_FILE = PARSED_ORGS_FILE
 
 
 # Manual aliases for ambiguous raw sharing-list names whose canonical slug
@@ -276,6 +271,7 @@ def main():
         portals_added += 1
 
     # Step 4: Write output
+    OUTPUT_FILE.parent.mkdir(parents=True, exist_ok=True)
     with open(OUTPUT_FILE, "w") as f:
         json.dump(parsed, f, indent=2)
 

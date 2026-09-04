@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
 """Upgrade state/default-fallback orgs using the Google Maps Geocoding API.
 
-Reads:  data/intermediate/geocoded_orgs.json   (produced by 02_geocode_orgs.py)
-        .env or environment variable GOOGLEMAPSAPI
-Writes: data/intermediate/geocoded_orgs.json   (updated in place)
-Cache:  data/intermediate/google_geocode_cache.json
+Reads:  <work>/intermediate/geocoded_orgs.json  (produced by 02_geocode_orgs.py)
+        eyesonflock/.env or environment variable GOOGLEMAPSAPI
+Writes: <work>/intermediate/geocoded_orgs.json  (updated in place)
+Cache:  eyesonflock/google_geocode_cache.json   (committed seed; read + written in place)
 
 For every org currently geocoded with method `state` or `default`, this step
 sends a structured query to Google Maps and — when Google returns a plausible
@@ -21,17 +21,13 @@ disk so re-runs are free.
 import json
 import os
 import sys
-from pathlib import Path
 
 from google_geocode import GoogleGeocoder, load_api_key
+from paths import ENV_FILE, GEOCODED_ORGS_FILE, GOOGLE_CACHE_FILE
 from state_bbox import is_in_state_bbox
 
-BASE_DIR = Path(__file__).resolve().parent.parent.parent
-INT_DIR = BASE_DIR / "data" / "intermediate"
-ENV_FILE = BASE_DIR / ".env"
-
-GEOCODED_FILE = INT_DIR / "geocoded_orgs.json"
-CACHE_FILE = INT_DIR / "google_geocode_cache.json"
+GEOCODED_FILE = GEOCODED_ORGS_FILE
+CACHE_FILE = GOOGLE_CACHE_FILE
 
 # Methods that are candidates for Google upgrade
 _UPGRADE_METHODS = {"state", "default"}

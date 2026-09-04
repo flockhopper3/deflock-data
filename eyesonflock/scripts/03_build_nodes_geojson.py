@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 """Build GeoJSON FeatureCollection of sharing network nodes.
 
-Reads:  data/intermediate/geocoded_orgs.json
-        data/raw/eyesonflock_full_data.json
-Writes: output/sharing-network-nodes.geojson
+Reads:  <work>/intermediate/geocoded_orgs.json
+        <work>/raw/eyesonflock_full_data.json
+Writes: <work>/output/sharing-network-nodes.geojson   (see paths.py)
 
 Each geocoded org becomes a GeoJSON Point feature with properties:
   id, name, city, state, type,
@@ -21,19 +21,13 @@ judgment.
 import json
 import re
 from collections import Counter
-from pathlib import Path
 
 from parse_orgs_lib import canonical_slug, parse_org_name, portal_canonical_slug
+from paths import GEOCODED_ORGS_FILE, NODES_FILE, SNAPSHOT_FILE
 
-BASE_DIR = Path(__file__).resolve().parent.parent.parent
-RAW_DIR = BASE_DIR / "data" / "raw"
-INT_DIR = BASE_DIR / "data" / "intermediate"
-OUTPUT_DIR = BASE_DIR / "output"
-OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
-
-GEOCODED_ORGS = INT_DIR / "geocoded_orgs.json"
-EYESONFLOCK = RAW_DIR / "eyesonflock_full_data.json"
-OUTPUT_FILE = OUTPUT_DIR / "sharing-network-nodes.geojson"
+GEOCODED_ORGS = GEOCODED_ORGS_FILE
+EYESONFLOCK = SNAPSHOT_FILE
+OUTPUT_FILE = NODES_FILE
 
 # Heuristic: a node with >= AGGREGATOR_MIN_DEGREE edges AND population <
 # AGGREGATOR_MAX_POP is very likely a Flock 'national coop' / template
@@ -165,6 +159,7 @@ def main():
         "features": features,
     }
 
+    OUTPUT_FILE.parent.mkdir(parents=True, exist_ok=True)
     with open(OUTPUT_FILE, "w") as f:
         json.dump(geojson, f)
 

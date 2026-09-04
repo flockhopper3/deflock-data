@@ -1,13 +1,14 @@
 #!/usr/bin/env python3
-"""Manual one-shot: refresh the Census Bureau gazetteer files in data/raw/.
+"""Manual one-shot: refresh the Census Bureau gazetteer files in gazetteer/.
 
-NOT part of run_pipeline.py. The gazetteers change at most annually; run this
-script manually when bumping to a newer Census vintage. See METHODOLOGY.md.
+NOT part of run_pipeline.py. The gazetteers change at most annually; bump
+GAZETTEER_VINTAGE in paths.py, delete the old files, run this script, and
+commit the new ones. See METHODOLOGY.md.
 
-Downloads three gazetteer files to data/raw/:
-  - 2023_Gaz_place_national.txt   (places / cities)
-  - 2023_Gaz_counties_national.txt (counties)
-  - 2023_Gaz_state_national.txt   (states, derived from counties)
+Downloads three gazetteer files to gazetteer/:
+  - <vintage>_Gaz_place_national.txt    (places / cities)
+  - <vintage>_Gaz_counties_national.txt (counties)
+  - <vintage>_Gaz_state_national.txt    (states, derived from counties)
 
 The Census Bureau distributes place and county gazetteers as .zip archives.
 There is no official state-level gazetteer, so we derive one by computing
@@ -20,22 +21,20 @@ import urllib.request
 import zipfile
 from pathlib import Path
 
-BASE_DIR = Path(__file__).resolve().parent.parent.parent
-RAW_DIR = BASE_DIR / "data" / "raw"
-RAW_DIR.mkdir(parents=True, exist_ok=True)
+from paths import COUNTY_GAZ, GAZETTEER_DIR, GAZETTEER_VINTAGE, PLACE_GAZ, STATE_GAZ
 
-CENSUS_BASE = "https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2023_Gazetteer"
+CENSUS_BASE = (
+    "https://www2.census.gov/geo/docs/maps-data/data/gazetteer/"
+    f"{GAZETTEER_VINTAGE}_Gazetteer"
+)
 
 # Census distributes these as zip archives containing a single .txt file
-GAZETTEER_ZIPS = {
-    "2023_Gaz_place_national.txt": f"{CENSUS_BASE}/2023_Gaz_place_national.zip",
-    "2023_Gaz_counties_national.txt": f"{CENSUS_BASE}/2023_Gaz_counties_national.zip",
+GAZETTEER_ZIPS: dict[Path, str] = {
+    PLACE_GAZ: f"{CENSUS_BASE}/{GAZETTEER_VINTAGE}_Gaz_place_national.zip",
+    COUNTY_GAZ: f"{CENSUS_BASE}/{GAZETTEER_VINTAGE}_Gaz_counties_national.zip",
 }
 
-# State-level file is derived from counties (no official Census state gazetteer)
-STATE_FILE = "2023_Gaz_state_national.txt"
-
-# State FIPS to name mapping (50 states + DC + territories)
+# State FIPS to name mapping (50 states + DC + PR)
 STATE_FIPS = {
     "01": "Alabama", "02": "Alaska", "04": "Arizona", "05": "Arkansas",
     "06": "California", "08": "Colorado", "09": "Connecticut", "10": "Delaware",
@@ -53,15 +52,31 @@ STATE_FIPS = {
     "72": "Puerto Rico",
 }
 
+# State name → USPS code, for the derived state file
+STATE_USPS = {
+    "Alabama": "AL", "Alaska": "AK", "Arizona": "AZ", "Arkansas": "AR",
+    "California": "CA", "Colorado": "CO", "Connecticut": "CT", "Delaware": "DE",
+    "District of Columbia": "DC", "Florida": "FL", "Georgia": "GA", "Hawaii": "HI",
+    "Idaho": "ID", "Illinois": "IL", "Indiana": "IN", "Iowa": "IA",
+    "Kansas": "KS", "Kentucky": "KY", "Louisiana": "LA", "Maine": "ME",
+    "Maryland": "MD", "Massachusetts": "MA", "Michigan": "MI", "Minnesota": "MN",
+    "Mississippi": "MS", "Missouri": "MO", "Montana": "MT", "Nebraska": "NE",
+    "Nevada": "NV", "New Hampshire": "NH", "New Jersey": "NJ", "New Mexico": "NM",
+    "New York": "NY", "North Carolina": "NC", "North Dakota": "ND", "Ohio": "OH",
+    "Oklahoma": "OK", "Oregon": "OR", "Pennsylvania": "PA", "Rhode Island": "RI",
+    "South Carolina": "SC", "South Dakota": "SD", "Tennessee": "TN", "Texas": "TX",
+    "Utah": "UT", "Vermont": "VT", "Virginia": "VA", "Washington": "WA",
+    "West Virginia": "WV", "Wisconsin": "WI", "Wyoming": "WY", "Puerto Rico": "PR",
+}
 
-def download_and_extract(url, dest):
+
+def download_and_extract(url: str, dest: Path) -> None:
     """Download a zip file and extract the .txt file inside it."""
     print(f"    Fetching {url.split('/')[-1]}...")
     response = urllib.request.urlopen(url)
     zip_data = response.read()
 
     with zipfile.ZipFile(io.BytesIO(zip_data)) as zf:
-        # Find the .txt file inside the zip
         txt_files = [n for n in zf.namelist() if n.endswith(".txt")]
         if not txt_files:
             raise RuntimeError(f"No .txt file found in {url}")
@@ -69,12 +84,13 @@ def download_and_extract(url, dest):
             dst.write(src.read())
 
 
-def line_count(path):
+def line_count(path: Path) -> int:
     """Count lines in a file."""
-    return sum(1 for _ in open(path))
+    with open(path, encoding="utf-8") as f:
+        return sum(1 for _ in f)
 
 
-def derive_state_gazetteer(counties_path, state_path):
+def derive_state_gazetteer(counties_path: Path, state_path: Path) -> None:
     """Derive a state-level gazetteer from the counties file.
 
     Uses area-weighted centroids: each county's lat/lng is weighted by its
@@ -82,8 +98,7 @@ def derive_state_gazetteer(counties_path, state_path):
     """
     print("  Deriving state gazetteer from counties...")
 
-    # Read counties file (tab-separated)
-    states = {}  # fips -> {name, total_area, weighted_lat, weighted_lng}
+    states: dict[str, dict] = {}  # fips -> aggregate
 
     with open(counties_path, "r", encoding="utf-8") as f:
         reader = csv.DictReader(f, delimiter="\t")
@@ -93,7 +108,6 @@ def derive_state_gazetteer(counties_path, state_path):
 
             geoid = row.get("GEOID", "")
             state_fips = geoid[:2] if len(geoid) >= 2 else ""
-
             if not state_fips or state_fips not in STATE_FIPS:
                 continue
 
@@ -107,19 +121,16 @@ def derive_state_gazetteer(counties_path, state_path):
             if area <= 0:
                 area = 1  # Avoid division by zero
 
-            if state_fips not in states:
-                states[state_fips] = {
-                    "name": STATE_FIPS[state_fips],
-                    "total_area": 0,
-                    "weighted_lat": 0,
-                    "weighted_lng": 0,
-                    "aland": 0,
-                    "awater": 0,
-                    "aland_sqmi": 0,
-                    "awater_sqmi": 0,
-                }
-
-            s = states[state_fips]
+            s = states.setdefault(state_fips, {
+                "name": STATE_FIPS[state_fips],
+                "total_area": 0,
+                "weighted_lat": 0,
+                "weighted_lng": 0,
+                "aland": 0,
+                "awater": 0,
+                "aland_sqmi": 0,
+                "awater_sqmi": 0,
+            })
             s["total_area"] += area
             s["weighted_lat"] += lat * area
             s["weighted_lng"] += lng * area
@@ -128,7 +139,6 @@ def derive_state_gazetteer(counties_path, state_path):
             s["aland_sqmi"] += float(row.get("ALAND_SQMI", 0))
             s["awater_sqmi"] += float(row.get("AWATER_SQMI", 0))
 
-    # Write state gazetteer
     with open(state_path, "w", newline="", encoding="utf-8") as f:
         writer = csv.writer(f, delimiter="\t")
         writer.writerow([
@@ -140,31 +150,8 @@ def derive_state_gazetteer(counties_path, state_path):
             s = states[fips]
             lat = s["weighted_lat"] / s["total_area"]
             lng = s["weighted_lng"] / s["total_area"]
-
-            # Reverse-lookup USPS code from name
-            usps = {v: k for k, v in {
-                "AL": "Alabama", "AK": "Alaska", "AZ": "Arizona",
-                "AR": "Arkansas", "CA": "California", "CO": "Colorado",
-                "CT": "Connecticut", "DE": "Delaware", "DC": "District of Columbia",
-                "FL": "Florida", "GA": "Georgia", "HI": "Hawaii",
-                "ID": "Idaho", "IL": "Illinois", "IN": "Indiana",
-                "IA": "Iowa", "KS": "Kansas", "KY": "Kentucky",
-                "LA": "Louisiana", "ME": "Maine", "MD": "Maryland",
-                "MA": "Massachusetts", "MI": "Michigan", "MN": "Minnesota",
-                "MS": "Mississippi", "MO": "Missouri", "MT": "Montana",
-                "NE": "Nebraska", "NV": "Nevada", "NH": "New Hampshire",
-                "NJ": "New Jersey", "NM": "New Mexico", "NY": "New York",
-                "NC": "North Carolina", "ND": "North Dakota", "OH": "Ohio",
-                "OK": "Oklahoma", "OR": "Oregon", "PA": "Pennsylvania",
-                "RI": "Rhode Island", "SC": "South Carolina",
-                "SD": "South Dakota", "TN": "Tennessee", "TX": "Texas",
-                "UT": "Utah", "VT": "Vermont", "VA": "Virginia",
-                "WA": "Washington", "WV": "West Virginia",
-                "WI": "Wisconsin", "WY": "Wyoming", "PR": "Puerto Rico",
-            }.items()}.get(s["name"], "")
-
             writer.writerow([
-                usps, fips, s["name"],
+                STATE_USPS.get(s["name"], ""), fips, s["name"],
                 s["aland"], s["awater"],
                 f"{s['aland_sqmi']:.3f}", f"{s['awater_sqmi']:.3f}",
                 f"{lat:+.7f}", f"{lng:+.7f}",
@@ -173,34 +160,27 @@ def derive_state_gazetteer(counties_path, state_path):
     print(f"    Saved: {state_path.name} ({line_count(state_path):,} lines)")
 
 
-def main():
-    print("=== Download Census Gazetteer Files ===")
+def main() -> None:
+    print(f"=== Download Census Gazetteer Files ({GAZETTEER_VINTAGE} vintage) ===")
+    GAZETTEER_DIR.mkdir(parents=True, exist_ok=True)
 
-    # Download place and county gazetteers (from Census zip archives)
-    for filename, url in GAZETTEER_ZIPS.items():
-        dest = RAW_DIR / filename
-
+    for dest, url in GAZETTEER_ZIPS.items():
         if dest.exists():
-            print(f"  Skipping (cached): {filename}")
+            print(f"  Skipping (cached): {dest.name}")
             print(f"    {line_count(dest):,} lines")
             continue
-
-        print(f"  Downloading {filename}...")
+        print(f"  Downloading {dest.name}...")
         download_and_extract(url, dest)
         print(f"    Saved: {dest.name} ({line_count(dest):,} lines)")
 
-    # Derive state gazetteer from counties
-    state_dest = RAW_DIR / STATE_FILE
-    counties_path = RAW_DIR / "2023_Gaz_counties_national.txt"
-
-    if state_dest.exists():
-        print(f"  Skipping (cached): {STATE_FILE}")
-        print(f"    {line_count(state_dest):,} lines")
-    elif not counties_path.exists():
-        print(f"  ERROR: Cannot derive state gazetteer — counties file missing")
+    if STATE_GAZ.exists():
+        print(f"  Skipping (cached): {STATE_GAZ.name}")
+        print(f"    {line_count(STATE_GAZ):,} lines")
+    elif not COUNTY_GAZ.exists():
+        print("  ERROR: Cannot derive state gazetteer — counties file missing")
         raise SystemExit(1)
     else:
-        derive_state_gazetteer(counties_path, state_dest)
+        derive_state_gazetteer(COUNTY_GAZ, STATE_GAZ)
 
     print("Done.")
 

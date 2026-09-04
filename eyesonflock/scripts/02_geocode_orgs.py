@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
 """Geocode parsed organizations using Census gazetteer data.
 
-Reads:  data/intermediate/parsed_orgs.json
-        data/raw/2023_Gaz_place_national.txt
-        data/raw/2023_Gaz_counties_national.txt
-        data/raw/2023_Gaz_state_national.txt
-Writes: data/intermediate/geocoded_orgs.json
+Reads:  <work>/intermediate/parsed_orgs.json
+        gazetteer/<vintage>_Gaz_place_national.txt
+        gazetteer/<vintage>_Gaz_counties_national.txt
+        gazetteer/<vintage>_Gaz_state_national.txt
+Writes: <work>/intermediate/geocoded_orgs.json   (see paths.py)
 
 For each organization, adds lat, lng, and geocode_method fields by matching
 city/state against Census place, county, and state gazetteers in order of
@@ -21,7 +21,6 @@ matching strategy.
 """
 
 import json
-from pathlib import Path
 
 from geocode_lib import (
     DEFAULT_LAT,
@@ -31,18 +30,10 @@ from geocode_lib import (
     build_state_lookup,
     geocode_org,
 )
+from paths import COUNTY_GAZ, GEOCODED_ORGS_FILE, PARSED_ORGS_FILE, PLACE_GAZ, STATE_GAZ
 
-BASE_DIR = Path(__file__).resolve().parent.parent.parent
-RAW_DIR = BASE_DIR / "data" / "raw"
-INT_DIR = BASE_DIR / "data" / "intermediate"
-INT_DIR.mkdir(parents=True, exist_ok=True)
-
-INPUT_FILE = INT_DIR / "parsed_orgs.json"
-OUTPUT_FILE = INT_DIR / "geocoded_orgs.json"
-
-PLACE_GAZ = RAW_DIR / "2023_Gaz_place_national.txt"
-COUNTY_GAZ = RAW_DIR / "2023_Gaz_counties_national.txt"
-STATE_GAZ = RAW_DIR / "2023_Gaz_state_national.txt"
+INPUT_FILE = PARSED_ORGS_FILE
+OUTPUT_FILE = GEOCODED_ORGS_FILE
 
 
 def main():
@@ -97,6 +88,7 @@ def main():
         method_counts[method] = method_counts.get(method, 0) + 1
 
     # Save output
+    OUTPUT_FILE.parent.mkdir(parents=True, exist_ok=True)
     with open(OUTPUT_FILE, "w") as f:
         json.dump(geocoded, f, indent=2)
 
