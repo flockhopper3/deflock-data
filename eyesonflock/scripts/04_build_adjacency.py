@@ -22,7 +22,7 @@ produces (IDs match properties.id in sharing-network-nodes.geojson).
 
 import json
 
-from parse_orgs_lib import canonical_slug, parse_org_name, portal_canonical_slug
+from parse_orgs_lib import build_alias_map, make_shared_name_resolver, portal_canonical_slug
 from paths import ADJACENCY_FILE, PARSED_ORGS_FILE, SNAPSHOT_FILE
 
 EYESONFLOCK = SNAPSHOT_FILE
@@ -31,35 +31,15 @@ OUTPUT_FILE = ADJACENCY_FILE
 
 
 def _load_alias_map() -> dict[str, str]:
-    """Build raw_name → canonical_slug from parsed_orgs.json.
+    """raw_name → canonical slug from parsed_orgs.json (see parse_orgs_lib.build_alias_map).
 
-    parsed_orgs.json holds the authoritative slug for every known raw name,
-    including rescued stateless entries (e.g., "Yuba County Sheriffs Office"
-    → "yuba-county-ca-so") that pure canonical_slug() can't resolve on its
-    own. This map ensures adjacency terminates at the same node 03 emits.
+    Absent file → empty map → bare canonical slugging, the same degradation
+    03_build_nodes_geojson.py applies, so the two files stay consistent.
     """
     if not PARSED_ORGS.exists():
         return {}
     with open(PARSED_ORGS) as f:
-        parsed = json.load(f)
-    alias_map: dict[str, str] = {}
-    for slug, entry in parsed.items():
-        alias_map[entry["raw_name"]] = slug
-        for alias in entry.get("aliases", []):
-            alias_map[alias] = slug
-    return alias_map
-
-
-def _slug_for_shared_name(raw_name: str, alias_map: dict[str, str], _cache: dict = {}) -> str:
-    """Canonical slug for a name that appears in organizations_shared_with.
-    Consults the alias map first so rescued names resolve correctly, then
-    falls back to canonical_slug. Memoized since many portals share with
-    the same agencies."""
-    slug = _cache.get(raw_name)
-    if slug is None:
-        slug = alias_map.get(raw_name) or canonical_slug(parse_org_name(raw_name), raw_name)
-        _cache[raw_name] = slug
-    return slug
+        return build_alias_map(json.load(f))
 
 
 def main():
@@ -68,7 +48,7 @@ def main():
     with open(EYESONFLOCK) as f:
         data = json.load(f)
 
-    alias_map = _load_alias_map()
+    resolve = make_shared_name_resolver(_load_alias_map())
 
     adjacency: dict[str, set[str]] = {}
 
@@ -79,7 +59,7 @@ def main():
         if not shared or not p_slug:
             continue
 
-        connected_slugs = {_slug_for_shared_name(name, alias_map) for name in shared}
+        connected_slugs = {resolve(name) for name in shared}
         # Drop self-edges and empty slugs
         connected_slugs.discard(p_slug)
         connected_slugs.discard("")

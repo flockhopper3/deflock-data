@@ -2,6 +2,7 @@
 """Build GeoJSON FeatureCollection of sharing network nodes.
 
 Reads:  <work>/intermediate/geocoded_orgs.json
+        <work>/intermediate/parsed_orgs.json      (alias map, so counts match step 04)
         <work>/raw/eyesonflock_full_data.json
 Writes: <work>/output/sharing-network-nodes.geojson   (see paths.py)
 
@@ -22,11 +23,12 @@ import json
 import re
 from collections import Counter
 
-from parse_orgs_lib import canonical_slug, parse_org_name, portal_canonical_slug
-from paths import GEOCODED_ORGS_FILE, NODES_FILE, SNAPSHOT_FILE
+from parse_orgs_lib import build_alias_map, make_shared_name_resolver, portal_canonical_slug
+from paths import GEOCODED_ORGS_FILE, NODES_FILE, PARSED_ORGS_FILE, SNAPSHOT_FILE
 
 GEOCODED_ORGS = GEOCODED_ORGS_FILE
 EYESONFLOCK = SNAPSHOT_FILE
+PARSED_ORGS = PARSED_ORGS_FILE
 OUTPUT_FILE = NODES_FILE
 
 # Heuristic: a node with >= AGGREGATOR_MIN_DEGREE edges AND population <
@@ -43,16 +45,16 @@ _INACTIVE_RE = re.compile(
 )
 
 
-def _build_connection_counts(portals: list[dict]) -> Counter:
+def _build_connection_counts(portals: list[dict], resolve) -> Counter:
     """Count unique neighbors per canonical slug in the bidirectional graph.
 
-    Uses set semantics (same as 04_build_adjacency.py) so that connectionCount
-    always equals the node's adjacency-list length. Drops self-edges introduced
-    when an alias in a portal's sharing list canonicalizes back to the portal's
-    own slug.
+    `resolve` is the shared name→slug function from
+    parse_orgs_lib.make_shared_name_resolver — the same one 04_build_adjacency.py
+    uses — so connectionCount always equals |outbound ∪ inbound| in the
+    adjacency file. Drops self-edges introduced when an alias in a portal's
+    sharing list canonicalizes back to the portal's own slug.
     """
     adjacency: dict[str, set[str]] = {}
-    name_cache: dict[str, str] = {}
 
     for portal in portals:
         shared = portal.get("organizations_shared_with") or []
@@ -62,10 +64,7 @@ def _build_connection_counts(portals: list[dict]) -> Counter:
 
         connected: set[str] = set()
         for org_name in shared:
-            slug = name_cache.get(org_name)
-            if slug is None:
-                slug = canonical_slug(parse_org_name(org_name), org_name)
-                name_cache[org_name] = slug
+            slug = resolve(org_name)
             if slug and slug != p_slug:
                 connected.add(slug)
 
@@ -99,7 +98,14 @@ def main():
     with open(EYESONFLOCK) as f:
         data = json.load(f)
 
-    connection_counts = _build_connection_counts(data["portals"])
+    alias_map: dict[str, str] = {}
+    if PARSED_ORGS.exists():
+        with open(PARSED_ORGS) as f:
+            alias_map = build_alias_map(json.load(f))
+    else:
+        print(f"  WARNING: {PARSED_ORGS.name} not found — sharing-list names resolve without aliases")
+    resolve = make_shared_name_resolver(alias_map)
+    connection_counts = _build_connection_counts(data["portals"], resolve)
 
     features = []
     aggregator_count = 0

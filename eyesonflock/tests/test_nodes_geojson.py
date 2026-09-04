@@ -38,17 +38,25 @@ def _make_org(**overrides):
     return base
 
 
-def _run_build(monkeypatch, tmp_path, orgs: dict, portals: list):
-    """Helper: point the build script at temp files and run main()."""
+def _run_build(monkeypatch, tmp_path, orgs: dict, portals: list, parsed: dict | None = None):
+    """Helper: point the build script at temp files and run main().
+
+    `parsed` is the parsed_orgs.json content (alias map source). When None the
+    file is absent, which must degrade to bare canonical slugging.
+    """
     geocoded = tmp_path / "geocoded_orgs.json"
     eyes = tmp_path / "eyesonflock.json"
+    parsed_f = tmp_path / "parsed_orgs.json"
     out = tmp_path / "sharing-network-nodes.geojson"
 
     geocoded.write_text(json.dumps(orgs))
     eyes.write_text(json.dumps({"portals": portals}))
+    if parsed is not None:
+        parsed_f.write_text(json.dumps(parsed))
 
     monkeypatch.setattr(_build03, "GEOCODED_ORGS", geocoded)
     monkeypatch.setattr(_build03, "EYESONFLOCK", eyes)
+    monkeypatch.setattr(_build03, "PARSED_ORGS", parsed_f)
     monkeypatch.setattr(_build03, "OUTPUT_FILE", out)
 
     _build03.main()
@@ -137,3 +145,37 @@ class TestLikelyAggregatorFlag:
             f for f in result["features"] if f["properties"]["id"] == "shelby-county-tn-so"
         )
         assert feat["properties"]["isLikelyAggregator"] is False
+
+
+class TestAliasAwareConnectionCount:
+    """connectionCount must use the same name→slug resolution as step 04, so a
+    sharing-list name that only resolves through parsed_orgs aliases (e.g. the
+    bare "Berkeley" manual alias) is counted."""
+
+    def _fixture(self):
+        orgs = {
+            "berkeley-ca-pd": _make_org(
+                raw_name="Berkeley CA PD", id="berkeley-ca-pd",
+                city="Berkeley", state="CA", portal_slug="berkeley-ca",
+            )
+        }
+        portals = [
+            {"slug": "berkeley-ca", "city": "Berkeley", "state": "CA", "type": "PD",
+             "organizations_shared_with": []},
+            {"slug": "other-ca", "city": "Other", "state": "CA", "type": "PD",
+             "organizations_shared_with": ["Berkeley"]},
+        ]
+        parsed = {"berkeley-ca-pd": {"raw_name": "Berkeley CA PD", "aliases": ["Berkeley"]}}
+        return orgs, portals, parsed
+
+    def test_alias_counts_toward_portal(self, monkeypatch, tmp_path):
+        orgs, portals, parsed = self._fixture()
+        result = _run_build(monkeypatch, tmp_path, orgs, portals, parsed=parsed)
+        feat = next(f for f in result["features"] if f["properties"]["id"] == "berkeley-ca-pd")
+        assert feat["properties"]["connectionCount"] == 1
+
+    def test_without_parsed_orgs_falls_back_to_bare_slugging(self, monkeypatch, tmp_path):
+        orgs, portals, _ = self._fixture()
+        result = _run_build(monkeypatch, tmp_path, orgs, portals, parsed=None)
+        feat = next(f for f in result["features"] if f["properties"]["id"] == "berkeley-ca-pd")
+        assert feat["properties"]["connectionCount"] == 0

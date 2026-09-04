@@ -453,3 +453,35 @@ class TestSpelledOutSuffixes:
         assert r["type"] == "so"
         assert r["state"] is None
         assert r["city"] == "Yuba County"
+
+
+# ── Alias map + shared-name resolver (shared by steps 03 and 04) ─────────────
+
+from parse_orgs_lib import build_alias_map, make_shared_name_resolver  # noqa: E402
+
+
+class TestAliasMap:
+    def test_build_alias_map_covers_raw_name_and_aliases(self):
+        parsed = {
+            "berkeley-ca-pd": {"raw_name": "Berkeley CA PD", "aliases": ["Berkeley", "Berkeley PD CA"]},
+            "yuba-county-ca-so": {"raw_name": "Yuba County CA SO", "aliases": ["Yuba County Sheriffs Office"]},
+        }
+        assert build_alias_map(parsed) == {
+            "Berkeley CA PD": "berkeley-ca-pd",
+            "Berkeley": "berkeley-ca-pd",
+            "Berkeley PD CA": "berkeley-ca-pd",
+            "Yuba County CA SO": "yuba-county-ca-so",
+            "Yuba County Sheriffs Office": "yuba-county-ca-so",
+        }
+
+    def test_build_alias_map_tolerates_missing_aliases_key(self):
+        assert build_alias_map({"x-tx-pd": {"raw_name": "X TX PD"}}) == {"X TX PD": "x-tx-pd"}
+
+    def test_resolver_prefers_alias_map_then_canonical(self):
+        resolve = make_shared_name_resolver({"Berkeley": "berkeley-ca-pd"})
+        assert resolve("Berkeley") == "berkeley-ca-pd"
+        assert resolve("Allen Park MI PD") == "allen-park-mi-pd"
+
+    def test_resolver_with_empty_map_is_pure_canonical(self):
+        resolve = make_shared_name_resolver({})
+        assert resolve("Berkeley") == canonical_slug(parse_org_name("Berkeley"), "Berkeley")

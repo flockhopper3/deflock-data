@@ -576,3 +576,41 @@ def portal_as_org_name(portal: dict) -> str:
         return f"{city} {state} PD".strip()
 
     return portal.get("slug") or ""
+
+
+# ── Shared name → slug resolution (steps 03 and 04) ───────────────────────────
+
+def build_alias_map(parsed_orgs: dict) -> dict[str, str]:
+    """raw_name and every alias → canonical slug, from parsed_orgs.json content.
+
+    parsed_orgs.json holds the authoritative slug for every known raw name,
+    including manual aliases ("Berkeley" → berkeley-ca-pd) and rescued
+    stateless entries ("Yuba County Sheriffs Office" → yuba-county-ca-so)
+    that canonical_slug() alone can't resolve. The node builder (03) and the
+    adjacency builder (04) must both resolve sharing-list names through this
+    map, otherwise connectionCount and the adjacency lists disagree.
+    """
+    alias_map: dict[str, str] = {}
+    for slug, entry in parsed_orgs.items():
+        alias_map[entry["raw_name"]] = slug
+        for alias in entry.get("aliases", []):
+            alias_map[alias] = slug
+    return alias_map
+
+
+def make_shared_name_resolver(alias_map: dict[str, str]):
+    """Return a memoised ``raw_name → slug`` function.
+
+    Consults the alias map first, then falls back to canonical_slug(). Memoised
+    because many portals share with the same agencies.
+    """
+    cache: dict[str, str] = {}
+
+    def resolve(raw_name: str) -> str:
+        slug = cache.get(raw_name)
+        if slug is None:
+            slug = alias_map.get(raw_name) or canonical_slug(parse_org_name(raw_name), raw_name)
+            cache[raw_name] = slug
+        return slug
+
+    return resolve

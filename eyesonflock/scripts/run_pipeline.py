@@ -42,6 +42,7 @@ SCRIPTS = [
     "03_build_nodes_geojson.py",
     "04_build_adjacency.py",
     "05_audit_geocoding.py",
+    "06_verify_outputs.py",
 ]
 
 
