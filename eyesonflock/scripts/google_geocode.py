@@ -29,6 +29,21 @@ _MIN_REQUEST_INTERVAL = 0.02  # 20ms between requests
 
 _GEOCODE_API_URL = "https://maps.googleapis.com/maps/api/geocode/json"
 
+# Statuses that mean "this query has no answer" — safe to cache as a negative
+# so the next run doesn't pay for it again.
+_NEGATIVE_STATUSES = frozenset({"ZERO_RESULTS"})
+
+# Statuses that mean the key, project, or quota is the problem. One of these
+# opens the circuit: no further paid calls this run, cache hits still served,
+# nothing cached. Caching these would poison the file — a later run with a
+# fixed key would never retry the query.
+_CIRCUIT_BREAKER_STATUSES = frozenset({"REQUEST_DENIED", "OVER_DAILY_LIMIT", "OVER_QUERY_LIMIT"})
+
+# Consecutive network failures before the circuit opens; each one already
+# burned the 10s request timeout, and ~1.5k candidates × 10s would blow the
+# CI job timeout.
+_MAX_CONSECUTIVE_NETWORK_ERRORS = 3
+
 
 class GoogleGeocoder:
     """Cached Google Maps Geocoding API client."""
@@ -45,6 +60,11 @@ class GoogleGeocoder:
         self._cache: dict[str, dict] = {}
         self._last_request_time = 0.0
         self._api_calls = 0
+        self._rejected = 0
+        self._circuit_open = False
+        self._consecutive_network_errors = 0
+        # (status, message) of the most recent non-answer from Google, or None.
+        self.last_error: tuple[str, str] | None = None
 
         if self.cache_path and self.cache_path.exists():
             self._load_cache()
@@ -66,8 +86,14 @@ class GoogleGeocoder:
 
     @property
     def is_live(self) -> bool:
-        """True when an API key is present and cache misses will hit Google."""
-        return self.api_key is not None
+        """True when cache misses will hit Google: a key is present and the
+        circuit hasn't opened on a refusal, quota error, or repeated network failure."""
+        return self.api_key is not None and not self._circuit_open
+
+    @property
+    def rejected_calls(self) -> int:
+        """API calls that returned a status other than OK/ZERO_RESULTS."""
+        return self._rejected
 
     @property
     def api_calls_made(self) -> int:
@@ -113,14 +139,14 @@ class GoogleGeocoder:
             time.sleep(_MIN_REQUEST_INTERVAL - elapsed)
         self._last_request_time = time.time()
 
-    def _call_api(self, query: str) -> dict | None:
-        """Make a geocoding API call.
-
-        Args:
-            query: The address/query string.
+    def _call_api(self, query: str) -> tuple[dict | None, str]:
+        """Make one geocoding API call.
 
         Returns:
-            Dict with 'lat' and 'lng' keys, or None if geocoding failed.
+            (result, status): result is {'lat', 'lng'} on success, else None.
+            status is Google's status string, "ZERO_RESULTS" for an OK response
+            with no results, or "NETWORK_ERROR" when the request never got an answer.
+            Side effects: counts calls, records last_error, opens the circuit.
         """
         self._rate_limit()
 
@@ -135,16 +161,32 @@ class GoogleGeocoder:
             req = urllib.request.Request(url)
             with urllib.request.urlopen(req, timeout=10) as resp:
                 data = json.loads(resp.read().decode("utf-8"))
-        except (urllib.error.URLError, OSError, json.JSONDecodeError):
-            return None
+        except (urllib.error.URLError, OSError, json.JSONDecodeError) as e:
+            self.last_error = ("NETWORK_ERROR", str(e))
+            self._consecutive_network_errors += 1
+            if self._consecutive_network_errors >= _MAX_CONSECUTIVE_NETWORK_ERRORS:
+                self._circuit_open = True
+            return None, "NETWORK_ERROR"
 
         self._api_calls += 1
+        self._consecutive_network_errors = 0
+        status = str(data.get("status") or "UNKNOWN")
 
-        if data.get("status") != "OK" or not data.get("results"):
-            return None
+        if status == "OK":
+            results = data.get("results") or []
+            if not results:
+                return None, "ZERO_RESULTS"
+            location = results[0]["geometry"]["location"]
+            return {"lat": location["lat"], "lng": location["lng"]}, status
 
-        location = data["results"][0]["geometry"]["location"]
-        return {"lat": location["lat"], "lng": location["lng"]}
+        if status in _NEGATIVE_STATUSES:
+            return None, status
+
+        self._rejected += 1
+        self.last_error = (status, str(data.get("error_message") or ""))
+        if status in _CIRCUIT_BREAKER_STATUSES:
+            self._circuit_open = True
+        return None, status
 
     def invalidate(self, org: dict) -> bool:
         """Remove this org's cache entry so the next run can re-query.
@@ -178,13 +220,16 @@ class GoogleGeocoder:
                 return None
             return (cached["lat"], cached["lng"])
 
-        # Cache-only mode: never hit the network, never record the miss.
+        # Cache-only mode (no key, or circuit open): never hit the network,
+        # never record the miss.
         if not self.is_live:
             return None
 
-        # Call API
-        result = self._call_api(query)
-        self._cache[query] = result
+        result, status = self._call_api(query)
+        # Only genuine answers are cached: a hit, or Google saying "no such
+        # place". Refusals, quota errors and network failures are not answers.
+        if result is not None or status in _NEGATIVE_STATUSES:
+            self._cache[query] = result
         if result:
             return (result["lat"], result["lng"])
         return None

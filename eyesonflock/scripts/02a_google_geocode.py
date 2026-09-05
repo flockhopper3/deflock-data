@@ -4,6 +4,7 @@
 Reads:  <work>/intermediate/geocoded_orgs.json  (produced by 02_geocode_orgs.py)
         eyesonflock/.env or environment variable GOOGLEMAPSAPI
 Writes: <work>/intermediate/geocoded_orgs.json  (updated in place)
+        <work>/intermediate/google_geocode_run.json (what this step did; shown in the CI job summary)
 Cache:  eyesonflock/google_geocode_cache.json   (committed seed; read + written in place)
 
 For every org currently geocoded with method `state` or `default`, this step
@@ -24,7 +25,7 @@ import os
 import sys
 
 from google_geocode import GoogleGeocoder, load_api_key
-from paths import ENV_FILE, GEOCODED_ORGS_FILE, GOOGLE_CACHE_FILE
+from paths import ENV_FILE, GEOCODED_ORGS_FILE, GOOGLE_CACHE_FILE, GOOGLE_RUN_STATUS_FILE
 from state_bbox import is_in_state_bbox
 
 GEOCODED_FILE = GEOCODED_ORGS_FILE
@@ -68,8 +69,10 @@ def main():
         return
 
     client = GoogleGeocoder(api_key=api_key, cache_path=CACHE_FILE)
-    print(f"  Mode:  {'live' if client.is_live else 'cache-only'}")
-    print(f"  Cache: {client.cache_size:,} entries already")
+    mode = "live" if client.is_live else "cache-only"
+    cache_before = client.cache_size
+    print(f"  Mode:  {mode}")
+    print(f"  Cache: {cache_before:,} entries already")
 
     upgraded = 0
     failed = 0
@@ -97,17 +100,43 @@ def main():
         org["geocode_method"] = "google"
         upgraded += 1
 
-    if client.is_live:
+    # Save whenever a key was present: refusals are never cached, so the file
+    # only ever gains genuine answers.
+    if api_key:
         client.save_cache()
 
     with open(GEOCODED_FILE, "w") as f:
         json.dump(geocoded, f, indent=2)
+
+    status = {
+        "mode": mode,
+        "candidates": len(candidates),
+        "upgraded": upgraded,
+        "rejectedOutOfState": rejected,
+        "stillAtFallback": failed,
+        "apiCalls": client.api_calls_made,
+        "apiCallsRejected": client.rejected_calls,
+        "apiError": None if client.last_error is None
+                    else {"status": client.last_error[0], "message": client.last_error[1]},
+        "circuitOpened": bool(api_key) and not client.is_live,
+        "cacheEntriesBefore": cache_before,
+        "cacheEntriesAfter": client.cache_size,
+    }
+    GOOGLE_RUN_STATUS_FILE.parent.mkdir(parents=True, exist_ok=True)
+    with open(GOOGLE_RUN_STATUS_FILE, "w") as f:
+        json.dump(status, f, indent=2)
 
     print(f"\n  Upgraded:    {upgraded:,}")
     print(f"  Rejected (out of state bbox): {rejected:,}")
     print(f"  Still at state/default:       {failed:,}")
     print(f"  API calls made:               {client.api_calls_made:,}")
     print(f"  Cache size now:               {client.cache_size:,}")
+    if client.last_error is not None:
+        st, msg = client.last_error
+        print(f"\n  WARNING: Google API error: {st} — {msg or '(no message)'}")
+        if status["circuitOpened"]:
+            print(f"           Stopped calling after {client.api_calls_made:,} call(s); "
+                  f"{failed:,} candidates left at state centroids. Nothing was cached for them.")
     print("Done.")
 
 

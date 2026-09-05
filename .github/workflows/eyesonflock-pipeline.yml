@@ -75,6 +75,13 @@ jobs:
             else
               echo "**Pipeline did not produce meta.json — see the run log.**"
             fi
+            if [ -f "${W}/intermediate/google_geocode_run.json" ]; then
+              echo
+              echo "### Google geocode step"
+              echo '```json'
+              cat "${W}/intermediate/google_geocode_run.json"
+              echo '```'
+            fi
             if [ -f "${W}/intermediate/geocode_audit.txt" ]; then
               echo
               echo "<details><summary>Geocode audit</summary>"
@@ -96,6 +103,7 @@ jobs:
             /tmp/eyesonflock-work/output/sharing-network-adjacency.json
             /tmp/eyesonflock-work/output/meta.json
             /tmp/eyesonflock-work/intermediate/geocode_audit.txt
+            /tmp/eyesonflock-work/intermediate/google_geocode_run.json
           retention-days: 30
           if-no-files-found: error
 

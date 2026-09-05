@@ -33,6 +33,7 @@ def test_env_override_relocates_generated_paths_only(monkeypatch, tmp_path):
     assert p.PARSED_ORGS_FILE == tmp_path / "intermediate" / "parsed_orgs.json"
     assert p.GEOCODED_ORGS_FILE == tmp_path / "intermediate" / "geocoded_orgs.json"
     assert p.AUDIT_FILE == tmp_path / "intermediate" / "geocode_audit.txt"
+    assert p.GOOGLE_RUN_STATUS_FILE == tmp_path / "intermediate" / "google_geocode_run.json"
     assert p.NODES_FILE == tmp_path / "output" / "sharing-network-nodes.geojson"
     assert p.ADJACENCY_FILE == tmp_path / "output" / "sharing-network-adjacency.json"
     assert p.META_FILE == tmp_path / "output" / "meta.json"

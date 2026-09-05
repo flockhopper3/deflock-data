@@ -42,6 +42,7 @@ SNAPSHOT_FILE = RAW_DIR / "eyesonflock_full_data.json"
 PARSED_ORGS_FILE = INT_DIR / "parsed_orgs.json"
 GEOCODED_ORGS_FILE = INT_DIR / "geocoded_orgs.json"
 AUDIT_FILE = INT_DIR / "geocode_audit.txt"
+GOOGLE_RUN_STATUS_FILE = INT_DIR / "google_geocode_run.json"
 
 NODES_FILE = OUTPUT_DIR / "sharing-network-nodes.geojson"
 ADJACENCY_FILE = OUTPUT_DIR / "sharing-network-adjacency.json"

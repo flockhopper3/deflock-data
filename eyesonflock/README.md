@@ -57,7 +57,7 @@ No R2 credentials are used. Nothing is uploaded anywhere but the run's own artif
 | Where | Refuses when |
 |-------|--------------|
 | step 00 | non-JSON / missing `portals` or `summary`; fewer than 500 portals (reference: 908); or fewer than 50% of the prior snapshot's portals when a prior exists |
-| step 02a | a Google result lands outside the declared state's bbox (cached entry is dropped so a later run can retry) |
+| step 02a | a Google result lands outside the declared state's bbox (cached entry is dropped so a later run can retry). A `REQUEST_DENIED` / quota status, or 3 consecutive network failures, opens a circuit: no more paid calls that run, nothing cached for the refused queries, warning in the log and in `google_geocode_run.json` (shown in the job summary). The step itself does not fail the run — the data is still valid, just less precise |
 | step 06 | any output invariant: not a FeatureCollection; < 5,000 features or < 700 portals; bad or out-of-range coordinates; property keys differ from the 18-key schema; duplicate or empty `id`; `portalSlug` present without `isPortal` or vice versa; adjacency key/target that isn't a node; list not sorted/deduped or containing a self-edge; < 100,000 directed edges; any node whose `connectionCount ≠ |outbound ∪ inbound|`; more than 2% of features at the DC default fallback |
 
 The floors sit far below the 2026-04 reference (6,461 features / 906 portals / 272,290 edges); they catch a truncated or broken build, not a real decline.
