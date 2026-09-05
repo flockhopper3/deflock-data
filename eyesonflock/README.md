@@ -31,7 +31,7 @@ python eyesonflock/scripts/run_pipeline.py --skip-fetch   # rebuild from the sna
 
 Generated files land in `eyesonflock/work/` (gitignored): `raw/` snapshot, `intermediate/` parse and geocode stages plus the audit report, `output/` the three deliverables. Set `EYESONFLOCK_WORK_DIR` to put them somewhere else — that is the only knob, and it is the one the workflow uses.
 
-Optional: a Google Geocoding key in `eyesonflock/.env` (see `.env.example`) or `GOOGLEMAPSAPI` in the environment lets step 02a resolve agencies the Census gazetteers could only place at a state centroid. Without it the step still applies the committed cache (`google_geocode_cache.json`, ~1.5k entries) and makes no network calls. With it, new lookups are written back to that file — commit them when convenient.
+Optional: a Google Maps key in `eyesonflock/.env` (see `.env.example`) or `GOOGLEMAPSAPI` in the environment lets step 02a resolve agencies the Census gazetteers could only place at a state centroid. The key needs the **Geocoding API** and **Places API (New)** enabled on a billed project, and no IP/referrer restriction (GitHub runners have no fixed IP); restrict it to those two APIs instead. Geocoding is tried first with the parsed jurisdiction, then Places text search with the raw agency name. Without a key the step still applies the committed cache (`google_geocode_cache.json`) and makes no network calls. With it, new lookups are written back to that file — commit them when convenient.
 
 Tests:
 
@@ -57,7 +57,7 @@ No R2 credentials are used. Nothing is uploaded anywhere but the run's own artif
 | Where | Refuses when |
 |-------|--------------|
 | step 00 | non-JSON / missing `portals` or `summary`; fewer than 500 portals (reference: 908); or fewer than 50% of the prior snapshot's portals when a prior exists |
-| step 02a | a Google result lands outside the declared state's bbox (cached entry is dropped so a later run can retry). A `REQUEST_DENIED` / quota status, or 3 consecutive network failures, opens a circuit: no more paid calls that run, nothing cached for the refused queries, warning in the log and in `google_geocode_run.json` (shown in the job summary). The step itself does not fail the run — the data is still valid, just less precise |
+| step 02a | a Google result lands outside the declared state's bbox (skipped; the cascade moves from Geocoding to Places). A refusal or quota status, or 3 consecutive network failures, opens that API's circuit: no more paid calls to it that run, nothing cached for the refused queries, warning in the log and in `google_geocode_run.json` (shown in the job summary). The step itself does not fail the run — the data is still valid, just less precise |
 | step 06 | any output invariant: not a FeatureCollection; < 5,000 features or < 700 portals; bad or out-of-range coordinates; property keys differ from the 18-key schema; duplicate or empty `id`; `portalSlug` present without `isPortal` or vice versa; adjacency key/target that isn't a node; list not sorted/deduped or containing a self-edge; < 100,000 directed edges; any node whose `connectionCount ≠ |outbound ∪ inbound|`; more than 2% of features at the DC default fallback |
 
 The floors sit far below the 2026-04 reference (6,461 features / 906 portals / 272,290 edges); they catch a truncated or broken build, not a real decline.
@@ -68,8 +68,9 @@ The floors sit far below the 2026-04 reference (6,461 features / 906 portals / 2
 |---|---|---|---|---|---|---|
 | 2026-04-24 snapshot, offline rebuild with this code | 908 | 6,461 | 906 | 528 | 272,290 | place 3,712 · county 1,014 · google 1,399 (cache) · place_variant 279 · junk 37 · state 19 · manual 1 |
 | 2026-09-04 live fetch, cache-only, no prior | 1,046 | 6,793 | 1,044 | 608 | 289,794 | place 3,900 · county 1,062 · google 1,367 (cache) · place_variant 291 · state 132 · junk 28 · default 12 · manual 1 |
+| 2026-09-05 same snapshot, live key (Geocoding → Places) | 1,046 | 6,793 | 1,044 | 608 | 289,794 | place 3,900 · google 1,494 · county 1,062 · place_variant 291 · junk 28 · google_places 12 · state 5 · manual 1 |
 
-The April rebuild is identical to the research repo's last run except that `connectionCount` is now consistent with the adjacency file for all nodes (66 disagreed before — see METHODOLOGY, step 3). The September run passed every step-06 invariant on a first-run path (no prior snapshot). Its 144 `state`/`default` orgs are agencies added since April that the committed Google cache has never seen; a run with `GOOGLEMAPSAPI` set would resolve most of them and grow the cache. Step 00's diff against the April snapshot: 138 portals added, 0 removed, 536 sharing lists changed.
+The April rebuild is identical to the research repo's last run except that `connectionCount` is now consistent with the adjacency file for all nodes (66 disagreed before — see METHODOLOGY, step 3). The first September run passed every step-06 invariant on a first-run path (no prior snapshot) but had 144 agencies added since April sitting at state centroids because the cache had never seen them. With a working key, Geocoding resolved 127 of those (16 answers landed in the wrong state and were skipped) and Places text search resolved 12 of the remaining 17; the cache grew from 1,552 to 1,712 entries and is committed. The 5 still at a state centroid are parser limits, not lookup failures: "UT Southwestern Medical Center TX" is read as Utah, "[Federal] Indiana HIDTA" defaults to DC, and the bbox check then rejects the correct Dallas / Indianapolis answers. Step 00's diff against the April snapshot: 138 portals added, 0 removed, 536 sharing lists changed.
 
 ## Refreshing the gazetteers
 

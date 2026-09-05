@@ -174,3 +174,93 @@ class TestApiFailureHandling:
             assert g.geocode_org(_org(city=city, state="TX")) is None
         assert len(attempts) == 3            # 4th and 5th never touched the network
         assert g.is_live is False and g.cache_size == 0
+
+
+# ── Places (New) text-search fallback ─────────────────────────────────────────
+
+PLACES_HIT = {"places": [{"displayName": {"text": "Chesapeake Sheriff's Office"},
+                          "formattedAddress": "401 Albemarle Dr, Chesapeake, VA 23322",
+                          "location": {"latitude": 36.7177, "longitude": -76.2517}}]}
+PLACES_EMPTY: dict = {}
+
+
+class _HTTPErr(urllib.error.HTTPError):
+    def __init__(self, code, payload):
+        super().__init__("https://places.googleapis.com/v1/places:searchText", code, "err", {}, None)
+        self._b = json.dumps(payload).encode()
+    def read(self): return self._b
+
+
+def _serve_places(monkeypatch, outcomes: list) -> list[dict]:
+    """Each outcome is a payload dict (HTTP 200) or an _HTTPErr to raise. Returns request log."""
+    log: list[dict] = []
+    it = iter(outcomes)
+    def fake_urlopen(req, timeout=None):
+        log.append({"url": req.full_url, "body": json.loads(req.data) if req.data else None,
+                    "mask": req.get_header("X-goog-fieldmask")})
+        out = next(it)
+        if isinstance(out, Exception): raise out
+        return _Resp(out)
+    monkeypatch.setattr(urllib.request, "urlopen", fake_urlopen)
+    return log
+
+
+class TestPlacesLookup:
+    def test_hit_returns_coords_and_caches_under_places_key(self, tmp_path, monkeypatch):
+        log = _serve_places(monkeypatch, [PLACES_HIT])
+        g = GoogleGeocoder(api_key="k", cache_path=tmp_path / "c.json")
+        org = _org(type="so", city=None, state="VA", raw_name="Chesapeake Sheriff's Office")
+        assert g.places_lookup(org) == (36.7177, -76.2517)
+        assert log[0]["url"].startswith("https://places.googleapis.com/v1/places:searchText")
+        assert log[0]["body"]["textQuery"] == "Chesapeake Sheriff's Office, VA"
+        assert log[0]["body"]["regionCode"] == "US"
+        assert "places.location" in log[0]["mask"]
+        assert g.places_calls_made == 1
+        assert g.places_lookup(org) == (36.7177, -76.2517)       # served from cache
+        assert g.places_calls_made == 1
+        g.save_cache()
+        assert "places:Chesapeake Sheriff's Office, VA" in json.loads((tmp_path / "c.json").read_text())
+
+    def test_query_without_state_is_raw_name(self, tmp_path, monkeypatch):
+        log = _serve_places(monkeypatch, [PLACES_HIT])
+        g = GoogleGeocoder(api_key="k", cache_path=tmp_path / "c.json")
+        g.places_lookup(_org(type="other", city=None, state=None, raw_name="Burr Ridge Village Center"))
+        assert log[0]["body"]["textQuery"] == "Burr Ridge Village Center"
+
+    def test_empty_result_is_cached_negative(self, tmp_path, monkeypatch):
+        log = _serve_places(monkeypatch, [PLACES_EMPTY])
+        g = GoogleGeocoder(api_key="k", cache_path=tmp_path / "c.json")
+        org = _org(type="other", city=None, state="TX", raw_name="Panhandle Auto Burglary and Theft Unit")
+        assert g.places_lookup(org) is None
+        assert g.places_lookup(org) is None
+        assert len(log) == 1 and g.cache_size == 1
+
+    def test_permission_denied_opens_places_circuit_only(self, tmp_path, monkeypatch):
+        log = _serve_places(monkeypatch, [_HTTPErr(403, {"error": {"code": 403, "status": "PERMISSION_DENIED",
+                                                                  "message": "Places API (New) has not been used in project"}}),
+                                          OK])  # a later Geocoding call must still be allowed
+        g = GoogleGeocoder(api_key="k", cache_path=tmp_path / "c.json")
+        assert g.places_lookup(_org(type="other", city=None, state="IL", raw_name="X")) is None
+        assert g.places_live is False and g.is_live is True
+        assert g.last_error == ("PERMISSION_DENIED", "Places API (New) has not been used in project")
+        assert g.cache_size == 0
+        assert g.places_lookup(_org(type="other", city=None, state="IL", raw_name="Y")) is None
+        assert g.geocode_org(_org(city="Auburn", state="MA")) == (42.19, -71.83)
+        assert len(log) == 2
+
+    def test_cache_only_mode_serves_places_hits(self, tmp_path):
+        cache = tmp_path / "c.json"
+        cache.write_text(json.dumps({"places:Foo, IL": {"lat": 1.5, "lng": 2.5}}))
+        g = GoogleGeocoder(api_key=None, cache_path=cache)
+        assert g.places_lookup(_org(type="other", city=None, state="IL", raw_name="Foo")) == (1.5, 2.5)
+        assert g.places_lookup(_org(type="other", city=None, state="IL", raw_name="Bar")) is None
+        assert g.places_calls_made == 0
+
+    def test_invalidate_places_entry(self, tmp_path):
+        cache = tmp_path / "c.json"
+        cache.write_text(json.dumps({"places:Foo, IL": {"lat": 1.5, "lng": 2.5}, "Foo, IL": {"lat": 9, "lng": 9}}))
+        g = GoogleGeocoder(api_key=None, cache_path=cache)
+        org = _org(type="other", city=None, state="IL", raw_name="Foo")
+        assert g.invalidate(org, source="places") is True
+        assert g.cache_size == 1                          # geocode entry untouched
+        assert g.invalidate(org, source="places") is False

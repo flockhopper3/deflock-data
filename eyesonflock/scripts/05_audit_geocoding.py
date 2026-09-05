@@ -44,22 +44,22 @@ def main():
 
     lines.append("METHOD BREAKDOWN")
     lines.append("-" * 40)
-    for method in ["manual", "place", "place_variant", "county", "google", "state", "default", "junk"]:
+    for method in ["manual", "place", "place_variant", "county", "google", "google_places", "state", "default", "junk"]:
         count = method_counts.get(method, 0)
         pct = 100 * count / total if total > 0 else 0
         lines.append(f"  {method:16s} {count:>5,}  ({pct:5.1f}%)")
 
     # Any unknown methods
-    known = {"manual", "place", "place_variant", "county", "google", "state", "default", "junk"}
+    known = {"manual", "place", "place_variant", "county", "google", "google_places", "state", "default", "junk"}
     for method, count in sorted(method_counts.items()):
         if method not in known:
             pct = 100 * count / total if total > 0 else 0
             lines.append(f"  {method:16s} {count:>5,}  ({pct:5.1f}%)  [UNEXPECTED]")
 
     # Accuracy summary
-    good = sum(method_counts.get(m, 0) for m in ("manual", "place", "place_variant", "county", "google"))
+    good = sum(method_counts.get(m, 0) for m in ("manual", "place", "place_variant", "county", "google", "google_places"))
     good_pct = 100 * good / total if total > 0 else 0
-    lines.append(f"\n  Accurate (manual+place+variant+county+google): {good:,} ({good_pct:.1f}%)")
+    lines.append(f"\n  Accurate (manual+place+variant+county+google+places): {good:,} ({good_pct:.1f}%)")
 
     # Remaining state/default orgs
     state_orgs = [
@@ -87,7 +87,7 @@ def main():
     # Cross-check: verify Google results fall within expected state bbox
     google_orgs = [
         (slug, e) for slug, e in geocoded.items()
-        if e.get("geocode_method") == "google"
+        if e.get("geocode_method") in ("google", "google_places")
     ]
     out_of_bounds = []
     for slug, e in google_orgs:

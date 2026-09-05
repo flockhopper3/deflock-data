@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Upgrade state/default-fallback orgs using the Google Maps Geocoding API.
+"""Upgrade state/default-fallback orgs via Google: Geocoding, then Places.
 
 Reads:  <work>/intermediate/geocoded_orgs.json  (produced by 02_geocode_orgs.py)
         eyesonflock/.env or environment variable GOOGLEMAPSAPI
@@ -8,8 +8,16 @@ Writes: <work>/intermediate/geocoded_orgs.json  (updated in place)
 Cache:  eyesonflock/google_geocode_cache.json   (committed seed; read + written in place)
 
 For every org currently geocoded with method `state` or `default`, this step
-sends a structured query to Google Maps and — when Google returns a plausible
-result — upgrades the org to lat/lng with method='google'.
+asks the Geocoding API for the parsed jurisdiction (``City, ST`` / ``County,
+ST``, or the raw name when nothing parsed). If that yields nothing plausible,
+it asks Places (New) text search for the raw agency name — the tool for
+"Panhandle Auto Burglary and Theft Unit"-style names. A plausible answer
+upgrades the org to method='google' or 'google_places'.
+
+A result whose coordinates fall outside the declared state's bbox is not
+plausible: it is skipped (the cache keeps Google's answer so the next run
+re-checks it for free instead of paying to hear it again) and the cascade
+moves to the next source.
 
 Entries with method='junk' are NEVER upgraded (that's a deliberate tag).
 Entries already at place/place_variant/county precision are not touched.
@@ -75,30 +83,34 @@ def main():
     print(f"  Cache: {cache_before:,} entries already")
 
     upgraded = 0
+    upgraded_by = {"google": 0, "google_places": 0}
     failed = 0
     rejected = 0
+    cascade = (("google", client.geocode_org), ("google_places", client.places_lookup))
     for i, (slug, org) in enumerate(candidates, 1):
         if i % 200 == 0:
-            print(f"    {i}/{len(candidates)}  (API calls: {client.api_calls_made}, upgraded: {upgraded})")
+            print(f"    {i}/{len(candidates)}  (API calls: {client.api_calls_made} + {client.places_calls_made} places, upgraded: {upgraded})")
 
-        result = client.geocode_org(org)
-        if result is None:
+        resolved = False
+        for method, lookup in cascade:
+            result = lookup(org)
+            if result is None:
+                continue
+            lat, lng = result
+            # Plausibility: a result outside the declared state's bbox is not an
+            # answer for this org. Fall through to the next source.
+            if not is_in_state_bbox(lat, lng, org.get("state")):
+                rejected += 1
+                continue
+            org["lat"] = round(lat, 4)
+            org["lng"] = round(lng, 4)
+            org["geocode_method"] = method
+            upgraded += 1
+            upgraded_by[method] += 1
+            resolved = True
+            break
+        if not resolved:
             failed += 1
-            continue
-
-        lat, lng = result
-        # Plausibility: reject Google results that land outside the declared
-        # state's bbox. Keeps the org at its prior state-centroid coords and
-        # drops the poisoned cache entry so the next paid run can retry.
-        if not is_in_state_bbox(lat, lng, org.get("state")):
-            client.invalidate(org)
-            rejected += 1
-            continue
-
-        org["lat"] = round(lat, 4)
-        org["lng"] = round(lng, 4)
-        org["geocode_method"] = "google"
-        upgraded += 1
 
     # Save whenever a key was present: refusals are never cached, so the file
     # only ever gains genuine answers.
@@ -112,13 +124,11 @@ def main():
         "mode": mode,
         "candidates": len(candidates),
         "upgraded": upgraded,
+        "upgradedBy": upgraded_by,
         "rejectedOutOfState": rejected,
         "stillAtFallback": failed,
-        "apiCalls": client.api_calls_made,
-        "apiCallsRejected": client.rejected_calls,
-        "apiError": None if client.last_error is None
-                    else {"status": client.last_error[0], "message": client.last_error[1]},
-        "circuitOpened": bool(api_key) and not client.is_live,
+        "geocoding": client.api_status("geocoding"),
+        "places": client.api_status("places"),
         "cacheEntriesBefore": cache_before,
         "cacheEntriesAfter": client.cache_size,
     }
@@ -126,17 +136,20 @@ def main():
     with open(GOOGLE_RUN_STATUS_FILE, "w") as f:
         json.dump(status, f, indent=2)
 
-    print(f"\n  Upgraded:    {upgraded:,}")
+    print(f"\n  Upgraded:    {upgraded:,}  (geocoding {upgraded_by['google']:,}, places {upgraded_by['google_places']:,})")
     print(f"  Rejected (out of state bbox): {rejected:,}")
     print(f"  Still at state/default:       {failed:,}")
-    print(f"  API calls made:               {client.api_calls_made:,}")
+    print(f"  API calls made:               {client.api_calls_made:,} geocoding, {client.places_calls_made:,} places")
     print(f"  Cache size now:               {client.cache_size:,}")
-    if client.last_error is not None:
-        st, msg = client.last_error
-        print(f"\n  WARNING: Google API error: {st} — {msg or '(no message)'}")
-        if status["circuitOpened"]:
-            print(f"           Stopped calling after {client.api_calls_made:,} call(s); "
-                  f"{failed:,} candidates left at state centroids. Nothing was cached for them.")
+    for api in ("geocoding", "places"):
+        err = client.errors.get(api)
+        if err is not None:
+            st, msg = err
+            print(f"\n  WARNING: Google {api} API error: {st} — {msg or '(no message)'}")
+            if client._circuit_open[api]:
+                print(f"           Stopped calling the {api} API for this run; nothing was cached for the refused queries.")
+    if failed:
+        print(f"           {failed:,} candidate(s) remain at state centroids.")
     print("Done.")
 
 

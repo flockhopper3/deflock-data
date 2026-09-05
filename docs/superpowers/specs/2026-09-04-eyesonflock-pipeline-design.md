@@ -102,6 +102,8 @@ The existing ≥50%-of-prior guard needs a prior snapshot. In CI the prior is re
 
 The cache file is read and written in place at its committed path. Locally that means a run may dirty `google_geocode_cache.json`; commit it when convenient. In CI the updated cache is uploaded as an artifact so new entries aren't lost.
 
+**Added 2026-09-05 after the first keyed run.** (a) Refusals are not answers: only `OK`/`ZERO_RESULTS` are cached; `REQUEST_DENIED`, quota statuses, or three consecutive network failures open a per-API circuit for the rest of the run, and step 02a writes `google_geocode_run.json` (surfaced in the job summary). This came out of a run whose key pointed at a deleted Cloud project — 143 refusals would otherwise have been cached as permanent negatives. (b) A second source: Places API (New) text search with the raw agency name, tried when Geocoding yields nothing plausible, tagged `geocode_method="google_places"`. The bbox check applies to both; a rejected answer is skipped, not invalidated, so the next run re-checks it for free. On the September snapshot: Geocoding 127/144, Places 12/17, 5 left (parser limits).
+
 ### Step 06: verify + meta
 
 A fail-closed gate, in the spirit of `tiles/cameras/verify.sh`. Exit 1 on any violation:

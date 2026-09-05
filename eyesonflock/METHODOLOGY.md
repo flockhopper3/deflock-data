@@ -75,13 +75,18 @@ The script prints a method breakdown at the end so you can see how many orgs lan
 
 ### 2a. `02a_google_geocode.py`
 
-Upgrade pass. Reads `geocoded_orgs.json` and rewrites the same file in place. For every org currently at `geocode_method in {state, default}`, looks up a structured query in the Google Maps Geocoding cache (`eyesonflock/google_geocode_cache.json`) and — if a plausible result is available — upgrades the lat/lng and re-tags `geocode_method="google"`.
+Upgrade pass. Reads `geocoded_orgs.json` and rewrites the same file in place. For every org currently at `geocode_method in {state, default}`, runs a two-source cascade against one on-disk cache (`eyesonflock/google_geocode_cache.json`):
+
+1. **Geocoding API** with the parsed jurisdiction — `City, ST` for PDs, `X County, ST` for SOs, the raw name plus state otherwise. A plausible hit re-tags `geocode_method="google"` (the jurisdiction centroid).
+2. **Places API (New) text search** with the raw agency name plus state, for names that carry no parseable jurisdiction ("Panhandle Auto Burglary and Theft Unit", "San Diego County District Attorney"). A plausible hit re-tags `geocode_method="google_places"` (the office itself). Cached under a `places:` key prefix.
+
+The website treats both as precise; only `state` and `default` are drawn as approximate.
 
 **Two modes.** With `GOOGLEMAPSAPI` set (environment or `eyesonflock/.env`), cache misses are sent to the Google API and the answers written back to the cache file. Without it, the step runs **cache-only**: cached results are still applied, misses are left at their state-centroid coordinates, no network call is made, and the cache file is not touched. This is how the scheduled GitHub run works unless a `GOOGLEMAPSAPI` repo secret is configured; the committed cache covers every candidate in the reference snapshot, so the two modes produced identical output there.
 
 **Refusals are not answers.** Only `OK` and `ZERO_RESULTS` responses are cached. `REQUEST_DENIED`, quota statuses, or three consecutive network failures open a circuit for the rest of the run — cache hits are still served, no further paid calls are made, and nothing is cached for the affected queries, so a run with a broken key can never poison the cache. The step writes `<work>/intermediate/google_geocode_run.json` describing what happened.
 
-**Plausibility check.** Before accepting a Google result, the step verifies the returned coordinates fall inside the declared state's bounding box (shared with step 5 via `state_bbox.STATE_BBOX`). Results that fail the check are rejected, the offending cache entry is invalidated so the next paid run can retry, and the org stays at its prior state-centroid coordinates. This prevents Google's occasional garbage results (e.g., returning a generic Rocky-Mountain centroid for queries with no city) from poisoning the cache. Junk-tagged entries are never upgraded. Step 05 re-runs the bbox check on the final output as a belt-and-suspenders audit.
+**Plausibility check.** Before accepting a result from either source, the step verifies the returned coordinates fall inside the declared state's bounding box (shared with step 5 via `state_bbox.STATE_BBOX`). A result that fails is skipped and the cascade moves on; if both sources fail, the org stays at its prior state-centroid coordinates. Google's answer stays in the cache so the next run re-checks it for free rather than paying to hear the same wrong answer (e.g., Places returning a Colorado office for a Louisiana DA, or Geocoding's generic Rocky-Mountain centroid for some Indiana queries). Junk-tagged entries are never upgraded. Step 05 re-runs the bbox check on the final output as a belt-and-suspenders audit.
 
 ### 3. `03_build_nodes_geojson.py`
 

@@ -6203,5 +6203,669 @@
   "UT Health - Tyler (TX), UT": {
     "lat": 40.7606608,
     "lng": -111.8939487
+  },
+  "Auburn, MA": {
+    "lat": 42.1945385,
+    "lng": -71.8356271
+  },
+  "Ball State University IN PD, IN": {
+    "lat": 40.208027,
+    "lng": -85.40756239999999
+  },
+  "Bellmawr, NJ": {
+    "lat": 39.8686729,
+    "lng": -75.09284099999999
+  },
+  "Belmont Co County, OH": {
+    "lat": 40.0325848,
+    "lng": -80.89865019999999
+  },
+  "Berlin Township (Camden County), NJ": {
+    "lat": 39.8120426,
+    "lng": -74.9303886
+  },
+  "Burr Ridge Village Center": {
+    "lat": 41.7535536,
+    "lng": -87.9129306
+  },
+  "CAC - NYC NY, NY": {
+    "lat": 40.7473709,
+    "lng": -73.9750627
+  },
+  "Chesapeake Sheriff's Office": {
+    "lat": 36.7177061,
+    "lng": -76.2516661
+  },
+  "Chitimacha Tribal, LA": {
+    "lat": 30.5190775,
+    "lng": -91.5208624
+  },
+  "City Of Fremont": {
+    "lat": 37.5485396,
+    "lng": -121.988583
+  },
+  "City of California, MO": {
+    "lat": 38.6275278,
+    "lng": -92.5665786
+  },
+  "City of Glenpool Public Works (OK), OK": {
+    "lat": 35.9553737,
+    "lng": -96.00888429999999
+  },
+  "City of Groton, CT": {
+    "lat": 41.3522145,
+    "lng": -72.0767072
+  },
+  "City of Waverly, MO": {
+    "lat": 39.2094637,
+    "lng": -93.5177118
+  },
+  "Cleveland OH Metropolitan Schools, OH": {
+    "lat": 41.3872034,
+    "lng": -81.77870209999999
+  },
+  "College of Charleston SC, SC": {
+    "lat": 32.7834441,
+    "lng": -79.93700179999999
+  },
+  "Collier Township, PA": {
+    "lat": 40.3832942,
+    "lng": -80.1162603
+  },
+  "Columbia County DA's Office GA, GA": {
+    "lat": 33.5098514,
+    "lng": -82.25832969999999
+  },
+  "Curry Co County, NM": {
+    "lat": 34.5751567,
+    "lng": -103.2663479
+  },
+  "Dare ABC (NC), NC": {
+    "lat": 35.6549619,
+    "lng": -75.62080879999999
+  },
+  "Decatur Park District, IL": {
+    "lat": 39.8284172,
+    "lng": -88.9477927
+  },
+  "District Attorney Middle Judicial Circuit GA, GA": {
+    "lat": 32.1574351,
+    "lng": -82.90712300000001
+  },
+  "East Brandywine Township, PA": {
+    "lat": 40.0397498,
+    "lng": -75.754592
+  },
+  "East Bridgewater, MA": {
+    "lat": 42.0334341,
+    "lng": -70.9592096
+  },
+  "Easton, CT": {
+    "lat": 41.27120559999999,
+    "lng": -73.2966405
+  },
+  "FL - Florida Department of Financial Services - Division of Consumer Services, FL": {
+    "lat": 30.4293817,
+    "lng": -84.2459485
+  },
+  "FL - State Office of the Attorney General - 7th Circuit, FL": {
+    "lat": 27.6648274,
+    "lng": -81.5157535
+  },
+  "Fairview Township, PA": {
+    "lat": 40.1775496,
+    "lng": -76.860565
+  },
+  "Florida SouthWestern State College FL PD, FL": {
+    "lat": 26.5517447,
+    "lng": -81.88927319999999
+  },
+  "Forney TX Parks Department, TX": {
+    "lat": 32.7481845,
+    "lng": -96.4719312
+  },
+  "Franklin County Water District TX, TX": {
+    "lat": 33.1891426,
+    "lng": -95.22061169999999
+  },
+  "GA - Office of the State Inspector General, GA": {
+    "lat": 33.7498461,
+    "lng": -84.3861355
+  },
+  "Galion City School District (OH), OH": {
+    "lat": 40.7221284,
+    "lng": -82.76707449999999
+  },
+  "Georgia College & State University GA PD, GA": {
+    "lat": 33.0804485,
+    "lng": -83.2319298
+  },
+  "Gordon State College, GA": {
+    "lat": 33.0473845,
+    "lng": -84.15165580000001
+  },
+  "Greenwood Public Schools AR, AR": {
+    "lat": 35.2185974,
+    "lng": -94.2558404
+  },
+  "Gwinnett County Solicitor's Office": {
+    "lat": 33.9516061,
+    "lng": -83.992725
+  },
+  "Heart of Texas Auto Theft Task Force, TX": {
+    "lat": 31.5436334,
+    "lng": -97.18172
+  },
+  "Hinds Community College MS PD, MS": {
+    "lat": 32.2552988,
+    "lng": -90.4141841
+  },
+  "Imperial County DA CA, CA": {
+    "lat": 33.0113694,
+    "lng": -115.4733554
+  },
+  "KY - Kentucky State Police, KY": {
+    "lat": 37.8393332,
+    "lng": -84.2700179
+  },
+  "Kansas City Airport, MO": {
+    "lat": 39.3014091,
+    "lng": -94.7104536
+  },
+  "Kansas City Intl Airport, KS": {
+    "lat": 39.3014091,
+    "lng": -94.7104536
+  },
+  "Kentucky AG, KY": {
+    "lat": 37.8393332,
+    "lng": -84.2700179
+  },
+  "Kern County Fire Department CA - Arson Investigation Unit, CA": {
+    "lat": 35.4937274,
+    "lng": -118.8596804
+  },
+  "Kidder Township, PA": {
+    "lat": 41.060235,
+    "lng": -75.667356
+  },
+  "Kline Township, PA": {
+    "lat": 40.8817864,
+    "lng": -76.0217831
+  },
+  "La Canada Flintridge CA (LASD), CA": {
+    "lat": 34.2063364,
+    "lng": -118.2044664
+  },
+  "Lake Vista LA Crime Prevention, LA": {
+    "lat": 30.0231515,
+    "lng": -90.0957057
+  },
+  "Lawnside, NJ": {
+    "lat": 39.8669886,
+    "lng": -75.0395348
+  },
+  "Lincoln, RI": {
+    "lat": 41.9345363,
+    "lng": -71.450654
+  },
+  "Los Gatos CA, CA": {
+    "lat": 37.2358078,
+    "lng": -121.9623751
+  },
+  "Methodist Mansfield, TX": {
+    "lat": 32.5639134,
+    "lng": -97.13513619999999
+  },
+  "Methodist Richardson Medical Center, TX": {
+    "lat": 32.9960963,
+    "lng": -96.66635250000002
+  },
+  "Michigan Department of Attorney General, MI": {
+    "lat": 42.7341361,
+    "lng": -84.5594787
+  },
+  "Mississippi Band of Choctaw Indians, MS": {
+    "lat": 32.3546679,
+    "lng": -89.3985283
+  },
+  "Missouri Department of Corrections, MO": {
+    "lat": 37.9642529,
+    "lng": -91.8318334
+  },
+  "Montgomery ISD, TX": {
+    "lat": 30.4502629,
+    "lng": -95.68787359999999
+  },
+  "NC - North Carolina State Bureau of Investigation (NCSBI), NC": {
+    "lat": 35.7330714,
+    "lng": -78.63033949999999
+  },
+  "NC - North Carolina State Highway Patrol (NCSHP), NC": {
+    "lat": 35.7595731,
+    "lng": -79.01929969999999
+  },
+  "Nacogdoches Co TX Criminal Taskforce Div, TX": {
+    "lat": 31.6353071,
+    "lng": -94.645035
+  },
+  "Natick, MA": {
+    "lat": 42.2775281,
+    "lng": -71.3468091
+  },
+  "New College of FL PD, FL": {
+    "lat": 27.3849617,
+    "lng": -82.5639597
+  },
+  "Nicholls State University PD": {
+    "lat": 29.7903032,
+    "lng": -90.8028911
+  },
+  "Northern Regional, PA": {
+    "lat": 41.2033216,
+    "lng": -77.1945247
+  },
+  "Ohio Investigative Unit (Ohio DPS), OH": {
+    "lat": 40.4172871,
+    "lng": -82.90712300000001
+  },
+  "Oklahoma Department of Public Safety (OK) [INACTIVE], OK": {
+    "lat": 35.0077519,
+    "lng": -97.092877
+  },
+  "Opa Locka, FL": {
+    "lat": 25.9023168,
+    "lng": -80.25032709999999
+  },
+  "Panhandle Auto Burglary and Theft Unit": {
+    "lat": 38.7945952,
+    "lng": -106.5348379
+  },
+  "Pasadena ISD, TX": {
+    "lat": 29.6638146,
+    "lng": -95.2057909
+  },
+  "Pennyrile Narcotics Task Force (KY), KY": {
+    "lat": 37.19995249999999,
+    "lng": -87.17722649999999
+  },
+  "Port Of Oakland (CA), CA": {
+    "lat": 37.7956584,
+    "lng": -122.2791769
+  },
+  "Precinct 1 (TX), TX": {
+    "lat": 31.9685988,
+    "lng": -99.9018131
+  },
+  "Red River Marshal's Office NM, NM": {
+    "lat": 36.7081756,
+    "lng": -105.4057691
+  },
+  "Region 26 Emergency Management NE, NE": {
+    "lat": 41.7706574,
+    "lng": -99.3811911
+  },
+  "Riverside Co CA DPSS, CA": {
+    "lat": 33.6825587,
+    "lng": -115.4733554
+  },
+  "Riverside VA Regional Jail, VA": {
+    "lat": 37.2462446,
+    "lng": -80.17504149999999
+  },
+  "Saint George, KS": {
+    "lat": 39.1911081,
+    "lng": -96.4202773
+  },
+  "Saint Paul, MN": {
+    "lat": 44.9537029,
+    "lng": -93.0899578
+  },
+  "San Diego County District Attorney": {
+    "lat": 33.0933809,
+    "lng": -116.6081653
+  },
+  "Santa Barbara County District Attorney CA, CA": {
+    "lat": 34.4208267,
+    "lng": -119.6984037
+  },
+  "Sheldon ISD TX, TX": {
+    "lat": 29.8613555,
+    "lng": -95.1744903
+  },
+  "Smith County TX DA Office, TX": {
+    "lat": 32.3352505,
+    "lng": -95.3102505
+  },
+  "Spring ISD, TX": {
+    "lat": 30.0118752,
+    "lng": -95.4463322
+  },
+  "St Tammany Fire Department - LA, LA": {
+    "lat": 30.6080522,
+    "lng": -90.1095038
+  },
+  "Sumner County TN E911, TN": {
+    "lat": 36.4718084,
+    "lng": -86.49965460000001
+  },
+  "TX - Brazoria County, TX": {
+    "lat": 29.2131857,
+    "lng": -95.4777811
+  },
+  "TX - City of Highland Haven, TX": {
+    "lat": 30.6082428,
+    "lng": -98.3958605
+  },
+  "TX - City of Lakewood Village, TX": {
+    "lat": 33.1435505,
+    "lng": -96.9721003
+  },
+  "TX - Duncanville Independent School District, TX": {
+    "lat": 32.6510679,
+    "lng": -96.93164809999999
+  },
+  "TX - Fate Department of Public Safety, TX": {
+    "lat": 32.9412836,
+    "lng": -96.3805696
+  },
+  "Trinity University Campus, TX": {
+    "lat": 29.4618769,
+    "lng": -98.48333819999999
+  },
+  "TX - Village of Bear Creek, TX": {
+    "lat": 30.1890973,
+    "lng": -97.94473029999999
+  },
+  "Tallapoosa County AL SD [Inactive], AL": {
+    "lat": 32.9201244,
+    "lng": -85.84862360000001
+  },
+  "Texas Department of Transportation, TX": {
+    "lat": 31.9685988,
+    "lng": -99.9018131
+  },
+  "Texas Southern University PD": {
+    "lat": 29.7214214,
+    "lng": -95.35926909999999
+  },
+  "The City of Miami Police Department": {
+    "lat": 25.7784351,
+    "lng": -80.1984076
+  },
+  "Town of Beaver, OK": {
+    "lat": 36.81613710000001,
+    "lng": -100.5198713
+  },
+  "Town of Elberfeld, IN": {
+    "lat": 38.1597668,
+    "lng": -87.4483482
+  },
+  "Town of Stockton UT, UT": {
+    "lat": 40.4518551,
+    "lng": -112.3625069
+  },
+  "Town of White Bluff, TN": {
+    "lat": 36.1075593,
+    "lng": -87.2208409
+  },
+  "Travis Ranch Marina (TX) - DNU, TX": {
+    "lat": 32.80197649999999,
+    "lng": -96.47432280000001
+  },
+  "Tri-Com Central Dispatch IL, IL": {
+    "lat": 41.9010304,
+    "lng": -88.36836629999999
+  },
+  "Tulane University Campus, LA": {
+    "lat": 29.942566,
+    "lng": -90.120105
+  },
+  "Tulsa Int'l Airport Police (OK), OK": {
+    "lat": 36.190034,
+    "lng": -95.890087
+  },
+  "University of Illinois Urbana-Champaign IL PD, IL": {
+    "lat": 40.0985023,
+    "lng": -88.2290783
+  },
+  "University of Missouri Campus MO PD, MO": {
+    "lat": 38.9403808,
+    "lng": -92.32773750000001
+  },
+  "University of North FL PD, FL": {
+    "lat": 30.2688615,
+    "lng": -81.5099248
+  },
+  "University of Tennessee at Martin Campus PD": {
+    "lat": 36.3429724,
+    "lng": -88.86433319999999
+  },
+  "Vermilion County SO - Bismarck Village": {
+    "lat": 40.2639252,
+    "lng": -87.6080755
+  },
+  "Village of Blue Mound, IL": {
+    "lat": 39.7011516,
+    "lng": -89.1231356
+  },
+  "Village of French Island, WI": {
+    "lat": 43.8579837,
+    "lng": -91.2599048
+  },
+  "Virginia Tech Police Department": {
+    "lat": 37.2187341,
+    "lng": -80.4155375
+  },
+  "Wake County NC ABC, NC": {
+    "lat": 35.8031909,
+    "lng": -78.5660852
+  },
+  "Washington Township, OH": {
+    "lat": 39.60867229999999,
+    "lng": -84.16461629999999
+  },
+  "Westampton Township, NJ": {
+    "lat": 40.0154621,
+    "lng": -74.8281281
+  },
+  "William & Mary, VA": {
+    "lat": 37.2709753,
+    "lng": -76.7162467
+  },
+  "Windsor Park TX PID, TX": {
+    "lat": 30.3141238,
+    "lng": -97.6925389
+  },
+  "Woodbury MN, MN": {
+    "lat": 44.9238552,
+    "lng": -92.9593797
+  },
+  "[Federal] Cowlitz Indian Tribal WA PD, WA": {
+    "lat": 46.1746472,
+    "lng": -122.7746902
+  },
+  "[Federal] Midwest HIDTA, DC": {
+    "lat": 38.9072873,
+    "lng": -77.0369274
+  },
+  "[Federal] Ohio Drug TF (HIDTA / Moreland Hills OH PD), OH": {
+    "lat": 41.4478312,
+    "lng": -81.4276153
+  },
+  "Troy University AL PD, AL": {
+    "lat": 31.80259259999999,
+    "lng": -85.9571615
+  },
+  "City of Half Moon Bay (SMCSO) County, CA": {
+    "lat": 37.4635519,
+    "lng": -122.4285862
+  },
+  "College of William and Mary VA PD, VA": {
+    "lat": 37.2709753,
+    "lng": -76.7162467
+  },
+  "Flock PD, GA": {
+    "lat": 32.1574351,
+    "lng": -82.90712300000001
+  },
+  "University Of Madison WI PD, WI": {
+    "lat": 43.0651752,
+    "lng": -89.4666577
+  },
+  "18th Judicial District DA's Office-, LA": {
+    "lat": 34.0549076,
+    "lng": -118.242643
+  },
+  "places:18th Judicial District DA's Office- LA PD, LA": {
+    "lat": 39.598754899999996,
+    "lng": -104.84120759999999,
+    "name": "Office of the District Attorney for the 18th Judicial District",
+    "address": "6450 S Revere Pkwy, Centennial, CO 80111"
+  },
+  "Community Health, IN": {
+    "lat": 38.7945952,
+    "lng": -106.5348379
+  },
+  "places:Community Health PD IN, IN": {
+    "lat": 39.726105,
+    "lng": -104.9832338,
+    "name": "Colorado Community Health Network",
+    "address": "600 N Grant St Ste 800, Denver, CO 80203"
+  },
+  "Indiana Department of Natural Resources, IN": {
+    "lat": 38.7945952,
+    "lng": -106.5348379
+  },
+  "places:Indiana Department of Natural Resources, IN": {
+    "lat": 39.767815,
+    "lng": -86.166461,
+    "name": "Indiana Department of Natural Resources",
+    "address": "402 W Washington St, Indianapolis, IN 46204"
+  },
+  "Indiana State Police, IN": {
+    "lat": 38.7945952,
+    "lng": -106.5348379
+  },
+  "places:Indiana State Police IN PD, IN": {
+    "lat": 39.7691002,
+    "lng": -86.1649229,
+    "name": "Indiana State Police",
+    "address": "100 N Senate Ave # N340, Indianapolis, IN 46204"
+  },
+  "Indiana University IN PD, IN": {
+    "lat": 38.7945952,
+    "lng": -106.5348379
+  },
+  "places:Indiana University IN PD, IN": {
+    "lat": 39.1792728,
+    "lng": -86.5133026,
+    "name": "Indiana University Police Department (IUPD)",
+    "address": "Indiana University Police, 1469 E 17th St, Bloomington, IN 47408"
+  },
+  "Louisiana Bureau of Investigation, LA": {
+    "lat": 34.0549076,
+    "lng": -118.242643
+  },
+  "places:Louisiana Bureau of Investigation, LA": {
+    "lat": 30.3961759,
+    "lng": -91.1123709,
+    "name": "Louisiana State Board of Private Investigator Examiners",
+    "address": "7414 Perkins Rd #120, Baton Rouge, LA 70808"
+  },
+  "Mar Mac, IA": {
+    "lat": 35.3348849,
+    "lng": -78.0558231
+  },
+  "places:Mar Mac IA PD, IA": {
+    "lat": 43.0460503,
+    "lng": -91.186872,
+    "name": "Mar-Mac Police Department",
+    "address": "319 Pleasant Dr, Marquette, IA 52158"
+  },
+  "places:Marshall County Prosecutor\u0019s Office IN, IN": {
+    "lat": 41.343733799999995,
+    "lng": -86.3105202,
+    "name": "Marshall County Prosecuting Atty",
+    "address": "Marshall County Building, 112 W Jefferson St, Plymouth, IN 46563"
+  },
+  "Marshall County Prosecutor\u2019s Office IN, IN": {
+    "lat": 38.7945952,
+    "lng": -106.5348379
+  },
+  "places:Marshall County Prosecutor\u2019s Office IN, IN": {
+    "lat": 41.343733799999995,
+    "lng": -86.3105202,
+    "name": "Marshall County Prosecuting Atty",
+    "address": "Marshall County Building, 112 W Jefferson St, Plymouth, IN 46563"
+  },
+  "Montone, IN": {
+    "lat": 38.7945952,
+    "lng": -106.5348379
+  },
+  "places:Montone PD IN, IN": {
+    "lat": 41.173094,
+    "lng": -86.037885,
+    "name": "Mentone Town Police Department",
+    "address": "201 W Main St, Mentone, IN 46539"
+  },
+  "NICTD -, IN": {
+    "lat": 38.7945952,
+    "lng": -106.5348379
+  },
+  "places:NICTD - IN PD, IN": {
+    "lat": 41.714548,
+    "lng": -86.86312330000001,
+    "name": "Northern Indiana Commuter Transportation District",
+    "address": "601 N Roeske Ave, Michigan City, IN 46360"
+  },
+  "South Coast Interagency Narcotics OR, OR": {
+    "lat": 38.7945952,
+    "lng": -106.5348379
+  },
+  "places:South Coast Interagency Narcotics OR, OR": {
+    "lat": 43.176558899999996,
+    "lng": -124.18647410000001,
+    "name": "Scint",
+    "address": "COOS COUNTY COURT HOUSE, 250 N Baxter St, Coquille, OR 97423"
+  },
+  "TNT Drug Task Force IN, IN": {
+    "lat": 38.7945952,
+    "lng": -106.5348379
+  },
+  "places:TNT Drug Task Force IN, IN": null,
+  "UT Southwestern Medical Center TX, UT": {
+    "lat": 31.9685988,
+    "lng": -99.9018131
+  },
+  "places:UT Southwestern Medical Center TX, UT": {
+    "lat": 32.8162179,
+    "lng": -96.84648659999999,
+    "name": "UT Southwestern Medical Center",
+    "address": "5323 Harry Hines Blvd, Dallas, TX 75390"
+  },
+  "University of Notre Dame PD (IN), IN": {
+    "lat": 38.7945952,
+    "lng": -106.5348379
+  },
+  "places:University of Notre Dame PD (IN), IN": {
+    "lat": 41.705809699999996,
+    "lng": -86.2350201,
+    "name": "Notre Dame Security Police",
+    "address": "Hammes Mowbray Hall, Notre Dame, IN 46556"
+  },
+  "[Federal] Indiana HIDTA, DC": {
+    "lat": 40.5512165,
+    "lng": -85.60236429999999
+  },
+  "places:Indiana HIDTA, DC": null,
+  "[Federal] Roudebush Medical Center IN Veterans Affairs PD, IN": {
+    "lat": 38.7945952,
+    "lng": -106.5348379
+  },
+  "places:Roudebush Medical Center IN Veterans Affairs PD, IN": {
+    "lat": 39.7783075,
+    "lng": -86.1868913,
+    "name": "Richard L. Roudebush VA Medical Center",
+    "address": "1481 W 10th St, Indianapolis, IN 46202"
   }
 }
