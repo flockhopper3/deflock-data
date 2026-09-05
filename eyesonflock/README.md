@@ -16,7 +16,7 @@ This hub is independent of `data/` and `tiles/`: Python, standard library only, 
 
 | Phase | What | State |
 |-------|------|-------|
-| 1 | Pipeline in this repo, unit-tested, verified outputs published as **workflow artifacts** | built, not yet run on GitHub |
+| 1 | Pipeline in this repo, unit-tested, verified outputs published as **workflow artifacts** | live on `main` since 2026-09-05; first dispatched run passed (run 33932564645) |
 | 2 | Upload verified outputs to the `flockhopper-tiles` R2 bucket | not started — after the owner reviews phase-1 artifacts |
 | 3 | Website fetches from the CDN instead of bundled static files | not started |
 
