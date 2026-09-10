@@ -145,6 +145,8 @@ In `<work>/output/`:
 - `sharing-network-adjacency.json` — edge list keyed by slug
 - `meta.json` — run summary
 
+Published by `upload.sh` to the `deflock` R2 bucket and served at `https://deflockdata.dontgetflocked.com/sharing-network-{nodes.geojson,adjacency.json,meta.json}` (see README, *Public data*).
+
 ## Caveats
 
 - **Self-reported relationships.** Sharing is what the transparency portal exposes. Agencies may share via channels not reflected here (e.g., direct DB peering, federal task forces).

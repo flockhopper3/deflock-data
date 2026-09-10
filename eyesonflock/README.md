@@ -17,8 +17,8 @@ This hub is independent of `data/` and `tiles/`: Python, standard library only, 
 | Phase | What | State |
 |-------|------|-------|
 | 1 | Pipeline in this repo, unit-tested, verified outputs published as **workflow artifacts** | live on `main` since 2026-09-05; first dispatched run passed (run 33932564645) |
-| 2 | Upload verified outputs to the `flockhopper-tiles` R2 bucket | not started — after the owner reviews phase-1 artifacts |
-| 3 | Website fetches from the CDN instead of bundled static files | not started |
+| 2 | Publish verified outputs to the pipeline's own public R2 bucket (`deflock`, served at `https://deflockdata.dontgetflocked.com`) | live since 2026-09-10 |
+| 3 | Website fetches from `deflockdata.dontgetflocked.com` instead of bundled static files | not started |
 
 ## Running locally
 
@@ -49,8 +49,30 @@ python -m pytest eyesonflock/tests -q
 3. `run_pipeline.py` with `EYESONFLOCK_WORK_DIR=/tmp/eyesonflock-work`. `GOOGLEMAPSAPI` is read from the repo secret of the same name if one exists; otherwise cache-only.
 4. `meta.json` and the geocode audit go into the job summary.
 5. Artifacts (30-day retention): `sharing-network-outputs` (the deliverables + audit), `eyesonflock-snapshot` (raw JSON, kept even on failure), `google-geocode-cache`.
+6. [`upload.sh`](upload.sh) publishes the three files to the `deflock` bucket (see **Public data** below). It refuses to run unless step 06 wrote `meta.json`, and fails the job if a public URL doesn't answer 200 afterwards.
 
-No R2 credentials are used. Nothing is uploaded anywhere but the run's own artifacts.
+The bucket has its own token, stored as `R2_NETWORK_ACCESS_KEY_ID` / `R2_NETWORK_SECRET_ACCESS_KEY` / `R2_NETWORK_ENDPOINT`. The tiles and camera-data buckets and their credentials are never touched by this workflow.
+
+## Public data
+
+Served straight from the `deflock` R2 bucket through its custom domain — no Worker in between. The bucket's CORS policy allows `GET` from any origin.
+
+| URL | Content | Stored as | Cache |
+|---|---|---|---|
+| `https://deflockdata.dontgetflocked.com/sharing-network-nodes.geojson` | node FeatureCollection | `application/geo+json`, `Content-Encoding: gzip` | 1 h |
+| `https://deflockdata.dontgetflocked.com/sharing-network-adjacency.json` | outbound adjacency | `application/json`, `Content-Encoding: gzip` | 1 h |
+| `https://deflockdata.dontgetflocked.com/sharing-network-meta.json` | run summary (`generatedAt`, counts, `runId`) | `application/json` | 5 min |
+
+The two big files are stored gzipped (~0.6 MB and ~1 MB on the wire instead of 3 MB and 6 MB); browsers and `fetch()` decode them transparently, `curl` needs `--compressed`. Each object carries `x-generated-at`, `x-feature-count`, `x-source=eyesonflock` and `x-run-id` metadata.
+
+Publishing by hand from a local run:
+
+```bash
+export AWS_ACCESS_KEY_ID=… AWS_SECRET_ACCESS_KEY=…            # the deflock-bucket token
+export R2_NETWORK_BUCKET=deflock R2_NETWORK_ENDPOINT=https://<account-id>.r2.cloudflarestorage.com
+export PUBLIC_BASE_URL=https://deflockdata.dontgetflocked.com
+bash eyesonflock/upload.sh eyesonflock/work        # add --dry-run to print the commands instead
+```
 
 ### Fail-closed points
 
@@ -76,11 +98,6 @@ The April rebuild is identical to the research repo's last run except that `conn
 
 The three Census gazetteer files in `gazetteer/` are the offline geocoder and change about once a year. To move to a new vintage: bump `GAZETTEER_VINTAGE` in `scripts/paths.py`, delete the old files, run `python eyesonflock/scripts/00_download_gazetteer.py`, run the pipeline offline to check the geocode-method breakdown didn't regress, and commit.
 
-## Phase 2 plan (not built)
+## Phase 3 (not built)
 
-- Keys in `flockhopper-tiles`: `sharing-network-nodes.geojson`, `sharing-network-adjacency.json`, `sharing-network-meta.json`; `Cache-Control: public, max-age=86400`; `x-generated-at` / `x-feature-count` / `x-source=eyesonflock` metadata from `meta.json`, mirroring `data/cameras/upload.sh`.
-- Upload step runs only after step 06 passes; same `R2_*` secrets as the camera workflows.
-- The prior-snapshot guard moves from the Actions cache to an R2 object (`pipeline/eyesonflock-snapshot.json`).
-- Serving the keys through the tiles Worker is a Worker change in the research repo — owner deploys.
-
-Phase 3 is a URL swap in `networkStore.ts`; the schema does not change.
+A base-URL swap in the website's `networkStore.ts`: fetch the two files from `https://deflockdata.dontgetflocked.com/` instead of `/public/`. The schema does not change, so the store's parsing code doesn't either. `sharing-network-meta.json` can drive an "as of" label.

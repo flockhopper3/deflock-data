@@ -1,7 +1,7 @@
 # EyesOnFlock sharing-network pipeline — Design
 
 **Date:** 2026-09-04
-**Status:** Built on branch `eyesonflock-pipeline`; awaiting owner review before any push
+**Status:** Phases 1–2 live on `main`; phase 3 pending
 
 ## Goal
 
@@ -12,7 +12,7 @@ This is phase 1 of three:
 | Phase | Deliverable | Status |
 |-------|-------------|--------|
 | 1 | Pipeline ported into `eyesonflock/`, unit-tested, verified outputs published as **workflow artifacts** | this spec |
-| 2 | Upload verified outputs to the `flockhopper-tiles` R2 bucket | later, after the owner confirms the data looks right |
+| 2 | Publish verified outputs to a dedicated public R2 bucket | built 2026-09-10 — bucket `deflock`, custom domain `deflockdata.dontgetflocked.com`, own token; see `eyesonflock/README.md` *Public data*. The owner chose a fresh bucket + bucket-level custom domain over touching the live data Worker or the tiles bucket |
 | 3 | Website `networkStore` fetches from the CDN instead of bundled static files | later |
 
 Nothing in phase 1 touches Cloudflare. Nothing is pushed to GitHub without the owner's say-so (see `CLAUDE.md`).

@@ -1,10 +1,9 @@
 name: EyesOnFlock Sharing Network
 
 # Rebuilds the sharing-network dataset (agency nodes GeoJSON + adjacency JSON)
-# from a fresh EyesOnFlock transparency-portal snapshot.
-#
-# Phase 1: outputs are published as workflow artifacts only. Nothing is
-# uploaded to R2 — see eyesonflock/README.md for the phase 2 plan.
+# from a fresh EyesOnFlock transparency-portal snapshot, then publishes it to
+# this pipeline's own public R2 bucket (served at deflockdata.dontgetflocked.com).
+# The tiles and camera-data buckets and their credentials are never touched.
 on:
   schedule:
     - cron: "0 6 * * 1" # Mondays 06:00 UTC — weekly is gentle on the public API and keeps the Actions cache below its 7-day idle eviction
@@ -106,6 +105,23 @@ jobs:
             /tmp/eyesonflock-work/intermediate/google_geocode_run.json
           retention-days: 30
           if-no-files-found: error
+
+      # Phase 2: publish to this pipeline's own public bucket. Only reached
+      # when every earlier step succeeded, and upload.sh re-checks meta.json
+      # (which step 06 writes only when all invariants hold). Dedicated
+      # token + endpoint secrets — the tiles/camera credentials are not used.
+      - name: Configure AWS CLI for R2
+        run: |
+          aws configure set aws_access_key_id "${{ secrets.R2_NETWORK_ACCESS_KEY_ID }}"
+          aws configure set aws_secret_access_key "${{ secrets.R2_NETWORK_SECRET_ACCESS_KEY }}"
+          aws configure set default.region auto
+
+      - name: Publish to R2
+        env:
+          R2_NETWORK_BUCKET: deflock
+          R2_NETWORK_ENDPOINT: ${{ secrets.R2_NETWORK_ENDPOINT }}
+          PUBLIC_BASE_URL: https://deflockdata.dontgetflocked.com
+        run: bash eyesonflock/upload.sh "${EYESONFLOCK_WORK_DIR}"
 
       # Kept even on failure so a rejected snapshot can be inspected.
       - name: Upload raw snapshot

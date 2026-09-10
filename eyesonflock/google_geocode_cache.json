@@ -6867,5 +6867,153 @@
     "lng": -86.1868913,
     "name": "Richard L. Roudebush VA Medical Center",
     "address": "1481 W 10th St, Indianapolis, IN 46202"
+  },
+  "Alpharetta GA Parks, GA": {
+    "lat": 34.0746204,
+    "lng": -84.29228619999999
+  },
+  "Augusta PD": {
+    "lat": 44.31649609999999,
+    "lng": -69.7681096
+  },
+  "BNSF, IL": {
+    "lat": 40.6331249,
+    "lng": -89.3985283
+  },
+  "Brigham Young University (UT), UT": {
+    "lat": 40.2518495,
+    "lng": -111.6493051
+  },
+  "City of Coon Rapids Parks and Recreation MN, MN": {
+    "lat": 45.1729942,
+    "lng": -93.30305969999999
+  },
+  "Coastal Carolina University Campus, SC": {
+    "lat": 33.79611939999999,
+    "lng": -79.0136958
+  },
+  "Cobb County Parks & Rec": {
+    "lat": 33.8999297,
+    "lng": -84.56414699999999
+  },
+  "Dighton, MA": {
+    "lat": 41.84385899999999,
+    "lng": -71.15673439999999
+  },
+  "Essex County MA District Attorney's Office, MA": {
+    "lat": 42.7051144,
+    "lng": -70.90712359999999
+  },
+  "Flock Safety - Engineering": {
+    "lat": 38.7945952,
+    "lng": -106.5348379
+  },
+  "Flock Safety Support Sandbox - LE": {
+    "lat": 38.7945952,
+    "lng": -106.5348379
+  },
+  "Fort Bend ISD, TX": {
+    "lat": 29.5560621,
+    "lng": -95.5827334
+  },
+  "Franklin County KS Communications Center, KS": {
+    "lat": 38.6165913,
+    "lng": -95.3102505
+  },
+  "GA - Stephen Johnston, GA": {
+    "lat": 32.1574351,
+    "lng": -82.90712300000001
+  },
+  "Georgetown, MA": {
+    "lat": 42.7250918,
+    "lng": -70.99116590000001
+  },
+  "Grand Canyon University Campus, AZ": {
+    "lat": 33.5100339,
+    "lng": -112.1288588
+  },
+  "Greenville Tech College SC Campus, SC": {
+    "lat": 34.8270773,
+    "lng": -82.37362639999999
+  },
+  "Litchfield, NH": {
+    "lat": 42.84425359999999,
+    "lng": -71.4797889
+  },
+  "Marian University Campus, IN": {
+    "lat": 39.8174958,
+    "lng": -86.2028127
+  },
+  "Midland County TX DA, TX": {
+    "lat": 32.0079977,
+    "lng": -102.0700055
+  },
+  "Montgomery County TX District Attorney, TX": {
+    "lat": 30.3213482,
+    "lng": -95.4777811
+  },
+  "New Mexico State Police, NM": {
+    "lat": 34.9727305,
+    "lng": -105.0323635
+  },
+  "North Reading, MA": {
+    "lat": 42.5750939,
+    "lng": -71.0786653
+  },
+  "Northeastern University MA PD, MA": {
+    "lat": 42.3395225,
+    "lng": -71.0878997
+  },
+  "On Site Test": {
+    "lat": 38.7945952,
+    "lng": -106.5348379
+  },
+  "Poarch Creek Tribal, AL": {
+    "lat": 31.8129739533742,
+    "lng": -86.89052694702387
+  },
+  "Precinct 2 (TX), TX": {
+    "lat": 31.9685988,
+    "lng": -99.9018131
+  },
+  "TN - Town of Guys, TN": {
+    "lat": 35.0348084,
+    "lng": -88.5586591
+  },
+  "Town of Eastview, TN": {
+    "lat": 35.0756408,
+    "lng": -88.54532499999999
+  },
+  "Town of Plainfield": {
+    "lat": 42.8341831,
+    "lng": -75.1895576
+  },
+  "Tyler Junior College Campus, TX": {
+    "lat": 32.3353847,
+    "lng": -95.28191149999999
+  },
+  "UT - Department of Natural Resources - Law Enforcement, UT": {
+    "lat": 40.7606608,
+    "lng": -111.8939487
+  },
+  "Utah Highway Patrol, UT": {
+    "lat": 40.7606608,
+    "lng": -111.8939487
+  },
+  "Village of Cloudcroft, NM": {
+    "lat": 32.9573133,
+    "lng": -105.7424855
+  },
+  "Ware County Sheriff's Office": {
+    "lat": 31.2610533,
+    "lng": -82.4035296
+  },
+  "Wayland, MA": {
+    "lat": 42.3625953,
+    "lng": -71.3614484
+  },
+  "[Federal] Golden Gate CA NRA, CA": {
+    "lat": 37.8098999,
+    "lng": -122.4977005
   }
 }
